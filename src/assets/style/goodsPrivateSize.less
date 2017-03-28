@@ -1,0 +1,31 @@
+#goodsPrivateSize{
+  .steps{
+    height: auto;
+    width: 100%;
+    margin-top: 100px;
+    .el-carousel__item{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:nth-child(2n) {
+        background-color: #99a9bf;
+        overflow-x: auto;
+        overflow-y: auto;
+      }
+      &:nth-child(2n+1) {
+        background-color: #d3dce6;
+        overflow-x: auto;
+        overflow-y: auto;
+      }
+      .el-dragger{
+        height: 385px !important;
+      }
+      .el-form-item__content{
+        max-width: 217px!important;
+        .el-tag{
+          margin-right: 15px!important;
+        }
+      }
+    }
+  }
+}

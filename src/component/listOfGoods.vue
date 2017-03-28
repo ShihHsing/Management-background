@@ -1,0 +1,522 @@
+<template>
+  <div id="listOfGoods">
+    <el-row style="margin-bottom: 15px;">
+      <el-col :span="22" :offset="1">
+        <el-row>
+          <el-form label-width="90px" ref="searchShopList" :model="searchShopList" :rules="rules">
+            <el-col :lg="5" :md="6" :sm="24">
+              <el-form-item label="商品品牌" prop="commodityBrand">
+                <el-select v-model="searchShopList.commodityBrand" clearable placeholder="请选择商品品牌">
+                  <el-option v-for="item in commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
+                  <!-- <el-option label="区域二" value="beijing"></el-option> -->
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="5" :md="6" :sm="24">
+              <el-form-item label="商品分类" prop="commodityClassification">
+                <el-select v-model="searchShopList.commodityClassification" clearable placeholder="请选择商品分类">
+                  <el-option v-for="item in commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
+                  <!-- <el-option label="区域二" value="beijing"></el-option> -->
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="5" :md="6" :sm="24">
+              <el-form-item label="商品款号:" prop="model">
+                <el-input v-model.number="searchShopList.model" style="float: right;" placeholder="请输入商品款号"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :lg="3" :md="6" :sm="24" >
+              <el-button type="primary" @click="onSubmit" style="float: right;">立即搜索</el-button>
+            </el-col>
+          </el-form>
+        </el-row>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="22" :offset="1">
+
+       	<el-table
+          :data="shopDateList"
+          border
+          stripe
+          style="width: 100%">
+          <el-table-column
+            prop="model"
+            label="商品款号"
+            width="180"
+            fixed="left">
+          </el-table-column>
+          <el-table-column
+            label="商品缩略图"
+            width="300">
+            <template scope="scope">
+              <img width="100%" height="auto" :src="scope.row.thumb_image" alt="商品缩略图">
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="product_name"
+            label="商品品牌">
+          </el-table-column>
+          <el-table-column
+            prop="category_name"
+            label="商品分类">
+          </el-table-column>
+          <el-table-column
+            prop="title"
+            label="商品标题"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="price"
+            label="商品价格"
+            width="100">
+          </el-table-column>
+          <el-table-column
+            label="操作">
+            <el-table-column
+              fixed="right"
+              label="信息修改"
+              width="180">
+              <template scope="scope">
+                <router-link size="small" class="el-button el-button--warning el-button--small" type="warning" :to="{path: 'modificationMerchandise', query: {shopID: scope.row.id}}">编辑</router-link>
+
+                <el-button @click="dialogVisible[scope.$index].model = true" size="small" type="danger">删除</el-button>
+
+                <el-dialog title="提示" v-model="dialogVisible[scope.$index].model" size="tiny">
+                  <span>您确定要删除这件商品吗?</span>
+                  <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible[scope.$index].model = false">取 消</el-button>
+                    <el-button type="primary" @click="deleteTestGoodsInfo(scope.row.id,scope.$index)">确 定</el-button>
+                  </span>
+                </el-dialog>
+
+              </template>
+            </el-table-column>
+            <el-table-column
+              fixed="right"
+              label="商品设置"
+              width="180">
+              <template scope="scope">
+                <template v-for="(item,index) in scope.row.switch_list">
+                  <el-form>
+                    <el-form-item :label="item.switch_name">
+                      <!-- <span>{{ index }}</span> -->
+                      <el-switch v-model="goodsSetSwitchModel[scope.$index][index].model" @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
+                      </el-switch>
+                    </el-form-item>
+                  </el-form>
+                </template>
+                <!-- 这是一个Debug的办法 为了配合商品属性开关动态效果的失效 -->
+                <el-switch
+                  v-model="value1"
+                  style="display:none;">
+                </el-switch>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              fixed="right"
+              label="添加3D模型"
+              width="120">
+              <template scope="scope">
+                <router-link :to="{path: 'add3DModel', query: {code: scope.row.code, id: scope.row.id, shop_id: scope.row.shop_id, color: scope.row.image_url}}" replace>
+                  <el-button type="info" size="small">添加</el-button>
+                </router-link>
+              </template>
+            </el-table-column>
+
+          </el-table-column>
+        </el-table>
+      </el-col>
+    </el-row>
+    </br>
+    </br>
+    <el-row type="flex" justify="center">
+      <el-col :span="22">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="current_page"
+          :page-size="20"
+          layout="prev, pager, next, jumper"
+          :total="20*total_pages"
+          style="float: right;padding: 0;">
+        </el-pagination>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+// 样式文件
+import '../assets/style/listOfGoods.less';
+export default {
+  name: 'listOfGoods',
+  data () {
+    var checkmodel = (rule, value, callback) => {
+      if (value != '') {
+        // statement
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+            callback();
+          }
+        }, 300)
+      } else {
+        callback();
+      }
+    };
+    return {
+      // 这是一个debug方案 为了配合商品属性开关动态效果的失效
+      value1: false,
+      // http => http 内外网切换
+      http: 'http://a001.aybc.so/',
+      // 唯一接口
+      getProductAndCategory: 'Shop/addTestGoodsInfo',
+      // 获取初始化数据接口
+      listTestGoodsInfo: 'Shop/listTestGoodsInfo',
+      // 置顶接口
+      popularHandleUrl: 'Shop/popularHandle',
+      // 推荐接口
+      specialPowerHandleUrl: 'Shop/specialPowerHandle',
+      // 商品属性开关
+      switchHandleUrl: 'Shop/switchHandle',
+      // 删除接口
+      deleteTestGoodsInfoUrl: 'Shop/deleteTestGoodsInfo', 
+      // 删除二次确认页面
+      dialogVisible: [],
+      // 商品设置数据模型
+      goodsSetSwitchModel: [],
+      // 当前页
+      current_page: 0,
+      // 总页数
+      total_pages: 0,
+      searchShopList:{
+        // 商品品牌
+        commodityBrand: '',
+        // 商品分类
+        commodityClassification: '',
+        // 商品款号
+        model: '',
+      },
+      // 服务端商品品牌
+      commodityBrandList : [],
+      // 服务端商品分类
+      commodityClassificationList: [],
+      // 验证规则
+      rules: {
+        commodityBrand: [
+          { message: '请选择商品品牌', trigger: 'change' }
+        ],
+        commodityClassification: [
+          { message: '请选择商品分类', trigger: 'change' }
+        ],
+        model: [
+          { validator: checkmodel, trigger: 'change' }
+        ]
+      },
+      // 服务端数据
+      shopDateList: [],
+    }
+  },
+
+  created: function() {
+    // 初始化获取商品品牌和商品分类
+    this.getCommodityBrandAndCommodityClassification();
+    // 获取初始化数据
+    this.getInitData();
+  },
+
+  methods: {
+    // 获取商品品牌和商品分类
+    getCommodityBrandAndCommodityClassification() {
+      var _this = this;
+      this.$http.post(this.http+this.getProductAndCategory,{
+        request_flag: 'product_list'
+      },{
+        emulateJSON: true
+      })
+      .then( (msg) => {
+        console.log(msg.body,'获取商品品牌和商品分类');
+        if (msg.data.flag == '1000') {
+          // statement
+          // 商品品牌列表
+          var product_list = msg.body.product_list;
+          _this.commodityBrandList = product_list;
+          // 商品分类列表
+          var category_list = msg.body.category_list;
+          _this.commodityClassificationList = category_list;
+        } else {
+          this.consoleError(msg.data.return_code);
+        }
+      }, (response) => {
+        console.log('Error')
+        this.consoleError('服务器发生未知错误,请刷新后重试!')
+      })
+    },
+
+    // 搜索商品
+    onSubmit() {
+      if (this.searchShopList.commodityBrand != '' || this.searchShopList.commodityClassification != '' || this.searchShopList.model != '') {
+        // statement
+        console.log(this.searchShopList);
+        this.searchShopData()
+      } else {
+        this.consoleError('请完善搜索信息!至少需要一个搜索条件!');
+        return false;
+      }
+    },
+
+    // 根据用户输入条件搜索数据
+    // TODO
+    //  还需传入页数
+
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.searchShopData(val)
+      console.log(`当前页: ${val}`);
+    },
+
+    searchShopData(val) {
+      var _this = this;
+      this.$http.post(this.http+this.listTestGoodsInfo,{
+        product_id: this.searchShopList.commodityBrand,
+        category_id: this.searchShopList.commodityClassification,
+        model: this.searchShopList.model,
+        current_page: val || ''
+      },{
+        emulateJSON: true
+      })
+      .then( (msg) => {
+        console.log(msg.body)
+        if (msg.body.flag == '1000') {
+          // statement
+          this.shopDateList = msg.body.goods_list;
+          // 构建二次确认数据模型
+          this.dialogVisible = [];
+          for (var i = 0; i < this.shopDateList.length; i++) {
+            this.dialogVisible.push({
+              model: false
+            });
+          }
+          // 设置当前页和总页数
+          this.total_pages = (msg.body.total_pages) >> 0;
+          this.current_page = (msg.body.current_page) >> 0;
+          console.log(this.total_pages,this.current_page);
+         // 商品设置开关
+          this.goodsSetSwitchModel = [];
+          for (var i = 0; i < this.shopDateList.length; i++) {
+            var model = [];
+            for (var ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
+              model.push({
+                model: !!(this.shopDateList[i].switch_list[ii].switch >> 0),
+                goods_id: this.shopDateList[i].id
+              });
+            }
+            this.goodsSetSwitchModel[i] = model;
+          }
+          // this.consoleSuccess('获取商品信息成功!')
+        } else {
+          this.consoleError(msg.body.return_code)
+          this.total_pages = 0;
+          this.current_page = 0;
+          this.shopDateList = [];
+        }
+      }, (response) => {
+        this.consoleError(response.return_code)
+      })
+      console.log(this.shopDateList)
+    },
+
+    // 初始化数据渲染页面
+    getInitData() {
+      // 服务器获取数据
+      this.getShopData();
+    },
+    
+    // 服务器获取数据
+    getShopData() {
+      // var _this = this;
+      this.$http.post(this.http+this.listTestGoodsInfo,{
+        current_page: ''
+      },{
+        emulateJSON: true
+      })
+      .then( (msg) => {
+        console.log(msg.body)
+        // 初始化
+        this.shopDateList = [];
+        if (msg.body.flag == '1000') {
+          // statement
+          this.shopDateList = msg.body.goods_list;
+          // 构建二次确认数据模型
+          this.dialogVisible = [];
+          for (var i = 0; i < this.shopDateList.length; i++) {
+            this.dialogVisible.push({
+              model: false
+            });
+          }
+          // 设置当前页和总页数
+          this.total_pages = (msg.body.total_pages) >> 0;
+          this.current_page = (msg.body.current_page) >> 0;
+          console.log(this.total_pages,this.current_page);
+          // 商品设置开关
+          this.goodsSetSwitchModel = [];
+          for (var i = 0; i < this.shopDateList.length; i++) {
+            var model = [];
+            for (var ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
+              model.push({
+                model: !!(this.shopDateList[i].switch_list[ii].switch >> 0),
+                goods_id: this.shopDateList[i].id
+              });
+            }
+            this.goodsSetSwitchModel[i] = model;
+          }
+        } else {
+          this.consoleError(msg.body.return_code)
+        }
+      }, (response) => {
+        this.consoleError(response.return_code)
+      })
+      console.log(this.shopDateList,'根据用户输入条件搜索数据')
+    },
+
+    // 商品设置置顶&取消
+    toGoTop(scope) {
+      var popular = scope.row.popular == 1?0:1;
+      // scope.row
+      // 当前点击数据的所有值
+      this.$http.post(this.http+this.popularHandleUrl,{
+        goods_id: scope.row.id,
+        popular: popular
+      },{
+        emulateJSON: true
+      })
+      .then( (msg) => {
+        console.log(msg.body)
+        if (msg.body.flag == '1000') {
+          // statement
+          this.consoleSuccess(msg.body.return_code)
+          this.getShopData();
+        } else {
+          this.consoleError(msg.body.return_code)
+        }
+      }, (response) => {
+        this.consoleError(response.return_code)
+      })
+    },
+
+    // 商品设置推荐&取消
+    toGoRecommend(scope) {
+      var special_power = scope.row.special_power == 1?0:1;
+      // scope.row
+      // 当前点击数据的所有值
+      this.$http.post(this.http+this.specialPowerHandleUrl,{
+        goods_id: scope.row.id,
+        special_power: special_power
+      },{
+        emulateJSON: true
+      })
+      .then( (msg) => {
+        console.log(msg.body)
+        if (msg.body.flag == '1000') {
+          // statement
+          this.consoleSuccess(msg.body.return_code)
+          this.getShopData();
+        } else {
+          this.consoleError(msg.body.return_code)
+        }
+      }, (response) => {
+        this.consoleError(response.return_code)
+      })
+    },
+
+    deleteRow(index, rows) {
+      rows.splice(index, 1);
+    },
+
+    // 删除
+    deleteTestGoodsInfo(id,index) {
+      console.log(index)
+      this.$http.post(this.http+this.deleteTestGoodsInfoUrl,{
+        goods_id: id
+      },{
+        emulateJSON: true
+      })
+      .then( (msg) => {
+        console.log(msg.body)
+        if (msg.body.flag == '1000') {
+          // statement
+          this.dialogVisible[index].model = false;
+          this.consoleSuccess(msg.body.return_code);
+          this.getShopData();
+        } else {
+          this.consoleError(msg.body.return_code)
+        }
+      }, (response) => {
+        this.consoleError(response.return_code);
+      })
+    },
+
+    // 商品设置开关
+    goodsSetSwitch(goods_id,switch_id,switch_value) {
+      // Debug 处理
+      this.value1 = !this.value1
+      this.$http.post(this.http+this.switchHandleUrl,{
+        goods_id: goods_id,
+        switch_id: switch_id,
+        switch_value: Number(switch_value) 
+      },{
+        emulateJSON: true
+      })
+      .then( msg => {
+        if (msg.data.flag == "1000") {
+          // statement
+          this.consoleSuccess(msg.data.return_code);
+          this.searchShopData();
+        } else {
+          this.consoleError(msg.data.return_code)
+        }
+      }, response => {
+        console.log(response);
+        this.consoleNews(response.return_code)
+      })
+    },
+
+    consoleSuccess(success) {
+      this.$notify({
+        title: '成功',
+        message: success,
+        type: 'success'
+      });
+    },
+
+    consoleWarning(warning) {
+      this.$notify({
+        title: '警告',
+        message: warning,
+        type: 'warning'
+      });
+    },
+
+    consoleNews(news) {
+      this.$notify.info({
+        title: '消息',
+        message: news
+      });
+    },
+
+    consoleError(error) {
+      this.$notify.error({
+        title: '错误',
+        message: error
+      });
+    }
+  },
+}
+</script>

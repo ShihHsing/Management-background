@@ -1,0 +1,177 @@
+<template>
+  <div id="goodsSetSwitch">
+    <el-row type="flex" class="steps" justify="center">
+      <el-col :span="11">
+        <el-carousel 
+          height="700px" 
+          indicator-position="none"
+          arrow="never"
+          :autoplay="false"
+          ref="elCarousel">
+          <!-- 第一页 -->
+          <el-carousel-item>
+            <el-form   
+              label-position="top">
+              <el-form-item label="商品设置开关(展示)">
+                <template v-for="item in items">
+                  <div>
+                    <span style="color: #666;">{{ item.switch_name }}:</span>
+                    <el-switch
+                      v-model="value"
+                      disabled>
+                    </el-switch>
+                  </div>
+                </template>
+                
+              </el-form-item>
+              <div style="color: #666">若您需要的设置开关不在此分类请点击<el-button type="text" @click="addGoodsSwitchVal = true">这里添加</el-button></div></br>
+            </el-form>
+          </el-carousel-item>
+          <!-- 第一页 End -->
+        </el-carousel>
+      </el-col>
+    </el-row>
+
+    <!-- 提示用户页面操作须知 -->
+    <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
+      <span>1.仅针对自有品牌除本平台提供商品颜色以外的自有商品颜色的添加。</span></br>
+      <span>2.您只能操作您自有商品颜色。</span></br>
+      <span>3.请注意文明用语!</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 商品设置添加 -->
+    <el-dialog title="商品设置添加" v-model="addGoodsSwitchVal" size="tiny">
+      <el-form label-position="top">
+        <el-form-item label="商品设置">
+          <el-input v-model="postData.addGoodsSwitchVal" placeholder="商品设置添加"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addGoodsSwitchVal = false">取 消</el-button>
+        <el-button type="primary" @click="postAddGoodsSwitchName();">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import '../assets/style/goodsSetSwitch.less'
+export default {
+  name: 'goodsSetSwitch',
+  data () {
+    return {
+      // 内网开发接口
+		  http: 'http://a001.aybc.so/',
+      // 上传商品设置借口
+      addGoodsSwitchNameUrl: 'Shop/addGoodsSwitchName',
+      // 获取初始化数据接口
+      listTestGoodsInfo: 'Shop/listTestGoodsInfo',
+      // 商品设置开发
+      addGoodsSwitchVal: false,
+      // 上传数据模型
+      postData: {
+        addGoodsSwitchVal: ''
+      },
+      value: true,
+      // 获取已有商品设置开发
+      items: [],
+      // 提示用户窗口
+      dialogVisible: true
+    }
+  },
+  
+  created: function() {
+    // 获取以后商品设置开关
+    this.getShopData();
+  },
+
+  methods: {
+    // 获取现有商品设置开关
+    getShopData() {
+      var _this = this;
+      this.$http.post(this.http+this.listTestGoodsInfo,{
+        current_page: ''
+      },{
+        emulateJSON: true
+      })
+      .then( (msg) => {
+        console.log(msg.body)
+        // 初始化
+        if (msg.body.flag == '1000') {
+          // statement
+          this.items = msg.body.goods_list[0].switch_list;
+        } else {
+          this.consoleError(msg.body.return_code)
+        }
+      }, (response) => {
+        this.consoleError(response.return_code)
+      })
+    },
+
+    // 上传商品设置开关
+    postAddGoodsSwitchName() {
+      if (this.postData.addGoodsSwitchVal) {
+        // statement
+        this.$http.post(this.http+this.addGoodsSwitchNameUrl,{
+          switch_name: this.postData.addGoodsSwitchVal
+        },{
+          emulateJSON: true
+        })
+
+        .then( msg => {
+          console.log(msg.body);
+          if (msg.body.flag == '1000') {
+            // statement
+            this.consoleSuccess(msg.body.return_code);
+            this.addGoodsSwitchVal = false;
+            this.postData.addGoodsSwitchVal = '';
+            this.getShopData()
+          } else {
+            this.consoleError(msg.body.return_code);
+          }
+        }, response => {
+          this.consoleError(response.return_code)
+        });
+
+      } else {
+        this.consoleError('请完善信息后提交!!!')
+      }
+    },
+
+    consoleSuccess(success) {
+      this.$notify({
+        title: '成功',
+        message: success,
+        type: 'success'
+      });
+    },
+
+    consoleWarning(warning) {
+      this.$notify({
+        title: '警告',
+        message: warning,
+        type: 'warning'
+      });
+    },
+
+    consoleNews(news) {
+      this.$notify.info({
+        title: '消息',
+        message: news
+      });
+    },
+
+    consoleError(error) {
+      this.$notify.error({
+        title: '错误',
+        message: error
+      });
+    }
+  },
+
+
+}
+</script>

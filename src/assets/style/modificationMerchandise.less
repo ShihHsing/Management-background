@@ -1,0 +1,66 @@
+#modificationMerchandise{
+	.steps{
+		height: auto;
+		width: 100%;
+    margin-top: 60px;
+    .el-carousel__item{
+      &:nth-child(2n) {
+        background-color: #99a9bf;
+        overflow-x: auto;
+        overflow-y: auto;
+      }
+      &:nth-child(2n+1) {
+        background-color: #d3dce6;
+        overflow-x: auto;
+        overflow-y: auto;
+      }
+      .el-dragger{
+        height: 385px !important;
+      }
+      .time {
+        font-size: 13px;
+        color: #999;
+      }
+      
+      .bottom {
+        margin-top: 13px;
+        line-height: 12px;
+      }
+
+      .button {
+        padding: 0;
+        float: right;
+      }
+
+      .image {
+        width: 100%;
+        display: block;
+      }
+
+      .clearfix:before,
+      .clearfix:after {
+          display: table;
+          content: ""
+      }
+      
+      .clearfix:after {
+          clear: both
+      }
+
+      .el-checkbox{
+        margin-right: 15px!important;
+        margin-left: 0px!important;
+      }
+      #container{
+        min-width: 550px;
+        margin-bottom: 35px;
+        .edui-editor{
+          border: none!important;
+        }
+      }
+    }
+    .el-carousel__container{
+      min-height: 650px!important;
+    }
+	}
+}
