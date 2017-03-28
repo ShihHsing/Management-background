@@ -680,9 +680,9 @@
 
                           // statement
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
-                            // setTimeout( () => {
-                            //   this.tabCheck = 'carouselDrawingList';
-                            // },1000)
+                            setTimeout( () => {
+                              this.tabCheck = 'carouselDrawingList';
+                            },1000)
                         } else {
                           this.consoleError(`${msg.data.return_code}`);
                         }
@@ -713,9 +713,9 @@
 
                           // statement
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
-                          // setTimeout( () => {
-                          //   this.tabCheck = 'carouselDrawingList';
-                          // },1000)
+                          setTimeout( () => {
+                            this.tabCheck = 'carouselDrawingList';
+                          },1000)
                         } else {
                           this.consoleError(`${msg.data.return_code}`);
                         }
@@ -746,9 +746,9 @@
 
                           // statement
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
-                          // setTimeout( () => {
-                          //   this.tabCheck = 'carouselDrawingList';
-                          // },1000)
+                          setTimeout( () => {
+                            this.tabCheck = 'carouselDrawingList';
+                          },1000)
                         } else {
                           this.consoleError(`${msg.data.return_code}`);
                         }
@@ -840,7 +840,7 @@
               const number_of_branches = rows.length;
               console.log(number_of_branches);
               if (number_of_branches == 1) {
-                
+
                 // statement
                 let current_page = this.current_page;
                 if (--current_page <= 1) {
@@ -974,7 +974,7 @@
           if (this.modification.location) {
 
             // statement
-            if (this.modification.carousel_drawing_url) {
+            if (this.modification.carousel_drawing_url || this.modification.imageUrl) {
 
               // statement
               if (this.modification.carousel_drawing_type) {
@@ -990,7 +990,7 @@
                         request_flag: 'modify',
                         carousel_drawing_id: this.modification.carousel_drawing_id,
                         name: this.modification.name,
-                        carousel_drawing_url: this.modification.carousel_drawing_url,
+                        carousel_drawing_url: this.modification.carousel_drawing_url || this.modification.imageUrl,
                         location: this.modification.location,
                         carousel_drawing_type: this.modification.carousel_drawing_type,
                         description: this.modification.newDetails
@@ -1024,7 +1024,7 @@
                         request_flag: 'modify',
                         carousel_drawing_id: this.modification.carousel_drawing_id,
                         name: this.modification.name,
-                        carousel_drawing_url: this.modification.carousel_drawing_url,
+                        carousel_drawing_url: this.modification.carousel_drawing_url || this.modification.imageUrl,
                         location: this.modification.location,
                         carousel_drawing_type: this.modification.carousel_drawing_type,
                         description: this.modification.model
@@ -1058,7 +1058,7 @@
                         request_flag: 'modify',
                         carousel_drawing_id: this.modification.carousel_drawing_id,
                         name: this.modification.name,
-                        carousel_drawing_url: this.modification.carousel_drawing_url,
+                        carousel_drawing_url: this.modification.carousel_drawing_url || this.modification.imageUrl,
                         location: this.modification.location,
                         carousel_drawing_type: this.modification.carousel_drawing_type,
                         description: this.modification.carousel_drawing_video_url

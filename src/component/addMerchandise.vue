@@ -15,7 +15,7 @@
       <el-col :span="11">
         <el-carousel 
           indicator-position="none"
-          arrow="hover"
+          arrow="never"
           :autoplay="false"
           ref="elCarousel">
           <!-- 第一页 -->
@@ -261,7 +261,7 @@ export default {
 
         // 商品分类
         commodityClassification: '',
-        commodityClassificationList: []
+        commodityClassificationList: [],
       },
       two: {
 
@@ -461,8 +461,8 @@ export default {
 
               // statement
               // 根据商品品牌和商品分类获取属性
+              // this.getShopStyle();
               this.getShopStyle();
-
               // 获取颜色和尺寸
               this.getSizeColor();
             } else if (formName == 'two') {
@@ -473,11 +473,11 @@ export default {
               console.log(this.twoReg())
               if(!this.twoReg()){
                 this.consoleError('请完善必填信息');
-                return false;
+              } else {
+                this.active ++ ;
+                this.$refs.elCarousel.next();
               }
             }
-            this.active ++ ;
-            this.$refs.elCarousel.next();
           } else {
             this.consoleError('请完善必填信息');
           }
@@ -630,9 +630,9 @@ export default {
         emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body)
         if (msg.body.flag == '1000') {
-
+          this.active ++ ;
+          this.$refs.elCarousel.next();
           // statement
           // 有商品属性 渲染页面
           this.two.judgeAttribute = true;
@@ -649,14 +649,15 @@ export default {
             }
             this.two.privatePropertyList.push(newAttribute);
           }
+
         } else {
           this.two.judgeAttribute = false;
-          console.log(msg.body.return_code);
+          this.consoleError(`商品属性${msg.body.return_code}`);
         }
         
       }, (response) => {
         console.log('Error')
-        this.consoleError('服务器发生未知错误,请刷新后重试!')
+        this.consoleError('服务器发生未知错误,请刷新后重试!');
       })
     },
 
@@ -737,7 +738,6 @@ export default {
       })
       .then( (msg) => {
         if (msg.body.flag == '1000') {
-
           // statement
           if (request_flag == 'color_list') {
 
@@ -757,7 +757,14 @@ export default {
             this.four.sizeList = msg.body.category_size_list;
           }
         } else {
-          this.consoleWarning(msg.body.return_code);
+          if (request_flag == 'color_list') {
+
+            // statement
+            this.consoleWarning(`颜色分类${msg.body.return_code}`);
+          } else {
+            this.consoleWarning(`尺码分类${msg.body.return_code}`);
+          }
+
         }
       })
     },
@@ -973,7 +980,7 @@ export default {
           // statement
           this.consoleSuccess(msg.body.return_code)
           setTimeout( () => {
-            // this.$router.push({ path: 'listOfGoods' });
+            this.$router.push({ path: 'listOfGoods' });
           },2000);
         } else {
 
