@@ -1,5 +1,8 @@
 {
   "presets": [
     ["es2015", { "modules": false }]
-  ]
+  ],
+  // babel预置的转换器是babel-preset-es2015，并不能转换Object Rest Operator特性。
+  // 可以安装整个stage2的预置器或者安装Object Rest Operator的babel插件babel-plugin-transform-object-rest-spread
+  "plugins": ["transform-object-rest-spread"],
 }
