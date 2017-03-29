@@ -94,7 +94,6 @@
                     <el-input
                       placeholder="请输入"
                       v-model="carousel_drawing_video_url"
-                      :maxlength="20"
                       style="width: 217px;">
                     </el-input>
                   </el-tooltip>
@@ -324,7 +323,6 @@
               <el-input
                 placeholder="请输入"
                 v-model="modification.carousel_drawing_video_url"
-                :maxlength="20"
                 style="width: 217px;">
               </el-input>
             </el-tooltip>
@@ -682,6 +680,8 @@
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
                             setTimeout( () => {
                               this.tabCheck = 'carouselDrawingList';
+                              // 初始化获取列表数据
+                              this.getCarouselDrawingListData();
                             },1000)
                         } else {
                           this.consoleError(`${msg.data.return_code}`);
@@ -715,6 +715,8 @@
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
                           setTimeout( () => {
                             this.tabCheck = 'carouselDrawingList';
+                            // 初始化获取列表数据
+                            this.getCarouselDrawingListData();
                           },1000)
                         } else {
                           this.consoleError(`${msg.data.return_code}`);
@@ -748,6 +750,8 @@
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
                           setTimeout( () => {
                             this.tabCheck = 'carouselDrawingList';
+                            // 初始化获取列表数据
+                            this.getCarouselDrawingListData();
                           },1000)
                         } else {
                           this.consoleError(`${msg.data.return_code}`);

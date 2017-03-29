@@ -30,7 +30,10 @@
 </template>
 
 <script>
-import '../assets/style/login.less'
+import { mapActions } from 'vuex';
+import { USER_SIGNIN } from '../assets/store/user.js';
+import '../assets/style/login.less';
+
 export default {
   name: 'login',
   data () {
@@ -42,41 +45,45 @@ export default {
     }
   },
   methods: {
-	 login() {
-    if (this.phone_number != '') {
-      // statement
-      if (this.password != '') {
-        // statement
-        this.$http.post(this.http+this.loginUrl, {
-          phone_number: this.phone_number,
-          password: this.password
-        },{
-          emulateJSON: true
-        })
-        .then( msg => {
-          console.log(msg.body)
-          if (msg.body.flag == '1000') {
-            // statement
-            this.consoleSuccess(msg.body.return_code);
-            setTimeout( () => {
-              this.$router.push({ path: 'home' })
-            }, 1000);
-          } else {
-            this.consoleError(msg.body.return_code)
-          }
-        }, response => {
-          this.consoleWarning('服务发生意外情况,请稍后重试!')
-          console.log(response)
-        })
-      } else {
-        this.consoleError('请完善密码!')
-      }
-    } else {
-      this.consoleError('请完善账号!')
-    }
-   },
+    ...mapActions([USER_SIGNIN]),
 
-   consoleSuccess(success) {
+    login() {
+      if (this.phone_number != '') {
+        // statement
+        if (this.password != '') {
+          // statement
+          this.$http.post(this.http+this.loginUrl, {
+            phone_number: this.phone_number,
+            password: this.password
+          },{
+            emulateJSON: true
+          })
+          .then( msg => {
+            console.log(msg.data)
+            if (msg.data.flag == '01') {
+              // statement
+              this.consoleSuccess(msg.data.return_code);
+              var userData = msg.data;
+              this.USER_SIGNIN({userData});
+              // setTimeout( () => {
+              //   this.$router.push({ path: 'home' })
+              // }, 1000);
+            } else {
+              this.consoleError(msg.data.return_code)
+            }
+          }, response => {
+            this.consoleWarning('服务发生意外情况,请稍后重试!')
+            console.log(response)
+          })
+        } else {
+          this.consoleError('请完善密码!')
+        }
+      } else {
+        this.consoleError('请完善账号!')
+      }
+    },
+
+    consoleSuccess(success) {
       this.$notify({
         title: '成功',
         message: success,
