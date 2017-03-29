@@ -14,18 +14,33 @@
     </el-col>
     <el-col :span="2" class="user">
       <div>
-        <img :src="userImgUrl" :alt="userName">
+        <img :src="userImgUrl" :alt="userName" @click="dialogVisible = true">
       </div>
     </el-col>
+    <el-dialog title="提示" v-model="dialogVisible" size="tiny">
+      <span>确定要退出{{ userPhone }}这个用户吗?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="logOut">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import '../assets/style/logoTop.less'
+import store from '../assets/store';
+import { mapActions } from 'vuex';
+import { USER_SIGNOUT } from '../assets/store/user';
+import '../assets/style/logoTop.less';
+import axios from 'axios';
 export default {
   name: 'logoTop',
   data () {
     return {
+      http: 'http://a001.aybc.so/',
+      log_out_api: 'Emp/logOut',
+      // 对话框控制
+      dialogVisible: false,
       // 门店选择
       options: [{
         value: '选项1',
@@ -47,11 +62,35 @@ export default {
       // 用户img
       userImgUrl: 'http://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1484901235476&di=0b91b607a22beca9c92ce65a9c64084f&imgtype=0&src=http%3A%2F%2Fb.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Ff603918fa0ec08faf0f7ace15cee3d6d54fbda85.jpg',
       // 用户名字
-      userName: '石鑫'
+      userName: '石鑫',
+      userPhone: store.state.user.userData.phone_number,
+      session_id: store.state.user.userData.session_id
     }
   },
   methods: {
-	 
+    logOut () {
+      // this.$http.post(this.http+this.log_out_api,{
+      
+      // },{
+      //   emulateJSON: true,
+      // })
+      // .then( msg => {
+      //   console.log(msg.data);
+      //   // this.USER_SIGNOUT()
+      // }, response => {
+
+      // })
+
+      axios.post(this.http+this.log_out_api, {
+        name: 'shixin'
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
   }
 }
 </script>

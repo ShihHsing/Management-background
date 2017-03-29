@@ -1,31 +1,31 @@
 <template>
   <div id="login">
     <div class="htmleaf-container">
-	<div class="wrapper">
-		<div class="container">
-			<h1>哎哟不错管理后台</h1>
-			
-			<form class="form">
-				<input type="text" v-model="phone_number" placeholder="账号/手机号">
-				<input type="password" v-model="password" placeholder="密码">
-				<button id="login-button" @click="login();">登录</button>
-			</form>
-		</div>
-		
-		<ul class="bg-bubbles">
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-		</ul>
-	</div>
-</div>
+      <div class="wrapper">
+        <div class="container">
+          <h1>哎哟不错管理后台</h1>
+          
+          <form class="form">
+            <input type="text" v-model="phone_number" placeholder="账号/手机号">
+            <input type="password" v-model="password" placeholder="密码">
+            <div id="login-button" @click="login();">登录</div>
+          </form>
+        </div>
+        
+        <ul class="bg-bubbles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -65,9 +65,9 @@ export default {
               this.consoleSuccess(msg.data.return_code);
               var userData = msg.data;
               this.USER_SIGNIN({userData});
-              // setTimeout( () => {
-              //   this.$router.push({ path: 'home' })
-              // }, 1000);
+              setTimeout( () => {
+                this.$router.push({ path: 'home' })
+              }, 1000);
             } else {
               this.consoleError(msg.data.return_code)
             }
