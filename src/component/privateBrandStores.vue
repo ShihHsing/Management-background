@@ -43,13 +43,12 @@
 </template>
 
 <script>
-import '../assets/style/privateBrandStores.less'
+import '../assets/style/privateBrandStores.less';
+import * as API from '../assets/axios/api.js';
 export default {
   name: 'privateBrandStores',
   data () {
     return {
-		  http: 'http://a001.aybc.so/',
-      addTestOwnProductUrl: 'Shop/addTestOwnProduct',
       dialogVisible: true,
       testOwnProduct: [],
       testOwnProductList: []
@@ -64,44 +63,44 @@ export default {
   methods: {
     
     getAddTestOwnProduct() {
-    	this.$http.post(this.http+this.addTestOwnProductUrl,{
+    	this.$axios.post(API.addTestOwnProductUrl,{
     		product_id: this.testOwnProduct
-    	},{
-    		emulateJSON: true
     	})
     	.then( msg => {
     		console.log(msg)
-        if (msg.body.flag == '1000') {
+        if (msg.data.flag == '1000') {
           // statement
-          this.testOwnProductList = msg.body.product_list;
+          this.testOwnProductList = msg.data.product_list;
         } else {
-          this.consoleError('由于意外情况导致与服务器中断链接,请稍后重试!')
+          this.consoleError(`${msg.data.return_code}`);
+          
         }
-    	}, response => {
-    		this.consoleError(response.return_code)
     	})
+      .catch( error => {
+        console.log(error)
+        // this.consoleError(`${error.data.return_code}`);
+      });
     },
 
     postAddTestOwnProduct() {
       if (this.testOwnProduct.length > 0 ) {
         // statement
-        this.$http.post(this.http+this.addTestOwnProductUrl,{
+        this.$axios.post(API.addTestOwnProductUrl,{
           product_id: this.testOwnProduct
-        },{
-          emulateJSON: true
         })
         .then( msg => {
           console.log(msg)
-          if (msg.body.flag == '1000') {
+          if (msg.data.flag == '1000') {
             // statement
-            this.consoleSuccess(msg.body.return_code);
+            this.consoleSuccess(`${msg.data.return_code}`);
             this.testOwnProduct = [];
           } else {
-            this.consoleError(msg.body.return_code);
+            this.consoleError(`${msg.data.return_code}`);
           }
-        }, response => {
-          this.consoleError(response.return_code)
         })
+        .catch( error => {
+          this.consoleError(`${error.data.return_code}`)
+        });
       } else {
         this.consoleError('请完善信息后提交!!!')
       }

@@ -29,13 +29,12 @@
 </style>
 
 <script>
+import * as API from '../assets/axios/api.js';
 export default {
   name: 'addRobotInstructions',
 
   data () {
     return {
-      http: 'http://a001.aybc.so/',
-      postUrl: 'Robot/recordTheInstructions',
       // 消息提示控件
       dialogVisible: true,
       // 初始化数据
@@ -60,20 +59,18 @@ export default {
       console.log(this.newData,'富文本数据')
       if (this.newData) {
         // statement
-        this.$http.post(this.http+this.postUrl,{
+        this.$axios.post(API.recordTheInstructions,{
           instructions: this.newData
-        },{
-          emulateJSON: true
         })
         .then( (msg) => {
-          console.log(msg.body,'服务器')
-          if (msg.body.flag == '1000') {
+          console.log(msg.data,'服务器')
+          if (msg.data.flag == '1000') {
             // statement
-            this.consoleSuccess(msg.body.return_code)
+            this.consoleSuccess(msg.data.return_code)
             window.location.reload();
           } else {
             // statement
-            this.consoleError(msg.body.return_code)
+            this.consoleError(msg.data.return_code)
           }
         }, (response) => {
           this.consoleError(response.return_code)
@@ -84,17 +81,15 @@ export default {
     },
 
     initDate() {
-      this.$http.post(this.http+this.postUrl,{},{
-        emulateJSON: true
-      })
+      this.$axios.post(API.recordTheInstructions)
       .then( (msg) => {
-        console.log(msg.body)
-        if (msg.body.flag == '1000') {
+        console.log(msg.data)
+        if (msg.data.flag == '1000') {
           // statement
-          this.initData = msg.body.instructions;
+          this.initData = msg.data.instructions;
         } else {
           // statement
-          this.consoleError(msg.body.return_code)
+          this.consoleError(msg.data.return_code)
         }
       }, (response) => {
         this.consoleError(response.return_code)

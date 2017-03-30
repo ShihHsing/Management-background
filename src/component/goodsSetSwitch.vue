@@ -13,14 +13,16 @@
             <el-form   
               label-position="top">
               <el-form-item label="商品设置开关(展示)">
-                <template v-for="item in items">
-                  <div>
-                    <span style="color: #666;">{{ item.switch_name }}:</span>
-                    <el-switch
-                      v-model="value"
-                      disabled>
-                    </el-switch>
-                  </div>
+                <template v-for="item_1 in items">
+                  <template v-for="item in item_1">
+                    <div>
+                      <span style="color: #666;">{{ item.switch_name }}:</span>
+                      <el-switch
+                        v-model="value"
+                        disabled>
+                      </el-switch>
+                    </div>
+                  </template>
                 </template>
                 
               </el-form-item>
@@ -59,16 +61,11 @@
 
 <script>
 import '../assets/style/goodsSetSwitch.less'
+import * as API from '../assets/axios/api.js';
 export default {
   name: 'goodsSetSwitch',
   data () {
     return {
-      // 内网开发接口
-		  http: 'http://a001.aybc.so/',
-      // 上传商品设置借口
-      addGoodsSwitchNameUrl: 'Shop/addGoodsSwitchName',
-      // 获取初始化数据接口
-      listTestGoodsInfo: 'Shop/listTestGoodsInfo',
       // 商品设置开发
       addGoodsSwitchVal: false,
       // 上传数据模型
@@ -91,49 +88,44 @@ export default {
   methods: {
     // 获取现有商品设置开关
     getShopData() {
-      var _this = this;
-      this.$http.post(this.http+this.listTestGoodsInfo,{
-        current_page: ''
-      },{
-        emulateJSON: true
-      })
+      this.$axios.post(API.listSwitchName)
       .then( (msg) => {
-        console.log(msg.body)
+        console.log(msg.data)
         // 初始化
-        if (msg.body.flag == '1000') {
-          // statement
-          this.items = msg.body.goods_list[0].switch_list;
-        } else {
-          this.consoleError(msg.body.return_code)
-        }
-      }, (response) => {
-        this.consoleError(response.return_code)
+        // if (msg.data.flag == '1000') {
+        //   // statement
+        //   this.items = msg.data.goods_list[0].switch_list;
+        // } else {
+        //   this.consoleError(`${msg.data.return_code}`)
+        // }
       })
+      .catch( error => {
+        this.consoleError(error.data.return_code)
+      });
     },
 
     // 上传商品设置开关
     postAddGoodsSwitchName() {
       if (this.postData.addGoodsSwitchVal) {
         // statement
-        this.$http.post(this.http+this.addGoodsSwitchNameUrl,{
+        this.$axios.post(API.addGoodsSwitchNameUrl,{
           switch_name: this.postData.addGoodsSwitchVal
-        },{
-          emulateJSON: true
         })
 
         .then( msg => {
-          console.log(msg.body);
-          if (msg.body.flag == '1000') {
+          console.log(msg.data);
+          if (msg.data.flag == '1000') {
             // statement
-            this.consoleSuccess(msg.body.return_code);
+            this.consoleSuccess(msg.data.return_code);
             this.addGoodsSwitchVal = false;
             this.postData.addGoodsSwitchVal = '';
             this.getShopData()
           } else {
-            this.consoleError(msg.body.return_code);
+            this.consoleError(`${msg.data.return_code}`);
           }
-        }, response => {
-          this.consoleError(response.return_code)
+        })
+        .catch( error => {
+          this.consoleError(`${error.data.return_code}`)
         });
 
       } else {

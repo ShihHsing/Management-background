@@ -77,6 +77,7 @@
 </template>
 
 <script>
+  import * as API from '../assets/axios/api.js';
   import '../assets/style/add3DModel.less';
   export default{
     name: 'add3DModel',
@@ -93,29 +94,10 @@
         // 门店id
         shop_id: '',
         // 文件名
-        file_name: '',
-        // http => http 内外网切换
-        http: 'http://a001.aybc.so/',
-        // 唯一接口
-        onlyUrl: 'Shop/handle3DModel'
+        file_name: ''
       }
     },
-    // beforeRouteUpdate (to, from, next) {
-    //   console.log('这是一个组件内钩子：beforeRouteUpdate，进入了about页面第一个子页面更新了')
-    //   console.log(to)
-    //   console.log(from)
-    //   console.log(next)
-    //   alert('beforeRouteUpdate')
-    //   next(true)
-    // },
-    // beforeRouteLeave (to, from, next) {
-    //   console.log('这是一个组件内钩子：beforeRouteLeave，离开了about页面第一个子页面')
-    //   console.log(to)
-    //   console.log(from)
-    //   console.log(next)
-    //   let sureClose = confirm('信息未完善!确定离开吗?')
-    //   next(sureClose)
-    // },
+    
     methods: {
       handleRemove(file, fileList) {
         console.log(file, fileList);
@@ -220,7 +202,7 @@
               // statement
               if (count == 0) {
                 // statement
-                this.$http.post(this.http+this.onlyUrl,{
+                this.$axios.post(API.handle3DModel,{
                   arguments: {
                     code: this.code,
                     ios_unity_url: this.ios,
@@ -230,8 +212,6 @@
                     shop_id: this.shop_id,
                     file_name: this.file_name
                   }
-                },{
-                  emulateJSON: true
                 })
                 .then( msg => {
                   console.log(msg.data);

@@ -150,6 +150,7 @@
 <script>
 // 样式文件
 import '../assets/style/listOfGoods.less';
+import * as API from '../assets/axios/api.js';
 export default {
   name: 'listOfGoods',
   data () {
@@ -170,20 +171,6 @@ export default {
     return {
       // 这是一个debug方案 为了配合商品属性开关动态效果的失效
       value1: false,
-      // http => http 内外网切换
-      http: 'http://a001.aybc.so/',
-      // 唯一接口
-      getProductAndCategory: 'Shop/addTestGoodsInfo',
-      // 获取初始化数据接口
-      listTestGoodsInfo: 'Shop/listTestGoodsInfo',
-      // 置顶接口
-      popularHandleUrl: 'Shop/popularHandle',
-      // 推荐接口
-      specialPowerHandleUrl: 'Shop/specialPowerHandle',
-      // 商品属性开关
-      switchHandleUrl: 'Shop/switchHandle',
-      // 删除接口
-      deleteTestGoodsInfoUrl: 'Shop/deleteTestGoodsInfo', 
       // 删除二次确认页面
       dialogVisible: [],
       // 商品设置数据模型
@@ -232,28 +219,26 @@ export default {
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification() {
       var _this = this;
-      this.$http.post(this.http+this.getProductAndCategory,{
+      this.$axios.post(API.getProductAndCategory,{
         request_flag: 'product_list'
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body,'获取商品品牌和商品分类');
+        console.log(msg.data,'获取商品品牌和商品分类');
         if (msg.data.flag == '1000') {
           // statement
           // 商品品牌列表
-          var product_list = msg.body.product_list;
+          var product_list = msg.data.product_list;
           _this.commodityBrandList = product_list;
           // 商品分类列表
-          var category_list = msg.body.category_list;
+          var category_list = msg.data.category_list;
           _this.commodityClassificationList = category_list;
         } else {
           this.consoleError(msg.data.return_code);
         }
-      }, (response) => {
-        console.log('Error')
-        this.consoleError('服务器发生未知错误,请刷新后重试!')
       })
+      .catch( error => {
+        this.consoleError(error.data.return_code)
+      });
     },
 
     // 搜索商品
@@ -284,19 +269,17 @@ export default {
 
     searchShopData(val) {
       var _this = this;
-      this.$http.post(this.http+this.listTestGoodsInfo,{
+      this.$axios.post(API.listTestGoodsInfo,{
         product_id: this.searchShopList.commodityBrand,
         category_id: this.searchShopList.commodityClassification,
         model: this.searchShopList.model,
         current_page: val || ''
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body)
-        if (msg.body.flag == '1000') {
+        console.log(msg.data)
+        if (msg.data.flag == '1000') {
           // statement
-          this.shopDateList = msg.body.goods_list;
+          this.shopDateList = msg.data.goods_list;
           // 构建二次确认数据模型
           this.dialogVisible = [];
           for (var i = 0; i < this.shopDateList.length; i++) {
@@ -305,8 +288,8 @@ export default {
             });
           }
           // 设置当前页和总页数
-          this.total_pages = (msg.body.total_pages) >> 0;
-          this.current_page = (msg.body.current_page) >> 0;
+          this.total_pages = (msg.data.total_pages) >> 0;
+          this.current_page = (msg.data.current_page) >> 0;
           console.log(this.total_pages,this.current_page);
          // 商品设置开关
           this.goodsSetSwitchModel = [];
@@ -322,14 +305,15 @@ export default {
           }
           // this.consoleSuccess('获取商品信息成功!')
         } else {
-          this.consoleError(msg.body.return_code)
+          this.consoleError(msg.data.return_code)
           this.total_pages = 0;
           this.current_page = 0;
           this.shopDateList = [];
         }
-      }, (response) => {
-        this.consoleError(response.return_code)
       })
+      .catch( error => {
+        this.consoleError(error.data.return_code)
+      });
       console.log(this.shopDateList)
     },
 
@@ -342,18 +326,16 @@ export default {
     // 服务器获取数据
     getShopData() {
       // var _this = this;
-      this.$http.post(this.http+this.listTestGoodsInfo,{
+      this.$axios.post(API.listTestGoodsInfo,{
         current_page: ''
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body)
+        console.log(msg.data)
         // 初始化
         this.shopDateList = [];
-        if (msg.body.flag == '1000') {
+        if (msg.data.flag == '1000') {
           // statement
-          this.shopDateList = msg.body.goods_list;
+          this.shopDateList = msg.data.goods_list;
           // 构建二次确认数据模型
           this.dialogVisible = [];
           for (var i = 0; i < this.shopDateList.length; i++) {
@@ -362,8 +344,8 @@ export default {
             });
           }
           // 设置当前页和总页数
-          this.total_pages = (msg.body.total_pages) >> 0;
-          this.current_page = (msg.body.current_page) >> 0;
+          this.total_pages = (msg.data.total_pages) >> 0;
+          this.current_page = (msg.data.current_page) >> 0;
           console.log(this.total_pages,this.current_page);
           // 商品设置开关
           this.goodsSetSwitchModel = [];
@@ -378,11 +360,12 @@ export default {
             this.goodsSetSwitchModel[i] = model;
           }
         } else {
-          this.consoleError(msg.body.return_code)
+          this.consoleError(msg.data.return_code)
         }
-      }, (response) => {
-        this.consoleError(response.return_code)
       })
+      .catch( error => {
+        this.consoleError(error.data.return_code)
+      });
       console.log(this.shopDateList,'根据用户输入条件搜索数据')
     },
 
@@ -391,24 +374,23 @@ export default {
       var popular = scope.row.popular == 1?0:1;
       // scope.row
       // 当前点击数据的所有值
-      this.$http.post(this.http+this.popularHandleUrl,{
+      this.$axios.post(API.popularHandleUrl,{
         goods_id: scope.row.id,
         popular: popular
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body)
-        if (msg.body.flag == '1000') {
+        console.log(msg.data)
+        if (msg.data.flag == '1000') {
           // statement
-          this.consoleSuccess(msg.body.return_code)
+          this.consoleSuccess(msg.data.return_code)
           this.getShopData();
         } else {
-          this.consoleError(msg.body.return_code)
+          this.consoleError(msg.data.return_code)
         }
-      }, (response) => {
-        this.consoleError(response.return_code)
       })
+      .catch( error => {
+        this.consoleError(error.data.return_code)
+      });
     },
 
     // 商品设置推荐&取消
@@ -416,24 +398,23 @@ export default {
       var special_power = scope.row.special_power == 1?0:1;
       // scope.row
       // 当前点击数据的所有值
-      this.$http.post(this.http+this.specialPowerHandleUrl,{
+      this.$axios.post(API.specialPowerHandleUrl,{
         goods_id: scope.row.id,
         special_power: special_power
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body)
-        if (msg.body.flag == '1000') {
+        console.log(msg.data)
+        if (msg.data.flag == '1000') {
           // statement
-          this.consoleSuccess(msg.body.return_code)
+          this.consoleSuccess(msg.data.return_code)
           this.getShopData();
         } else {
-          this.consoleError(msg.body.return_code)
+          this.consoleError(msg.data.return_code)
         }
-      }, (response) => {
-        this.consoleError(response.return_code)
       })
+      .catch( error => {
+        this.consoleError(error.data.return_code)
+      });
     },
 
     deleteRow(index, rows) {
@@ -443,36 +424,33 @@ export default {
     // 删除
     deleteTestGoodsInfo(id,index) {
       console.log(index)
-      this.$http.post(this.http+this.deleteTestGoodsInfoUrl,{
+      this.$axios.post(API.deleteTestGoodsInfoUrl,{
         goods_id: id
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body)
-        if (msg.body.flag == '1000') {
+        console.log(msg.data)
+        if (msg.data.flag == '1000') {
           // statement
           this.dialogVisible[index].model = false;
-          this.consoleSuccess(msg.body.return_code);
+          this.consoleSuccess(msg.data.return_code);
           this.getShopData();
         } else {
-          this.consoleError(msg.body.return_code)
+          this.consoleError(msg.data.return_code)
         }
-      }, (response) => {
-        this.consoleError(response.return_code);
       })
+      .catch( error => {
+        this.consoleError(error.data.return_code)
+      });
     },
 
     // 商品设置开关
     goodsSetSwitch(goods_id,switch_id,switch_value) {
       // Debug 处理
       this.value1 = !this.value1
-      this.$http.post(this.http+this.switchHandleUrl,{
+      this.$axios.post(API.switchHandleUrl,{
         goods_id: goods_id,
         switch_id: switch_id,
         switch_value: Number(switch_value) 
-      },{
-        emulateJSON: true
       })
       .then( msg => {
         if (msg.data.flag == "1000") {
@@ -482,10 +460,10 @@ export default {
         } else {
           this.consoleError(msg.data.return_code)
         }
-      }, response => {
-        console.log(response);
-        this.consoleNews(response.return_code)
       })
+      .catch( error => {
+        this.consoleError(error.data.return_code)
+      });
     },
 
     consoleSuccess(success) {

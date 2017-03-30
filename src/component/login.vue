@@ -32,16 +32,15 @@
 <script>
 import { mapActions } from 'vuex';
 import { USER_SIGNIN } from '../assets/store/user.js';
+import * as API from '../assets/axios/api.js';
 import '../assets/style/login.less';
 
 export default {
   name: 'login',
   data () {
     return {
-      http: 'http://a001.aybc.so/',
-      loginUrl: 'Emp/login',
-      phone_number: '',
-      password: ''
+      phone_number: '15338888742',
+      password: 'a123456'
     }
   },
   methods: {
@@ -52,14 +51,13 @@ export default {
         // statement
         if (this.password != '') {
           // statement
-          this.$http.post(this.http+this.loginUrl, {
+          let data = {
             phone_number: this.phone_number,
             password: this.password
-          },{
-            emulateJSON: true
-          })
+          }
+          this.$axios.post(API.loginUrl,data)
           .then( msg => {
-            console.log(msg.data)
+            console.log(msg)
             if (msg.data.flag == '01') {
               // statement
               this.consoleSuccess(msg.data.return_code);

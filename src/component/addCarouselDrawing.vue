@@ -375,6 +375,7 @@
 </style>
 
 <script>
+  import * as API from '../assets/axios/api.js';
   export default{
     name: 'addCarouselDrawing',
 
@@ -389,12 +390,9 @@
 
     data () {
       return {
-
-        // http => http 内外网切换
-        http: 'http://a001.aybc.so/',
-
+        
         // 最终上传数据
-        api: 'Shop/addCarouselDrawing',
+        addCarouselDrawing: 'Shop/addCarouselDrawing',
 
         // 轮播图位置接口
         location_type_api: 'Shop/getCarouselDrawingLocation',
@@ -582,9 +580,7 @@
 
       // 后台获取轮播图位置
       getLocationTypeList () {
-        this.$http.post(this.http+this.location_type_api,{},{
-          emulateJSON: true
-        })
+        this.$axios.post(this.location_type_api)
         .then( msg => {
           if (msg.data.flag == '1000') {
 
@@ -602,9 +598,7 @@
 
       // 后台获取轮播图类型
       getcarouselDrawingTypeList () {
-        this.$http.post(this.http+this.carousel_drawing_type_api,{},{
-          emulateJSON: true
-        })
+        this.$axios.post(this.carousel_drawing_type_api)
         .then( msg => {
           if (msg.data.flag == '1000') {
 
@@ -622,10 +616,8 @@
 
       // 获取指定商品对应缩略图
       getShopIdThumbImg() {
-        this.$http.post(this.http+this.shop_id_thumb_img_api,{
+        this.$axios.post(this.shop_id_thumb_img_api,{
           model: this.model
-        },{
-          emulateJSON: true
         })
         .then( msg => {
           if (msg.data.flag == '1000') {
@@ -664,14 +656,12 @@
                     if (this.newDetails) {
 
                       // statement
-                      this.$http.post(this.http+this.api,{
+                      this.$axios.post(API.addCarouselDrawing,{
                         name: this.name,
                         carousel_drawing_url: this.carousel_drawing_url,
                         location: this.location,
                         carousel_drawing_type: this.carousel_drawing_type,
                         description: this.newDetails
-                      },{
-                        emulateJSON: true
                       })
                       .then( msg => {
                         if (msg.data.flag == '1000') {
@@ -699,14 +689,12 @@
                     if (this.model) {
                       
                       // statement
-                      this.$http.post(this.http+this.api,{
+                      this.$axios.post(API.addCarouselDrawing,{
                         name: this.name,
                         carousel_drawing_url: this.carousel_drawing_url,
                         location: this.location,
                         carousel_drawing_type: this.carousel_drawing_type,
                         description: this.model
-                      },{
-                        emulateJSON: true
                       })
                       .then( msg => {
                         if (msg.data.flag == '1000') {
@@ -734,14 +722,12 @@
                     if (this.carousel_drawing_video_url) {
 
                       // statement
-                      this.$http.post(this.http+this.api,{
+                      this.$axios.post(API.addCarouselDrawing,{
                         name: this.name,
                         carousel_drawing_url: this.carousel_drawing_url,
                         location: this.location,
                         carousel_drawing_type: this.carousel_drawing_type,
                         description: this.carousel_drawing_video_url
-                      },{
-                        emulateJSON: true
                       })
                       .then( msg => {
                         if (msg.data.flag == '1000') {
@@ -780,13 +766,11 @@
 
       // 获取数据
       getCarouselDrawingListData (current_page) {
-        this.$http.post(this.http+this.carousel_drawing_list_data_api,{
+        this.$axios.post(this.carousel_drawing_list_data_api,{
           name: this.search_name,
           location: this.search_location,
           carousel_drawing_type: this.search_carousel_drawing_type,
           current_page: current_page || this.current_page
-        },{
-          emulateJSON: true
         })
         .then( msg => {
           if (msg.data.flag == '1000') {
@@ -829,10 +813,8 @@
         if (confirm('确认删除吗?')) {
 
           // statement
-          this.$http.post(this.http+this.removeCarouselDrawing,{
+          this.$axios.post(this.removeCarouselDrawing,{
             carousel_drawing_id: row.id
-          },{
-            emulateJSON: true
           })
           .then( msg => {
             if (msg.data.flag == '1000') {
@@ -877,10 +859,8 @@
       getModificationData (id) {
         console.log(`获取修改id:${id}`);
         this.modification.carousel_drawing_id = id;
-        this.$http.post(this.http+this.modification_api,{
+        this.$axios.post(this.modification_api,{
           carousel_drawing_id: id
-        },{
-          emulateJSON: true
         })
         .then( msg => {
           if (msg.data.flag == '1000') {
@@ -949,10 +929,8 @@
 
       // 获取指定商品对应缩略图
       modificationGetShopIdThumbImg() {
-        this.$http.post(this.http+this.shop_id_thumb_img_api,{
+        this.$axios.post(this.shop_id_thumb_img_api,{
           model: this.modification.model
-        },{
-          emulateJSON: true
         })
         .then( msg => {
           if (msg.data.flag == '1000') {
@@ -990,7 +968,7 @@
                     if (this.modification.newDetails) {
 
                       // statement
-                      this.$http.post(this.http+this.modification_api,{
+                      this.$axios.post(this.modification_api,{
                         request_flag: 'modify',
                         carousel_drawing_id: this.modification.carousel_drawing_id,
                         name: this.modification.name,
@@ -998,8 +976,6 @@
                         location: this.modification.location,
                         carousel_drawing_type: this.modification.carousel_drawing_type,
                         description: this.modification.newDetails
-                      },{
-                        emulateJSON: true
                       })
                       .then( msg => {
                         if (msg.data.flag == '1000') {
@@ -1024,7 +1000,7 @@
                     if (this.modification.model) {
                       
                       // statement
-                      this.$http.post(this.http+this.modification_api,{
+                      this.$axios.post(this.modification_api,{
                         request_flag: 'modify',
                         carousel_drawing_id: this.modification.carousel_drawing_id,
                         name: this.modification.name,
@@ -1032,8 +1008,6 @@
                         location: this.modification.location,
                         carousel_drawing_type: this.modification.carousel_drawing_type,
                         description: this.modification.model
-                      },{
-                        emulateJSON: true
                       })
                       .then( msg => {
                         if (msg.data.flag == '1000') {
@@ -1058,7 +1032,7 @@
                     if (this.modification.carousel_drawing_video_url) {
 
                       // statement
-                      this.$http.post(this.http+this.modification_api,{
+                      this.$axios.post(this.modification_api,{
                         request_flag: 'modify',
                         carousel_drawing_id: this.modification.carousel_drawing_id,
                         name: this.modification.name,
@@ -1066,8 +1040,6 @@
                         location: this.modification.location,
                         carousel_drawing_type: this.modification.carousel_drawing_type,
                         description: this.modification.carousel_drawing_video_url
-                      },{
-                        emulateJSON: true
                       })
                       .then( msg => {
                         if (msg.data.flag == '1000') {
@@ -1105,11 +1077,9 @@
       // 轮播图禁用 启用
       forbiddenOrStartUsing (id,status) {
         console.log(`${id}${status}`);
-        this.$http.post(this.http+this.handleCarouselDrawing,{
+        this.$axios.post(this.handleCarouselDrawing,{
           carousel_drawing_id: id,
           carousel_drawing_status: (status == '1'?'0':'1')
-        },{
-          emulateJSON: true
         })
         .then( msg => {
           if (msg.data.flag == '1000') {

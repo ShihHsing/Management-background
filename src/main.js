@@ -6,10 +6,18 @@ import App from './App.vue'
 import router from './assets/router/router.js'
 import jQuery from 'jquery'
 import store from './assets/store/';
-import './assets/editor/editor.config.js'
+import axios from './assets/axios/http.js';
+import './assets/editor/editor.config.js';
+import Qs from 'qs';
 
 Vue.use(ElementUI)
 Vue.use(VueResource)
+
+// 将axios挂载到prototype上，在组件中可以直接使用this.axios访问
+Vue.prototype.$axios = axios;
+
+// 将Qs挂载到prototype上，在组件中可以直接使用this.Qs访问
+Vue.prototype.$Qs = Qs;
 
 router.beforeEach(({meta, path}, from, next) => {
   var { auth = true } = meta;
@@ -25,6 +33,7 @@ new Vue({
   el: '#app',
   store,
   router,
+  axios,
   render: h => h(App)
 })
 

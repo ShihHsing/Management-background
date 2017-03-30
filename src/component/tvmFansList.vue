@@ -47,7 +47,6 @@ export default {
 
   data () {
     return {
-      http: 'http://a001.aybc.so/',
       listTVMFansInfoUrl: 'Shop/listTVMFansInfo',
       // 服务器端获取数据
       listTVMFans: [],
@@ -66,25 +65,22 @@ export default {
   methods: {
     getTvmData(current_page) {
       var _this = this;
-      this.$http.post(this.http+this.listTVMFansInfoUrl,{
+      this.$axios.post(this.listTVMFansInfoUrl,{
         current_page: current_page
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body)
-        if (msg.body.flag == '1000') {
+        console.log(msg.data)
+        if (msg.data.flag == '1000') {
           // statement
-          this.listTVMFans = msg.body.fans_list;
-          this.total_pages = msg.body.total_pages;
-          this.current_page = msg.body.current_page;
+          this.listTVMFans = msg.data.fans_list;
+          this.total_pages = msg.data.total_pages;
+          this.current_page = msg.data.current_page;
         } else {
-          this.consoleError(msg.body.return_code)
+          this.consoleError(msg.data.return_code)
         }
       }, (response) => {
         this.consoleError(response.return_code)
       })
-      console.log(this.listTVMFans)
     },
 
     handleSizeChange(val) {

@@ -252,8 +252,6 @@ export default {
   data () {
     return {
       active: 0,
-      // http => http 内外网切换
-      http: 'http://a001.aybc.so/',
       // 唯一接口
       onlyUrl: 'Shop/addTestGoodsInfo',
       // 删除接口
@@ -406,18 +404,16 @@ export default {
     getGoodsDetail() {
       if (this.shopID != '') {
         // statement
-        this.$http.post(this.http+this.modifyTestGoodsInfoUrl,{
+        this.$axios.post(this.modifyTestGoodsInfoUrl,{
           goods_id: this.$route.query.shopID,
           request_flag: 'goods_detail'
-        },{
-          emulateJSON: true
         })
         .then( (msg) => {
-          if (msg.body.flag == '1000') {
-            console.log(msg.body)
-            if (msg.body.goods_detail != '' || msg.body.goods_detail != 'null') {
+          if (msg.data.flag == '1000') {
+            console.log(msg.data)
+            if (msg.data.goods_detail != '' || msg.data.goods_detail != 'null') {
               // statement
-              let goods_detail = msg.body.goods_detail;
+              let goods_detail = msg.data.goods_detail;
               this.goods_detail = goods_detail;
               // statement
               // 商品品牌
@@ -472,7 +468,7 @@ export default {
             }
           } else {
             // statement
-            this.consoleError(msg.body.return_code)
+            this.consoleError(msg.data.return_code)
           }
         }, (response) => {
           this.consoleError(response.return_code)
@@ -600,13 +596,11 @@ export default {
     // 移除商品列表图
     handleRemove1() {
       this.three.thumb_image = true;
-      this.$http.post(this.http+this.removeUploadedFile,{
+      this.$axios.post(this.removeUploadedFile,{
         file_url: this.three.thumb_image_url
-        },{
-          emulateJSON: true
         })
       .then( (msg) => {
-        console.log(msg.body)
+        console.log(msg.data)
       })
     },
 
@@ -630,13 +624,11 @@ export default {
     // 移除商品音频
     handleRemove2() {
       this.three.audio = true;
-      this.$http.post(this.http+this.removeUploadedFile,{
+      this.$axios.post(this.removeUploadedFile,{
         file_url: this.three.audio_url
-        },{
-          emulateJSON: true
         })
       .then( (msg) => {
-        console.log(msg.body)
+        console.log(msg.data)
       })
     },
 
@@ -660,31 +652,27 @@ export default {
     // 移除商品视频
     handleRemove3() {
       this.three.video = true;
-      this.$http.post(this.http+this.removeUploadedFile,{
+      this.$axios.post(this.removeUploadedFile,{
         file_url: this.three.video_url
-        },{
-          emulateJSON: true
         })
       .then( (msg) => {
-        console.log(msg.body)
+        console.log(msg.data)
       })
     },  
 
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification() {
       var _this = this;
-      this.$http.post(this.http+this.onlyUrl,{
+      this.$axios.post(this.onlyUrl,{
         request_flag: 'product_list'
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body,'获取商品品牌和商品分类')
+        console.log(msg.data,'获取商品品牌和商品分类')
         // 商品品牌列表
-        var product_list = msg.body.product_list;
+        var product_list = msg.data.product_list;
         _this.one.commodityBrandList = product_list;
         // 商品分类列表
-        var category_list = msg.body.category_list;
+        var category_list = msg.data.category_list;
         _this.one.commodityClassificationList = category_list;
 
         // 根据商品品牌和商品分类获取属性
@@ -700,19 +688,17 @@ export default {
     // 根据商品品牌和商品分类获取属性
     getShopStyle() {
       var _this = this;
-      this.$http.post(this.http+this.onlyUrl,{
+      this.$axios.post(this.onlyUrl,{
         request_flag: 'arguments_list',
         product_id: this.one.commodityBrand,
         category_id: this.one.commodityClassification
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body)
-        if (msg.body.flag == '1000') {
+        console.log(msg.data)
+        if (msg.data.flag == '1000') {
           // statement
           //获取数据信息 渲染页面
-          _this.two.privateProperty = msg.body.category_arguments_list.category_argument_list;
+          _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list;
 
           for (var i = 0; i < this.two.privateProperty.length; i++) {
             // 接收服务器信息 向原有数据模型动态添加新模型
@@ -736,7 +722,7 @@ export default {
 
 
         } else {
-          console.log(msg.body.return_code)
+          console.log(msg.data.return_code)
         }
         
       }, (response) => {
@@ -810,38 +796,36 @@ export default {
 
     // 服务器获取颜色分类
     getColorClassification(request_flag) {
-      this.$http.post(this.http+this.getColorClassificationUrl,{
+      this.$axios.post(this.getColorClassificationUrl,{
         // 方便测试开发 默认品牌ID为1 分类ID为4
         product_id: this.one.commodityBrand,
         category_id: this.one.commodityClassification,
         request_flag: request_flag
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        if (msg.body.flag == '1000') {
+        if (msg.data.flag == '1000') {
           // statement
           if (request_flag == 'color_list') {
             // statement
-            console.log(msg.body,'颜色分类');
-            for (var i = 0; i < msg.body.category_color_list.length; i++) {
+            console.log(msg.data,'颜色分类');
+            for (var i = 0; i < msg.data.category_color_list.length; i++) {
               for(var ii = 0, length1 = this.goods_detail.image_url.length; ii < length1; ii++){
-                if(this.goods_detail.image_url[ii].color_name != msg.body.category_color_list[i].argument_value){
-                    this.four.cities.push(msg.body.category_color_list[i].argument_value);
+                if(this.goods_detail.image_url[ii].color_name != msg.data.category_color_list[i].argument_value){
+                    this.four.cities.push(msg.data.category_color_list[i].argument_value);
                 }
               }
             }
-            this.four.colorList = msg.body.category_color_list;
+            this.four.colorList = msg.data.category_color_list;
           } else if (request_flag == 'size_list') {
             // statement
-            console.log(msg.body,'尺码分类');
-            for (var i = 0; i < msg.body.category_size_list.length; i++) {
-              this.four.size_list.push(msg.body.category_size_list[i].argument_value);
+            console.log(msg.data,'尺码分类');
+            for (var i = 0; i < msg.data.category_size_list.length; i++) {
+              this.four.size_list.push(msg.data.category_size_list[i].argument_value);
             }
-            this.four.sizeList = msg.body.category_size_list;
+            this.four.sizeList = msg.data.category_size_list;
           }
         } else {
-          this.consoleWarning(msg.body.return_code);
+          this.consoleWarning(msg.data.return_code);
         }
       })
     },
@@ -1008,13 +992,11 @@ export default {
 
     // 移除商品颜色图片
     colorAndImgRemove() {
-      this.$http.post(this.http+this.removeUploadedFile,{
+      this.$axios.post(this.removeUploadedFile,{
         file_url: this.three.thumb_image_url
-        },{
-          emulateJSON: true
         })
       .then( (msg) => {
-        console.log(msg.body)
+        console.log(msg.data)
       })
     },
 
@@ -1131,24 +1113,22 @@ export default {
     // 提交数据
     postAddShopData() {
       // this.buildAddShopData()
-      this.$http.post(this.http+this.modifyTestGoodsInfoUrl,{
+      this.$axios.post(this.modifyTestGoodsInfoUrl,{
         arguments: this.buildAddShopData(),
         request_flag: 'modify',
         goods_id: this.goods_detail.id
-      },{
-        emulateJSON: true
       })
       .then( (msg) => {
-        console.log(msg.body)
-        if (msg.body.flag == '1000') {
+        console.log(msg.data)
+        if (msg.data.flag == '1000') {
           // statement
-          this.consoleSuccess(msg.body.return_code);
+          this.consoleSuccess(msg.data.return_code);
           setTimeout( () => {
             this.$router.push({ path: 'listOfGoods' });
           },2000);
         } else {
           // statement
-          this.consoleError(msg.body.return_code)
+          this.consoleError(msg.data.return_code)
         }
       }, (response) => {
         this.consoleError(response.return_code)

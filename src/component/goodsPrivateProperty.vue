@@ -60,8 +60,6 @@ export default {
   name: 'goodsPrivateProperty',
   data () {
     return {
-      // http => http 内外网切换
-      http: 'http://a001.aybc.so/',
       // 唯一接口
       onlyUrl: 'Shop/addTestGoodsInfo',
       // 添加商品属性
@@ -98,30 +96,28 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // success
-          this.$http.post(this.http+this.addGoodsPrivatePropertyUrl,{
+          this.$axios.post(this.addGoodsPrivatePropertyUrl,{
             product_id: this.goodsPrivateProperty.commodityBrand,
             category_id: this.goodsPrivateProperty.commodityClassification,
             // 0代表商品分类属性
             parent_id: 0,
             argument: this.goodsPrivateProperty.addGoodsPrivateProperty
-          },{
-            emulateJSON: true
           })
           .then( (msg) => {
-            if (msg.body.flag == '1000') {
+            if (msg.data.flag == '1000') {
               // statement
-              this.consoleSuccess(msg.body.return_code);
+              this.consoleSuccess(msg.data.return_code);
               setTimeout(() => {
                 console.log('执行')
                 this.resetForm('goodsPrivateProperty');
               },1200)
             } else {
               // statement
-              this.consoleError(msg.body.return_code);
+              this.consoleError(msg.data.return_code);
             }
-            console.log(msg.body);
+            console.log(msg.data);
           }, (response) => {
-            this.consoleError(response.body.return_code);
+            this.consoleError(response.data.return_code);
             console.log(response);
           })
         } else {
@@ -138,20 +134,18 @@ export default {
 	  // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification() {
       var _this = this;
-      this.$http.post(this.http+this.onlyUrl,{
+      this.$axios.post(this.onlyUrl,{
         request_flag: 'product_list'
-      },{
-        emulateJSON: true
       })
       .then( msg => {
-        console.log(msg.body)
+        console.log(msg.data)
         if (msg.data.flag == '1000') {
           // statement
           // 商品品牌列表
-          var product_list = msg.body.product_list;
+          var product_list = msg.data.product_list;
           _this.goodsPrivateProperty.commodityBrandList = product_list;
           // 商品分类列表
-          var category_list = msg.body.category_list;
+          var category_list = msg.data.category_list;
           _this.goodsPrivateProperty.commodityClassificationList = category_list;
         } else {
           this.consoleError(msg.data.return_code);

@@ -33,12 +33,12 @@ import { mapActions } from 'vuex';
 import { USER_SIGNOUT } from '../assets/store/user';
 import '../assets/style/logoTop.less';
 import axios from 'axios';
+import * as API from '../assets/axios/api.js';
+
 export default {
   name: 'logoTop',
   data () {
     return {
-      http: 'http://a001.aybc.so/',
-      log_out_api: 'Emp/logOut',
       // 对话框控制
       dialogVisible: false,
       // 门店选择
@@ -68,27 +68,59 @@ export default {
     }
   },
   methods: {
+    ...mapActions([USER_SIGNOUT]),
     logOut () {
-      // this.$http.post(this.http+this.log_out_api,{
-      
-      // },{
-      //   emulateJSON: true,
-      // })
-      // .then( msg => {
-      //   console.log(msg.data);
-      //   // this.USER_SIGNOUT()
-      // }, response => {
+      let data = {
+        session_id: this.session_id
+      }
+      this.$axios.post(API.logOut)
+      .then( msg => {
+        console.log(msg)
+        if (msg.data.flag == '01') {
 
-      // })
+          // statement
+          this.dialogVisible = false;
+          this.USER_SIGNOUT();// 退出登录
+          this.consoleSuccess(msg.data.return_code);
+          setTimeout( () => {
+            this.$router.replace({ path: '/login' })
+          },1000)
+        } else {
+          this.consoleError(msg.data.return_code);
+        }
+      })
+      .catch( response => {
+        console.log(response.data)
+        this.dialogVisible = true;
+      });
+    },
+    consoleSuccess(success) {
+      this.$notify({
+        title: '成功',
+        message: success,
+        type: 'success'
+      });
+    },
 
-      axios.post(this.http+this.log_out_api, {
-        name: 'shixin'
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
+    consoleWarning(warning) {
+      this.$notify({
+        title: '警告',
+        message: warning,
+        type: 'warning'
+      });
+    },
+
+    consoleNews(news) {
+      this.$notify.info({
+        title: '消息',
+        message: news
+      });
+    },
+
+    consoleError(error) {
+      this.$notify.error({
+        title: '错误',
+        message: error
       });
     }
   }
