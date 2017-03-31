@@ -1,41 +1,33 @@
 <template>
   <div id="privateBrandStores">
     <el-row type="flex" class="steps" justify="center">
-      <el-col :span="11">
-        <el-carousel 
-          height="700px" 
-          indicator-position="none"
-          arrow="never"
-          :autoplay="false"
-          ref="elCarousel">
-          <!-- 第一页 -->
-          <el-carousel-item>
-            <el-form   
-              label-position="top">
-              <el-form-item label="选择自由品牌" prop="commodityBrand">
-                <el-select multiple v-model="testOwnProduct" placeholder="可单选可多选">
-                  <el-option v-for="item in testOwnProductList" :label="item.product_name" :value="item.id"></el-option>
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span style="font-size: 22px;">设置自由品牌</span>
+            <el-button style="float: right;" type="text" @click="dialogVisible = true">操作说明</el-button>
+          </div>
+          <el-form   
+            label-position="top">
+            <el-form-item label="选择自由品牌" prop="commodityBrand">
+              <el-select multiple v-model="testOwnProduct" placeholder="可单选可多选">
+                <el-option v-for="item in testOwnProductList" :label="item.product_name" :value="item.id"></el-option>
 
-                </el-select>
-              </el-form-item>
+              </el-select>
+            </el-form-item>
 
-              <el-form-item>
-                <el-button type="primary" @click="postAddTestOwnProduct()">提交</el-button>
-              </el-form-item>
-            </el-form>
-          </el-carousel-item>
-          <!-- 第一页 End -->
-        </el-carousel>
+            <el-form-item>
+              <el-button type="primary" @click="postAddTestOwnProduct()">提交</el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
       </el-col>
     </el-row>
 
     <!-- 提示用户页面操作须知 -->
     <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
-      <span>1.仅针对自有品牌除本平台提供商品颜色以外的自有商品颜色的添加。</span></br>
-      <span>2.您只能操作您自有商品颜色。</span></br>
-      <span>3.请注意文明用语!</span>
+      <span>待定!</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
@@ -78,7 +70,7 @@ export default {
     	})
       .catch( error => {
         console.log(error)
-        // this.consoleError(`${error.data.return_code}`);
+        this.consoleError(`${error.data.return_code}`);
       });
     },
 

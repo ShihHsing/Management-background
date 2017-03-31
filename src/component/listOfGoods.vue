@@ -219,7 +219,7 @@ export default {
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification() {
       var _this = this;
-      this.$axios.post(API.getProductAndCategory,{
+      this.$axios.post(API.addTestGoodsInfo,{
         request_flag: 'product_list'
       })
       .then( (msg) => {
@@ -233,11 +233,11 @@ export default {
           var category_list = msg.data.category_list;
           _this.commodityClassificationList = category_list;
         } else {
-          this.consoleError(msg.data.return_code);
+          this.consoleError(`${msg.data.return_code}`);
         }
       })
       .catch( error => {
-        this.consoleError(error.data.return_code)
+        this.consoleError(`${error.data.return_code}`)
       });
     },
 
@@ -305,14 +305,14 @@ export default {
           }
           // this.consoleSuccess('获取商品信息成功!')
         } else {
-          this.consoleError(msg.data.return_code)
+          this.consoleError(`${msg.data.return_code}`)
           this.total_pages = 0;
           this.current_page = 0;
           this.shopDateList = [];
         }
       })
       .catch( error => {
-        this.consoleError(error.data.return_code)
+        this.consoleError(`${error.data.return_code}`)
       });
       console.log(this.shopDateList)
     },
@@ -360,11 +360,11 @@ export default {
             this.goodsSetSwitchModel[i] = model;
           }
         } else {
-          this.consoleError(msg.data.return_code)
+          this.consoleError(`${msg.data.return_code}`)
         }
       })
       .catch( error => {
-        this.consoleError(error.data.return_code)
+        this.consoleError(`${error.data.return_code}`)
       });
       console.log(this.shopDateList,'根据用户输入条件搜索数据')
     },
@@ -382,14 +382,14 @@ export default {
         console.log(msg.data)
         if (msg.data.flag == '1000') {
           // statement
-          this.consoleSuccess(msg.data.return_code)
+          this.consoleSuccess(`${msg.data.return_code}`)
           this.getShopData();
         } else {
-          this.consoleError(msg.data.return_code)
+          this.consoleError(`${msg.data.return_code}`)
         }
       })
       .catch( error => {
-        this.consoleError(error.data.return_code)
+        this.consoleError(`${error.data.return_code}`)
       });
     },
 
@@ -406,14 +406,14 @@ export default {
         console.log(msg.data)
         if (msg.data.flag == '1000') {
           // statement
-          this.consoleSuccess(msg.data.return_code)
+          this.consoleSuccess(`${msg.data.return_code}`)
           this.getShopData();
         } else {
-          this.consoleError(msg.data.return_code)
+          this.consoleError(`${msg.data.return_code}`)
         }
       })
       .catch( error => {
-        this.consoleError(error.data.return_code)
+        this.consoleError(`${error.data.return_code}`)
       });
     },
 
@@ -432,14 +432,14 @@ export default {
         if (msg.data.flag == '1000') {
           // statement
           this.dialogVisible[index].model = false;
-          this.consoleSuccess(msg.data.return_code);
+          this.consoleSuccess(`${msg.data.return_code}`);
           this.getShopData();
         } else {
-          this.consoleError(msg.data.return_code)
+          this.consoleError(`${msg.data.return_code}`)
         }
       })
       .catch( error => {
-        this.consoleError(error.data.return_code)
+        this.consoleError(`${error.data.return_code}`)
       });
     },
 
@@ -455,14 +455,14 @@ export default {
       .then( msg => {
         if (msg.data.flag == "1000") {
           // statement
-          this.consoleSuccess(msg.data.return_code);
+          this.consoleSuccess(`${msg.data.return_code}`);
           this.searchShopData();
         } else {
-          this.consoleError(msg.data.return_code)
+          this.consoleError(`${msg.data.return_code}`)
         }
       })
       .catch( error => {
-        this.consoleError(error.data.return_code)
+        this.consoleError(`${error.data.return_code}`)
       });
     },
 

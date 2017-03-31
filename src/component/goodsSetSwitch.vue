@@ -1,46 +1,38 @@
 <template>
   <div id="goodsSetSwitch">
     <el-row type="flex" class="steps" justify="center">
-      <el-col :span="11">
-        <el-carousel 
-          height="700px" 
-          indicator-position="none"
-          arrow="never"
-          :autoplay="false"
-          ref="elCarousel">
-          <!-- 第一页 -->
-          <el-carousel-item>
-            <el-form   
-              label-position="top">
-              <el-form-item label="商品设置开关(展示)">
-                <template v-for="item_1 in items">
-                  <template v-for="item in item_1">
-                    <div>
-                      <span style="color: #666;">{{ item.switch_name }}:</span>
-                      <el-switch
-                        v-model="value"
-                        disabled>
-                      </el-switch>
-                    </div>
-                  </template>
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span style="font-size: 22px;">添加商品开关</span>
+            <el-button style="float: right;" type="text" @click="dialogVisible = true">操作说明</el-button>
+          </div>
+          <el-form   
+            label-position="top">
+            <el-form-item label="商品设置开关(展示!!!)">
+              <template v-for="item_1 in items">
+                <template v-for="item in item_1">
+                  <div>
+                    <span style="color: #666;">{{ item.switch_name }}:</span>
+                    <el-switch
+                      v-model="value"
+                      disabled>
+                    </el-switch>
+                  </div>
                 </template>
-                
-              </el-form-item>
-              <div style="color: #666">若您需要的设置开关不在此分类请点击<el-button type="text" @click="addGoodsSwitchVal = true">这里添加</el-button></div></br>
-            </el-form>
-          </el-carousel-item>
-          <!-- 第一页 End -->
-        </el-carousel>
+              </template>
+              
+            </el-form-item>
+            <div style="color: #666">若您需要的设置开关不在此分类请点击<el-button type="text" @click="addGoodsSwitchVal = true">这里添加</el-button></div></br>
+          </el-form>
+        </el-card>
       </el-col>
     </el-row>
 
     <!-- 提示用户页面操作须知 -->
     <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
-      <span>1.仅针对自有品牌除本平台提供商品颜色以外的自有商品颜色的添加。</span></br>
-      <span>2.您只能操作您自有商品颜色。</span></br>
-      <span>3.请注意文明用语!</span>
+      <span>待定!</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
@@ -100,7 +92,7 @@ export default {
         // }
       })
       .catch( error => {
-        this.consoleError(error.data.return_code)
+        this.consoleError(`${error.data.return_code}`);
       });
     },
 
@@ -125,11 +117,11 @@ export default {
           }
         })
         .catch( error => {
-          this.consoleError(`${error.data.return_code}`)
+          this.consoleError(`${error.data.return_code}`);
         });
 
       } else {
-        this.consoleError('请完善信息后提交!!!')
+        this.consoleError('请完善信息后提交!!!');
       }
     },
 

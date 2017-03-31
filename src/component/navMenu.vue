@@ -6,7 +6,6 @@
   	    <template slot="title">门店管理</template>
   	    <el-menu-item index="/privateBrandStores">设置自由品牌</el-menu-item>
   	    <el-menu-item index="/goodsSetSwitch">商品设置开关</el-menu-item>
-  	    <el-menu-item index="2-3">选项3</el-menu-item>
   	  </el-submenu>
       <el-submenu index="商品管理">
         <template slot="title">商品管理</template>
@@ -19,7 +18,6 @@
           <el-menu-item index="/goodsPrivateProperty">商品私有属性</el-menu-item>
           <el-menu-item index="/goodsPrivatePropertyValues">商品私有属性值</el-menu-item>
         </el-submenu>
-        <el-menu-item index="3-4">商品风格</el-menu-item>
         <el-menu-item index="/addMerchandise">添加商品</el-menu-item>
         <el-menu-item index="/listOfGoods">商品列表</el-menu-item>
         <el-menu-item index="/addCarouselDrawing">新增轮播图</el-menu-item>

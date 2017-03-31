@@ -22,9 +22,6 @@ export const listSwitchName = 'Shop/listSwitchName';
 // 设置自由品牌
 export const addTestOwnProductUrl = 'Shop/addTestOwnProduct';
 
-// 唯一接口
-export const getProductAndCategory = 'Shop/addTestGoodsInfo';
-
 // 获取初始化数据接口
 export const listTestGoodsInfo = 'Shop/listTestGoodsInfo';
 
@@ -39,5 +36,13 @@ export const switchHandleUrl = 'Shop/switchHandle';
 
 // 删除接口
 export const deleteTestGoodsInfoUrl = 'Shop/deleteTestGoodsInfo'; 
+
+// 获取商品品牌和分类 (颜色、尺寸)
+export const addTestGoodsInfo = 'Shop/addTestGoodsInfo';
+
+// 获取商品属性分类 (颜色、尺寸)
+export const addTestCategoryArguments = 'Shop/addTestCategoryArguments';
+
+
 
 // import * as API from '../assets/axios/api.js';

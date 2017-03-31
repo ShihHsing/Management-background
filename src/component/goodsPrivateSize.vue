@@ -2,63 +2,58 @@
   <div id="goodsPrivateSize">
     <el-row type="flex" class="steps" justify="center">
       <el-col :span="11">
-        <el-carousel 
-          height="700px" 
-          indicator-position="none"
-          arrow="never"
-          :autoplay="false"
-          ref="elCarousel">
-          <!-- 第一页 -->
-          <el-carousel-item>
-            <el-form 
-              :model="goodsPrivatePropertyValues" 
-              :rules="goodsPrivatePropertyValuesRules" 
-              ref="goodsPrivatePropertyValues"  
-              label-position="top">
-              <el-form-item label="商品品牌" prop="commodityBrand">
-                <el-select v-model="goodsPrivatePropertyValues.commodityBrand" placeholder="请选择商品品牌">
-                  <el-option v-for="item in goodsPrivatePropertyValues.commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
-                  <!-- <el-option label="区域二" value="beijing"></el-option> -->
-                </el-select>
-              </el-form-item>
-              <el-form-item label="商品分类" prop="commodityClassification">
-                <el-select v-model="goodsPrivatePropertyValues.commodityClassification" placeholder="请选择商品分类">
-                  <el-option v-for="item in goodsPrivatePropertyValues.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
-                  <!-- <el-option label="区域二" value="beijing"></el-option> -->
-                </el-select>
-              </el-form-item>
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span style="font-size: 22px;">商品私有尺寸</span>
+            <el-button style="float: right;" type="text" @click="dialogVisible = true">操作说明</el-button>
+          </div>
+          <el-form 
+            :model="goodsPrivatePropertyValues" 
+            :rules="goodsPrivatePropertyValuesRules" 
+            ref="goodsPrivatePropertyValues"  
+            label-position="top">
+            <el-form-item label="商品品牌" prop="commodityBrand">
+              <el-select v-model="goodsPrivatePropertyValues.commodityBrand" placeholder="请选择商品品牌">
+                <el-option v-for="item in goodsPrivatePropertyValues.commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
+                <!-- <el-option label="区域二" value="beijing"></el-option> -->
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品分类" prop="commodityClassification">
+              <el-select v-model="goodsPrivatePropertyValues.commodityClassification" placeholder="请选择商品分类">
+                <el-option v-for="item in goodsPrivatePropertyValues.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
+                <!-- <el-option label="区域二" value="beijing"></el-option> -->
+              </el-select>
+            </el-form-item>
 
-              <el-form-item label="商品私有尺寸" prop="goodsPrivatePropertyValuesText">
-                <el-tag
-                  v-for="tag in goodsPrivatePropertyValues.dynamicTags"
-                  :closable="true"
-                  :close-transition="false"
-                  @close="handleClose(tag)"
-                  type="primary"
-                >
-                {{tag}}
-                </el-tag>
-                <el-input
-                  class="input-new-tag"
-                  v-if="goodsPrivatePropertyValues.inputVisible"
-                  v-model="goodsPrivatePropertyValues.inputValue"
-                  ref="saveTagInput"
-                  size="mini"
-                  @keyup.enter.native="handleInputConfirm"
-                  @blur="handleInputConfirm"
-                >
-                </el-input>
-                <el-button v-else class="button-new-tag" size="small" @click="showInput">添加</el-button>
-              </el-form-item>
+            <el-form-item label="商品私有尺寸" prop="goodsPrivatePropertyValuesText">
+              <el-tag
+                v-for="tag in goodsPrivatePropertyValues.dynamicTags"
+                :closable="true"
+                :close-transition="false"
+                @close="handleClose(tag)"
+                type="primary"
+              >
+              {{tag}}
+              </el-tag>
+              <el-input
+                class="input-new-tag"
+                v-if="goodsPrivatePropertyValues.inputVisible"
+                v-model="goodsPrivatePropertyValues.inputValue"
+                ref="saveTagInput"
+                size="mini"
+                @keyup.enter.native="handleInputConfirm"
+                @blur="handleInputConfirm"
+              >
+              </el-input>
+              <el-button v-else class="button-new-tag" size="small" @click="showInput">添加</el-button>
+            </el-form-item>
 
-              <el-form-item>
-                <el-button type="primary" @click="submitForm('goodsPrivatePropertyValues')">提交</el-button>
-                <el-button @click="resetForm('goodsPrivatePropertyValues')">重置</el-button>
-              </el-form-item>
-            </el-form>
-          </el-carousel-item>
-          <!-- 第一页 End -->
-        </el-carousel>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('goodsPrivatePropertyValues')">提交</el-button>
+              <el-button @click="resetForm('goodsPrivatePropertyValues')">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
       </el-col>
     </el-row>
 
@@ -68,7 +63,6 @@
       <span>2.您只能操作您自有商品尺寸。</span></br>
       <span>3.请注意文明用语!</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
@@ -76,15 +70,12 @@
 </template>
 
 <script>
+import * as API from '../assets/axios/api.js';
 import '../assets/style/goodsPrivateSize.less'
 export default {
   name: 'goodsPrivateSize',
   data () {
     return {
-      // 唯一接口
-      onlyUrl: 'Shop/addTestGoodsInfo',
-      // 获取商品属性分类
-      getCommodityClassificationPropertiesUrl: 'Shop/addTestCategoryArguments',
       // 消息提示控件
       dialogVisible: true,
       goodsPrivatePropertyValues: {
@@ -121,7 +112,7 @@ export default {
           // success
           if (this.goodsPrivatePropertyValues.dynamicTags.length > 0) {
             // statement
-            this.$axios.post(this.getCommodityClassificationPropertiesUrl,{
+            this.$axios.post(API.addTestCategoryArguments,{
               product_id: this.goodsPrivatePropertyValues.commodityBrand,
               category_id: this.goodsPrivatePropertyValues.commodityClassification,
               parent_id: 54,
@@ -129,8 +120,8 @@ export default {
             })
             .then( (msg) => {
               if(msg.data.flag == '1000'){
-                this.consoleSuccess(msg.data.return_code);
                 console.log(msg.data);
+                this.consoleSuccess(`${msg.data.return_code}`);
                 setTimeout(() => {
                   this.resetForm('goodsPrivatePropertyValues');
                   this.goodsPrivatePropertyValues.dynamicTags = [];
@@ -138,12 +129,12 @@ export default {
                 },1200)
               } else {
                 // statement
-                this.consoleError(msg.data.return_code);
+                this.consoleError(`${msg.data.return_code}`);
               }
-            }, (response) => {
-              this.consoleError(response.data.return_code);
-              console.log(response);
             })
+            .catch( error => {
+              this.consoleError(`${error.data.return_code}`)
+            });
           } else {
             this.consoleWarning('请完善商品分类属性属性值!')
           }
@@ -161,7 +152,7 @@ export default {
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification() {
       var _this = this;
-      this.$axios.post(this.onlyUrl,{
+      this.$axios.post(API.addTestGoodsInfo,{
         request_flag: 'product_list'
       })
       .then( (msg) => {
@@ -172,9 +163,10 @@ export default {
         // 商品分类列表
         var category_list = msg.data.category_list;
         _this.goodsPrivatePropertyValues.commodityClassificationList = category_list;
-      }, (response) => {
-        console.log('Error')
       })
+      .catch( error => {
+        this.consoleError(`${error.data.return_code}`)
+      });
     },
 
     handleClose(tag) {
