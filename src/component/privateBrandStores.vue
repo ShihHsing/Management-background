@@ -4,22 +4,34 @@
       <el-col :span="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="font-size: 22px;">设置自由品牌</span>
+            <span style="font-size: 22px;">添加自有品牌</span>
             <el-button style="float: right;" type="text" @click="dialogVisible = true">操作说明</el-button>
           </div>
-          <el-form   
-            label-position="top">
-            <el-form-item label="选择自由品牌" prop="commodityBrand">
-              <el-select multiple v-model="testOwnProduct" placeholder="可单选可多选">
-                <el-option v-for="item in testOwnProductList" :label="item.product_name" :value="item.id"></el-option>
-
-              </el-select>
-            </el-form-item>
-
-            <el-form-item>
-              <el-button type="primary" @click="postAddTestOwnProduct()">提交</el-button>
-            </el-form-item>
-          </el-form>
+          <el-table
+            :data="ownProductList"
+            stripe
+            style="width: 100%">
+            <el-table-column
+              prop="id"
+              label="ID"
+              width="60">
+            </el-table-column>
+            <el-table-column
+              prop="product_name"
+              label="门店名"
+              align="center"
+              header-align="center">
+            </el-table-column>
+            <el-table-column
+              label="操作"
+              align="center"
+              header-align="center"
+              width="180">
+              <template scope="scope">
+                <el-button type="primary" @click="addTestOwnProduct(scope.row.id)">添加</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-card>
       </el-col>
     </el-row>
@@ -42,50 +54,46 @@ export default {
   data () {
     return {
       dialogVisible: true,
-      testOwnProduct: [],
-      testOwnProductList: []
+
+      // 品牌列表
+      ownProductList: []
     }
   },
   
   created: function() {
-    // 获取所有品牌
-    this.getAddTestOwnProduct();
+    this.getOwnProductList();
   },
 
   methods: {
     
-    getAddTestOwnProduct() {
-    	this.$axios.post(API.addTestOwnProductUrl,{
-    		product_id: this.testOwnProduct
-    	})
-    	.then( msg => {
-    		console.log(msg)
-        if (msg.data.flag == '1000') {
-          // statement
-          this.testOwnProductList = msg.data.product_list;
+    // 获取商品列表
+    getOwnProductList () {
+      this.$axios.post(API.addTestOwnProduct)
+      .then( msg => {
+        console.log(msg)
+        let data = msg.data;
+        if (data.flag == '1000') {
+          this.ownProductList = data.product_list;
         } else {
           this.consoleError(`${msg.data.return_code}`);
-          
         }
-    	})
+      })
       .catch( error => {
-        console.log(error)
-        this.consoleError(`${error.data.return_code}`);
+        this.consoleError(`${error.data.return_code}`)
       });
     },
 
-    postAddTestOwnProduct() {
-      if (this.testOwnProduct.length > 0 ) {
-        // statement
-        this.$axios.post(API.addTestOwnProductUrl,{
-          product_id: this.testOwnProduct
+    addTestOwnProduct (id) {
+      if (id) {
+        this.$axios.post(API.addTestOwnProduct,{
+          product_id: id
         })
         .then( msg => {
           console.log(msg)
-          if (msg.data.flag == '1000') {
-            // statement
+          let data = msg.data;
+          if (data.flag == '1000') {
             this.consoleSuccess(`${msg.data.return_code}`);
-            this.testOwnProduct = [];
+            this.getOwnProductList();
           } else {
             this.consoleError(`${msg.data.return_code}`);
           }
@@ -94,7 +102,7 @@ export default {
           this.consoleError(`${error.data.return_code}`)
         });
       } else {
-        this.consoleError('请完善信息后提交!!!')
+        this.consoleError(`发生未知错误,门店ID丢失,请稍后重试!`);
       }
     },
 

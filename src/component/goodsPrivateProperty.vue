@@ -15,13 +15,11 @@
             <el-form-item label="商品品牌" prop="commodityBrand">
               <el-select v-model="goodsPrivateProperty.commodityBrand" placeholder="请选择商品品牌">
                 <el-option v-for="item in goodsPrivateProperty.commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
-                <!-- <el-option label="区域二" value="beijing"></el-option> -->
               </el-select>
             </el-form-item>
             <el-form-item label="商品分类" prop="commodityClassification">
               <el-select v-model="goodsPrivateProperty.commodityClassification" placeholder="请选择商品分类">
                 <el-option v-for="item in goodsPrivateProperty.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
-                <!-- <el-option label="区域二" value="beijing"></el-option> -->
               </el-select>
             </el-form-item>
             <el-form-item label="添加商品私有属性" prop="addGoodsPrivateProperty">

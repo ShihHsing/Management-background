@@ -23,14 +23,12 @@
           <!-- 第二页 -->
           <el-carousel-item id="none-align-items">
           <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
-            <div style="display: flex;justify-content: center;align-items: center;width: 100%;">
-              <el-form 
-                :model="two" 
-                :rules="twoRules" 
-                ref="two"
-                label-width="100px">
-                
-                </br></br>
+            <el-form 
+              :model="two" 
+              :rules="twoRules" 
+              ref="two"
+              label-width="100px">
+              <el-card class="box-card">
                 <el-form-item label="商品标题" prop="commodityTitle">
                   <el-input type="textarea" v-model="two.commodityTitle" placeholder="请输入商品标题"></el-input>
                 </el-form-item>
@@ -68,22 +66,22 @@
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('two')">下一步</el-button>
                 </el-form-item>
-
-              </el-form>
-            </div>
+              </el-card>
+            </el-form>
           </el-carousel-item>
           <!-- 第二页 End -->
 
           <!-- 第三页 -->
           <el-carousel-item>
-            <div style="display: flex;justify-content: center;align-items: center;width: auto;height: 100%;">
-              <el-form 
-                :model="three"
-                ref="three">
-
+            <el-form 
+              :model="three"
+              ref="three">
+              <el-card class="box-card">
                 <el-form-item label="商品列表图"></br>
                   <el-upload
-                    :action="this.http+'Shop/addTestGoodsInfo'"
+                    class="upload-demo"
+                    action="http://a001.aybc.so/Shop/addTestGoodsInfo"
+                    list-type="picture"
                     :on-success="handleSuccess1"
                     :on-remove="handleRemove1"
                     :on-error="uploadError"
@@ -91,14 +89,16 @@
                     :file-list="three.thumb_image_file_list"
                     name="thumb_image"
                     ref="thumb_image">
-                    <el-button size="small" type="primary" v-show="three.thumb_image">点击上传</el-button>
+                    <el-button size="small" type="primary">点击上传</el-button>
                     <div class="el-upload__tip" slot="tip">请上传图片大小为370*400像素尺寸jpg/png文件,且不超过500kb,列表图在商品库存、商家推荐及订单列表中显示</div>
                   </el-upload>
                 </el-form-item>
 
                 <el-form-item label="商品音频"></br>
                   <el-upload
-                    :action="this.http+'Shop/addTestGoodsInfo'"
+                    class="upload-demo"
+                    action="http://a001.aybc.so/Shop/addTestGoodsInfo"
+                    list-type="picture"
                     :on-success="handleSuccess2"
                     :on-remove="handleRemove2"
                     :on-error="uploadError"
@@ -106,14 +106,16 @@
                     :file-list="three.audio_file_list"
                     name="audio"
                     ref="audio">
-                    <el-button size="small" type="primary" v-show="three.audio">点击上传</el-button>
+                    <el-button size="small" type="primary">点击上传</el-button>
                     <div class="el-upload__tip" slot="tip">请上传小于1MB,且格式为MP3音乐</div>
                   </el-upload>
                 </el-form-item>
 
                 <el-form-item label="商品视频"></br>
                   <el-upload
-                    :action="this.http+'Shop/addTestGoodsInfo'"
+                    class="upload-demo"
+                    action="http://a001.aybc.so/Shop/addTestGoodsInfo"
+                    list-type="picture"
                     :on-remove="handleRemove3"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
@@ -121,7 +123,7 @@
                     :file-list="three.video_file_list"
                     name="video"
                     ref="video">
-                    <el-button size="small" type="primary" v-show="three.video">点击上传</el-button>
+                    <el-button size="small" type="primary">点击上传</el-button>
                     <div class="el-upload__tip" slot="tip">请上传小于4MB,且格式为MP4的视频</div>
                   </el-upload>
                 </el-form-item>
@@ -129,24 +131,20 @@
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('three')">下一步</el-button>
                 </el-form-item>
-
-              </el-form>
-            </div>
+              </el-card>
+            </el-form>
           </el-carousel-item>
           <!-- 第三页 End -->
 
           <!-- 第四页 -->
           <el-carousel-item>
             <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
-            <div style="display: flex;justify-content: center;align-items: center;width: 100%;">
-              <el-form 
-                :model="four"
-                ref="four"
-                label-width="100px">
-                
-                </br></br>
+            <el-form 
+              :model="four"
+              ref="four"
+              label-width="100px">
+              <el-card class="box-card">
                 <el-form-item label="颜色分类">
-                  <!-- <el-checkbox :indeterminate="four.isIndeterminate" v-model="four.checkAll" @change="handleCheckAllChange">全选</el-checkbox> -->
                   <el-checkbox-group v-model="four.checkedCities" @change="handleCheckedCitiesChange">
                     <el-checkbox v-for="city in four.cities" :label="city">{{city}}</el-checkbox>
                   </el-checkbox-group>
@@ -155,7 +153,6 @@
 
 
                 <el-form-item label="尺码">
-                  <!-- <el-checkbox :indeterminate="four.isIndeterminateSize" v-model="four.checkAllSize" @change="handleCheckAllChangeSize">全选</el-checkbox> -->
                   <el-checkbox-group v-model="four.checkedSize" @change="handleCheckedCitiesChangeSize">
                     <el-checkbox v-for="city in four.size_list" :label="city">{{city}}</el-checkbox>
                   </el-checkbox-group>
@@ -165,9 +162,9 @@
                 <el-form-item label="商品图片">
                   <div v-for="(city,index) in four.checkedCities">
                   <!-- action冒号问题 -->
-                    <el-upload
+                   <el-upload
+                      class="upload-demo"
                       action="http://a001.aybc.so/Shop/addTestGoodsInfo"
-                      drag
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"
@@ -175,9 +172,9 @@
                       :on-error="uploadError"
                       name="normal_image"
                       :data="{'imgColor': four.checkedCities[index]}"
-                      ref="normal_image">
-                      <i class="el-icon-upload"></i>
-                      <div class="el-dragger__text">请上传<em>{{ four.checkedCities[index] }}</em>商品的商品图片</div>
+                      ref="normal_image"
+                      list-type="picture">
+                      <el-button size="small" type="primary">请上传<em>{{ four.checkedCities[index] }}</em>商品的商品图片</el-button>
                       <div class="el-upload__tip" style="color:#555;" slot="tip">请上传<b style="color:#20A0FF;">{{ four.checkedCities[index] }}</b>商品的商品图片,并只能上传jpg/png文件，且不超过500kb</div>
                     </el-upload>
                   </div>
@@ -186,9 +183,8 @@
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('four')">下一步</el-button>
                 </el-form-item>
-
-              </el-form>
-            </div>
+              </el-card>
+            </el-form>
           </el-carousel-item>
           <!-- 第四页 End -->
           <el-carousel-item>
@@ -197,11 +193,13 @@
               :model="four"
               ref="four"
               label-width="47%">
-              <vue-html5-editor :content="description" :height="500" @change="updateData"></vue-html5-editor>
-              <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
-              <el-form-item>
-                <el-button type="primary" @click="submitForm('End')">下一步</el-button>
-              </el-form-item>
+              <el-card class="box-card">
+                <vue-html5-editor :content="description" :height="500" @change="updateData"></vue-html5-editor>
+                <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
+                <el-form-item>
+                  <el-button type="primary" @click="submitForm('End')">下一步</el-button>
+                </el-form-item>
+              </el-card>
             </el-form>
           </el-carousel-item>
         </el-carousel>
@@ -758,17 +756,6 @@ export default {
       }
     },
 
-    // 颜色选择 全选
-    handleCheckAllChange(event) {
-      console.log(event)
-      this.four.checkedCities = event.target.checked ? this.four.cities : [];
-      this.four.isIndeterminate = false;
-      // 记录用户每次颜色选择的操作
-      this.userColorModelHistoricalRecord();
-      // 根据用户选择颜色 动态生成颜色、图片对应关系
-      this.createColorAndImg();
-    },
-
     // 颜色选择 单选
     handleCheckedCitiesChange(value) {
       var checkedCount = value.length;
@@ -808,13 +795,53 @@ export default {
           if (request_flag == 'color_list') {
             // statement
             console.log(msg.data,'颜色分类');
-            for (var i = 0; i < msg.data.category_color_list.length; i++) {
-              for(var ii = 0, length1 = this.goods_detail.image_url.length; ii < length1; ii++){
-                if(this.goods_detail.image_url[ii].color_name != msg.data.category_color_list[i].argument_value){
-                    this.four.cities.push(msg.data.category_color_list[i].argument_value);
-                }
-              }
+            // for (var i = 0; i < msg.data.category_color_list.length; i++) {
+            //   for(var ii = 0, length1 = this.goods_detail.image_url.length; ii < length1; ii++){
+            //     if(this.goods_detail.image_url[ii].color_name != msg.data.category_color_list[i].argument_value){
+            //         this.four.cities.push(msg.data.category_color_list[i].argument_value);
+            //     }
+            //   }
+            // }
+            // for(var i = 0, length1 = msg.data.category_color_list.length; i < length1; i++){
+            //   // msg.data.category_color_list[i].argument_value
+            //   for(var ii = 0, length2 = this.goods_detail.image_url.length; ii < length2; ii++){
+            //     // this.goods_detail.image_url[ii].color_name
+            //     if (this.goods_detail.image_url[ii].color_name != msg.data.category_color_list[i].argument_value) {
+            //       this.four.cities.push(msg.data.category_color_list[i].argument_value);
+            //     }
+            //   }
+            // }
+
+            var arr1 = [];
+            var arr2 = [];
+
+            for(var i = 0, length1 = msg.data.category_color_list.length; i < length1; i++){
+              arr1.push(msg.data.category_color_list[i].argument_value);
             }
+
+            for(var i = 0, length1 = this.goods_detail.image_url.length; i < length1; i++){
+              arr2.push(this.goods_detail.image_url[i].color_name);
+            }
+
+            var arr3 = '';
+            console.log(arr1,arr2,'传入的两个数组')
+            for (var i = 0; i < arr1.length;) {
+              for (var ii = 0; ii < arr2.length;) {
+                if (arr1[i] == arr2[ii]) {
+                  // statement
+                  arr1.splice(i,1);
+                  arr2.splice(ii,1);
+                  continue;
+                }
+                ii++
+              }
+              i++
+            }
+            arr3 = arr1.concat(arr2);
+            
+            this.four.cities = arr3;
+            console.log(arr3);
+            
             this.four.colorList = msg.data.category_color_list;
           } else if (request_flag == 'size_list') {
             // statement
@@ -1019,6 +1046,7 @@ export default {
     buildAddShopData() {
       var argument = []
       argument.push({product_id: this.one.commodityBrand});
+      argument.push({shop_show: this.two.shop_show});
       argument.push({category_id: this.one.commodityClassification});
       argument.push({title: this.two.commodityTitle});
       argument.push({'sub-title': this.two.commodityIntroduction});

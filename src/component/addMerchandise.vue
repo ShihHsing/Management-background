@@ -20,43 +20,41 @@
           ref="elCarousel">
           <!-- 第一页 -->
           <el-carousel-item>
-            <div style="display: flex;justify-content: center;align-items: center;width: auto;height: 100%;">
-              <el-form 
-                :model="one" 
-                :rules="oneRules" 
-                ref="one"  
-                label-position="top">
+            <el-form 
+              :model="one" 
+              :rules="oneRules" 
+              ref="one"  
+              label-position="top"
+              style="width: 100%;">
+              <el-card class="box-card">
                 <el-form-item label="商品品牌" prop="commodityBrand">
                   <el-select v-model="one.commodityBrand" placeholder="请选择商品品牌">
                     <el-option v-for="item in one.commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
-                    <!-- <el-option label="区域二" value="beijing"></el-option> -->
                   </el-select>
                 </el-form-item>
                 <el-form-item label="商品分类" prop="commodityClassification">
                   <el-select v-model="one.commodityClassification" placeholder="请选择商品分类">
                     <el-option v-for="item in one.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
-                    <!-- <el-option label="区域二" value="beijing"></el-option> -->
                   </el-select>
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('one')">下一步</el-button>
                 </el-form-item>
-              </el-form>
-            </div>
+              </el-card>
+            </el-form>
           </el-carousel-item>
           <!-- 第一页 End -->
 
           <!-- 第二页 -->
           <el-carousel-item id="none-align-items">
           <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
-            <div style="display: flex;justify-content: center;align-items: center;width: 100%;">
-              <el-form 
-                :model="two" 
-                :rules="twoRules" 
-                ref="two"
-                label-width="100px">
-                
-                </br></br>
+            <el-form 
+              :model="two" 
+              :rules="twoRules" 
+              ref="two"
+              label-width="100px"
+              style="width: 100%;">
+              <el-card class="box-card">
                 <el-form-item label="商品标题" prop="commodityTitle">
                   <el-input type="textarea" v-model="two.commodityTitle" placeholder="请输入商品标题"></el-input>
                 </el-form-item>
@@ -94,57 +92,62 @@
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('two')">下一步</el-button>
                 </el-form-item>
-
-              </el-form>
-            </div>
+              </el-card>
+            </el-form>
           </el-carousel-item>
           <!-- 第二页 End -->
 
           <!-- 第三页 -->
           <el-carousel-item>
-            <div style="display: flex;justify-content: center;align-items: center;width: auto;height: 100%;">
-              <el-form 
-                :model="three"
-                ref="three">
-
+            <el-form 
+              :model="three"
+              ref="three"
+              style="width: 100%;">
+              <el-card class="box-card">
                 <el-form-item label="商品列表图"></br>
                   <el-upload
-                    :action="this.http+'Shop/addTestGoodsInfo'"
+                    class="upload-demo"
+                    action="http://a001.aybc.so/Shop/addTestGoodsInfo"
+                    list-type="picture"
                     :on-success="handleSuccess1"
                     :on-remove="handleRemove1"
                     :on-error="uploadError"
                     :multiple="false"
                     name="thumb_image"
                     ref="thumb_image">
-                    <el-button size="small" type="primary" v-show="three.thumb_image">点击上传</el-button>
+                    <el-button size="small" type="primary">点击上传</el-button>
                     <div class="el-upload__tip" slot="tip">请上传图片大小为370*400像素尺寸jpg/png文件,且不超过500kb,列表图在商品库存、商家推荐及订单列表中显示</div>
                   </el-upload>
                 </el-form-item>
 
                 <el-form-item label="商品音频"></br>
                   <el-upload
-                    :action="this.http+'Shop/addTestGoodsInfo'"
+                    list-type="picture"
+                    class="upload-demo"
+                    action="http://a001.aybc.so/Shop/addTestGoodsInfo"
                     :on-success="handleSuccess2"
                     :on-remove="handleRemove2"
                     :on-error="uploadError"
                     :multiple="false"
                     name="audio"
                     ref="audio">
-                    <el-button size="small" type="primary" v-show="three.audio">点击上传</el-button>
+                    <el-button size="small" type="primary">点击上传</el-button>
                     <div class="el-upload__tip" slot="tip">请上传小于1MB,且格式为MP3音乐</div>
                   </el-upload>
                 </el-form-item>
 
                 <el-form-item label="商品视频"></br>
                   <el-upload
-                    :action="this.http+'Shop/addTestGoodsInfo'"
+                    list-type="picture"
+                    class="upload-demo"
+                    action="http://a001.aybc.so/Shop/addTestGoodsInfo"
                     :on-remove="handleRemove3"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
                     :multiple="false"
                     name="video"
                     ref="video">
-                    <el-button size="small" type="primary" v-show="three.video">点击上传</el-button>
+                    <el-button size="small" type="primary">点击上传</el-button>
                     <div class="el-upload__tip" slot="tip">请上传小于4MB,且格式为MP4的视频</div>
                   </el-upload>
                 </el-form-item>
@@ -152,24 +155,20 @@
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('three')">下一步</el-button>
                 </el-form-item>
-
-              </el-form>
-            </div>
+              </el-card>
+            </el-form>
           </el-carousel-item>
           <!-- 第三页 End -->
 
           <!-- 第四页 -->
           <el-carousel-item>
             <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
-            <div style="display: flex;justify-content: center;align-items: center;width: 100%;">
-              <el-form 
-                :model="four"
-                ref="four"
-                label-width="100px">
-                
-                </br></br>
+            <el-form 
+              :model="four"
+              ref="four"
+              label-width="100px">
+              <el-card class="box-card">
                 <el-form-item label="颜色分类">
-                  <!-- <el-checkbox :indeterminate="four.isIndeterminate" v-model="four.checkAll" @change="handleCheckAllChange">全选</el-checkbox> -->
                   <el-checkbox-group v-model="four.checkedCities" @change="handleCheckedCitiesChange">
                     <el-checkbox v-for="city in four.cities" :label="city">{{city}}</el-checkbox>
                   </el-checkbox-group>
@@ -208,9 +207,8 @@
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('four')">下一步</el-button>
                 </el-form-item>
-
-              </el-form>
-            </div>
+              </el-card>
+            </el-form>
           </el-carousel-item>
           <!-- 第四页 End -->
           <el-carousel-item>
@@ -219,11 +217,14 @@
               :model="four"
               ref="four"
               label-width="47%">
-              <vue-html5-editor :content="description" :height="500" @change="updateData"></vue-html5-editor>
-              <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
-              <el-form-item>
-                <el-button type="primary" @click="submitForm('End')">下一步</el-button>
-              </el-form-item>
+              <el-card class="box-card">
+                <vue-html5-editor :content="description" :height="500" @change="updateData"></vue-html5-editor>
+                <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">
+                商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
+                <el-form-item>
+                  <el-button type="primary" @click="submitForm('End')">下一步</el-button>
+                </el-form-item>
+              </el-card>
             </el-form>
           </el-carousel-item>
         </el-carousel>
@@ -381,9 +382,9 @@ export default {
         price: [
           { required: true, message: '请输入商品价格', trigger: 'change' }
         ],
-        shop_show: [
-          { required: true, message: '请输入易企秀链接', trigger: 'change' }
-        ]
+        // shop_show: [
+        //   { required: true, message: '请输入易企秀链接', trigger: 'change' }
+        // ]
       },
       elCarousel: '',
       description: '',
@@ -670,19 +671,6 @@ export default {
       } else {
         return false;
       }
-    },
-
-    // 颜色选择 全选
-    handleCheckAllChange(event) {
-      console.log(event)
-      this.four.checkedCities = event.target.checked ? this.four.cities : [];
-      this.four.isIndeterminate = false;
-
-      // 记录用户每次颜色选择的操作
-      this.userColorModelHistoricalRecord();
-
-      // 根据用户选择颜色 动态生成颜色、图片对应关系
-      this.createColorAndImg();
     },
 
     // 颜色选择 单选

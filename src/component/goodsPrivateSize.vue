@@ -15,13 +15,11 @@
             <el-form-item label="商品品牌" prop="commodityBrand">
               <el-select v-model="goodsPrivatePropertyValues.commodityBrand" placeholder="请选择商品品牌">
                 <el-option v-for="item in goodsPrivatePropertyValues.commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
-                <!-- <el-option label="区域二" value="beijing"></el-option> -->
               </el-select>
             </el-form-item>
             <el-form-item label="商品分类" prop="commodityClassification">
               <el-select v-model="goodsPrivatePropertyValues.commodityClassification" placeholder="请选择商品分类">
                 <el-option v-for="item in goodsPrivatePropertyValues.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
-                <!-- <el-option label="区域二" value="beijing"></el-option> -->
               </el-select>
             </el-form-item>
 
@@ -32,8 +30,8 @@
                 :close-transition="false"
                 @close="handleClose(tag)"
                 type="primary"
-              >
-              {{tag}}
+                style="width: 217px;">
+                {{tag}}
               </el-tag>
               <el-input
                 class="input-new-tag"

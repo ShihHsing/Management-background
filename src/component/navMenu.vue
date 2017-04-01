@@ -2,11 +2,9 @@
   <div id="navMenu">
     <el-menu theme="dark" :default-active="router_url" class="el-menu-demo" mode="vertical" @select="handleSelect" unique-opened router>
   	  <el-menu-item index="/home">首页</el-menu-item>
-  	  <el-submenu index="门店管理">
+  	  <!-- <el-submenu index="门店管理">
   	    <template slot="title">门店管理</template>
-  	    <el-menu-item index="/privateBrandStores">设置自由品牌</el-menu-item>
-  	    <el-menu-item index="/goodsSetSwitch">商品设置开关</el-menu-item>
-  	  </el-submenu>
+      </el-submenu> -->
       <el-submenu index="商品管理">
         <template slot="title">商品管理</template>
         <el-menu-item index="/commodityBrand">商品品牌</el-menu-item>
@@ -24,6 +22,8 @@
       </el-submenu>
       <el-submenu index="内部服务">
         <template slot="title">内部服务</template>
+        <el-menu-item index="/goodsSetSwitch">商品设置开关</el-menu-item>
+  	    <el-menu-item index="/privateBrandStores">添加自有品牌</el-menu-item>
         <el-menu-item index="/addRobotInstructions">机器人使用说明</el-menu-item>
         <el-menu-item index="/tvmFansList">TVM活动吸粉列表</el-menu-item>
       </el-submenu>

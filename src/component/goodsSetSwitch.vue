@@ -10,18 +10,15 @@
           <el-form   
             label-position="top">
             <el-form-item label="商品设置开关(展示!!!)">
-              <template v-for="item_1 in items">
-                <template v-for="item in item_1">
-                  <div>
-                    <span style="color: #666;">{{ item.switch_name }}:</span>
-                    <el-switch
-                      v-model="value"
-                      disabled>
-                    </el-switch>
-                  </div>
-                </template>
+              <template v-for="item in items">
+                <div style="float: left;margin:0 10px;">
+                  <span style="color: #666;">{{ item.switch_name }}:</span>
+                  <el-switch
+                    v-model="value"
+                    disabled>
+                  </el-switch>
+                </div>
               </template>
-              
             </el-form-item>
             <div style="color: #666">若您需要的设置开关不在此分类请点击<el-button type="text" @click="addGoodsSwitchVal = true">这里添加</el-button></div></br>
           </el-form>
@@ -58,7 +55,7 @@ export default {
   name: 'goodsSetSwitch',
   data () {
     return {
-      // 商品设置开发
+      // 商品设置开关
       addGoodsSwitchVal: false,
       // 上传数据模型
       postData: {
@@ -84,12 +81,12 @@ export default {
       .then( (msg) => {
         console.log(msg.data)
         // 初始化
-        // if (msg.data.flag == '1000') {
-        //   // statement
-        //   this.items = msg.data.goods_list[0].switch_list;
-        // } else {
-        //   this.consoleError(`${msg.data.return_code}`)
-        // }
+        if (msg.data.flag == '1000') {
+          // statement
+          this.items = msg.data.switch_list;
+        } else {
+          this.consoleError(`${msg.data.return_code}`);
+        }
       })
       .catch( error => {
         this.consoleError(`${error.data.return_code}`);
@@ -103,15 +100,14 @@ export default {
         this.$axios.post(API.addGoodsSwitchNameUrl,{
           switch_name: this.postData.addGoodsSwitchVal
         })
-
         .then( msg => {
           console.log(msg.data);
           if (msg.data.flag == '1000') {
             // statement
-            this.consoleSuccess(msg.data.return_code);
+            this.consoleSuccess(`${msg.data.return_code}`);
             this.addGoodsSwitchVal = false;
             this.postData.addGoodsSwitchVal = '';
-            this.getShopData()
+            this.getShopData();
           } else {
             this.consoleError(`${msg.data.return_code}`);
           }

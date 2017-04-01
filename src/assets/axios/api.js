@@ -19,8 +19,8 @@ export const addGoodsSwitchNameUrl = 'Shop/addGoodsSwitchName';
 // 获取初始化数据接口
 export const listSwitchName = 'Shop/listSwitchName';
 
-// 设置自由品牌
-export const addTestOwnProductUrl = 'Shop/addTestOwnProduct';
+// 设置自有品牌
+export const addTestOwnProduct = 'Shop/addTestOwnProduct';
 
 // 获取初始化数据接口
 export const listTestGoodsInfo = 'Shop/listTestGoodsInfo';

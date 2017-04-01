@@ -31,9 +31,8 @@
                 :closable="true"
                 :close-transition="false"
                 @close="handleClose(tag)"
-                type="primary"
-              >
-              {{tag}}
+                type="primary">
+                {{tag}}
               </el-tag>
               <el-input
                 class="input-new-tag"
@@ -43,7 +42,7 @@
                 size="mini"
                 @keyup.enter.native="handleInputConfirm"
                 @blur="handleInputConfirm"
-              >
+                style="width: 217px;">
               </el-input>
               <el-button v-else class="button-new-tag" size="small" @click="showInput">添加</el-button>
             </el-form-item>

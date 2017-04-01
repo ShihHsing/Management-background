@@ -39,10 +39,18 @@
           :data="shopDateList"
           border
           stripe
-          style="width: 100%">
-          <el-table-column
+          style="width: 100%"
+          v-loading="loading"
+          element-loading-text="加载中...">
+         <!--  <el-table-column
             prop="model"
             label="商品款号"
+            width="180"
+            fixed="left">
+          </el-table-column> -->
+          <el-table-column
+            prop="id"
+            label="ID"
             width="180"
             fixed="left">
           </el-table-column>
@@ -169,6 +177,8 @@ export default {
       }
     };
     return {
+      // 加载数据蒙层
+      loading: true,
       // 这是一个debug方案 为了配合商品属性开关动态效果的失效
       value1: false,
       // 删除二次确认页面
@@ -334,6 +344,7 @@ export default {
         // 初始化
         this.shopDateList = [];
         if (msg.data.flag == '1000') {
+
           // statement
           this.shopDateList = msg.data.goods_list;
           // 构建二次确认数据模型
@@ -362,6 +373,7 @@ export default {
         } else {
           this.consoleError(`${msg.data.return_code}`)
         }
+        this.loading = false;
       })
       .catch( error => {
         this.consoleError(`${error.data.return_code}`)

@@ -64,15 +64,12 @@ export default {
       // 用户名字
       userName: '石鑫',
       userPhone: store.state.user.userData.phone_number,
-      session_id: store.state.user.userData.session_id
+      // session_id: store.state.user.userData.session_id
     }
   },
   methods: {
     ...mapActions([USER_SIGNOUT]),
     logOut () {
-      let data = {
-        session_id: this.session_id
-      }
       this.$axios.post(API.logOut)
       .then( msg => {
         console.log(msg)
