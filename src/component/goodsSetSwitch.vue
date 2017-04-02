@@ -10,14 +10,19 @@
           <el-form   
             label-position="top">
             <el-form-item label="商品设置开关(展示!!!)">
-              <template v-for="item in items">
-                <div style="float: left;margin:0 10px;">
-                  <span style="color: #666;">{{ item.switch_name }}:</span>
-                  <el-switch
-                    v-model="value"
-                    disabled>
-                  </el-switch>
-                </div>
+              <template v-if="items">
+                <template v-for="item in items">
+                  <div style="float: left;margin:0 10px;">
+                    <span style="color: #666;">{{ item.switch_name }}:</span>
+                    <el-switch
+                      v-model="value"
+                      disabled>
+                    </el-switch>
+                  </div>
+                </template>
+              </template>
+              <template v-else>
+                <span style="text-align: center;">数据为空</span>
               </template>
             </el-form-item>
             <div style="color: #666">若您需要的设置开关不在此分类请点击<el-button type="text" @click="addGoodsSwitchVal = true">这里添加</el-button></div></br>
@@ -81,15 +86,22 @@ export default {
       .then( (msg) => {
         console.log(msg.data)
         // 初始化
-        if (msg.data.flag == '1000') {
-          // statement
-          this.items = msg.data.switch_list;
-        } else {
-          this.consoleError(`${msg.data.return_code}`);
+        const data = msg.data;
+
+        switch (data.flag) {
+          case 1000:
+            this.items = data.switch_list;
+            break;
+          // 初始化数据为空 
+          case 4001:
+            this.items = '';
+            break;
+          default:
+            this.consoleError(`${msg.data.return_code}`);
         }
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`);
+        this.consoleError(`服务器${error.response}`);;
       });
     },
 
@@ -113,7 +125,7 @@ export default {
           }
         })
         .catch( error => {
-          this.consoleError(`${error.data.return_code}`);
+          this.consoleError(`服务器${error.response}`);;
         });
 
       } else {

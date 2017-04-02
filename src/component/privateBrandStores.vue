@@ -79,7 +79,7 @@ export default {
         }
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`)
+        this.consoleError(`服务器${error.response}`);
       });
     },
 
@@ -99,7 +99,7 @@ export default {
           }
         })
         .catch( error => {
-          this.consoleError(`${error.data.return_code}`)
+          this.consoleError(`服务器${error.response}`);
         });
       } else {
         this.consoleError(`发生未知错误,门店ID丢失,请稍后重试!`);

@@ -13,13 +13,19 @@
             ref="goodsPrivatePropertyValues"  
             label-position="top">
             <el-form-item label="商品品牌" prop="commodityBrand">
-              <el-select v-model="goodsPrivatePropertyValues.commodityBrand" placeholder="请选择商品品牌">
+              <el-select 
+                v-model="goodsPrivatePropertyValues.commodityBrand" 
+                placeholder="请选择商品品牌"
+                @change="getParentId">
                 <el-option v-for="item in goodsPrivatePropertyValues.commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
                 <!-- <el-option label="区域二" value="beijing"></el-option> -->
               </el-select>
             </el-form-item>
             <el-form-item label="商品分类" prop="commodityClassification">
-              <el-select v-model="goodsPrivatePropertyValues.commodityClassification" placeholder="请选择商品分类">
+              <el-select 
+                v-model="goodsPrivatePropertyValues.commodityClassification" 
+                placeholder="请选择商品分类"
+                @change="getParentId">
                 <el-option v-for="item in goodsPrivatePropertyValues.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
                 <!-- <el-option label="区域二" value="beijing"></el-option> -->
               </el-select>
@@ -90,8 +96,11 @@ export default {
         // 商品私有属性属性值
         dynamicTags: [],
         inputVisible: false,
-        inputValue: ''
+        inputValue: '',
+
       },
+      // 附属性ID 上传颜色前需请求给后端
+      parent_id: '',
       // 验证规则
       goodsPrivatePropertyValuesRules: {
         commodityBrand: [
@@ -103,8 +112,50 @@ export default {
       }
     }
   },
-  
+
+  created: function() {
+    // 初始化获取商品品牌和商品分类
+    this.getCommodityBrandAndCommodityClassification();
+  },
+
   methods: {
+
+    // 获取附属性ID 
+    getParentId () {
+      if (this.goodsPrivatePropertyValues.commodityBrand != '' && this.goodsPrivatePropertyValues.commodityClassification != '') {
+        var _this = this;
+        this.$axios.post(API.addTestCategoryArguments,{
+          product_id: this.goodsPrivatePropertyValues.commodityBrand,
+          category_id: this.goodsPrivatePropertyValues.commodityClassification,
+          request_flag: 'parent_list'
+        })
+        .then( msg => {
+          console.log(msg);
+
+          const data = msg.data;
+          if (data.flag == '1000') {
+
+            for (var i = data.parent_argument_list.length - 1; i >= 0; i--) {
+
+              if (data.parent_argument_list[i].argument_value == '颜色') {
+
+                _this.parent_id = data.parent_argument_list[i].id;
+                console.log(`副属性ID:${_this.parent_id}`);
+                break;
+              }
+
+            }
+          } else {
+            _this.consoleError(`服务器发生未知错误!`);
+          }
+        })
+        .catch( response => {
+          _this.consoleError(`服务器${error.response}`);
+        });
+      }
+    },
+
+
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -114,7 +165,7 @@ export default {
             this.$axios.post(API.addTestCategoryArguments,{
               product_id: this.goodsPrivatePropertyValues.commodityBrand,
               category_id: this.goodsPrivatePropertyValues.commodityClassification,
-              parent_id: 53,
+              parent_id: this.parent_id,
               argument: this.goodsPrivatePropertyValues.dynamicTags
             })
             .then( msg => {
@@ -132,7 +183,7 @@ export default {
               }
             })
             .catch( error => {
-              this.consoleError(`${error.data.return_code}`)
+              this.consoleError(`服务器${error.response}`);
             });
           } else {
             this.consoleWarning('请完善商品分类属性属性值!')
@@ -169,7 +220,7 @@ export default {
         }
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`)
+        this.consoleError(`服务器${error.response}`);
       });
     },
 
@@ -219,11 +270,6 @@ export default {
         message: error
       });
     }
-  },
-
-  created: function() {
-    // 初始化获取商品品牌和商品分类
-    this.getCommodityBrandAndCommodityClassification();
-  },
+  }
 }
 </script>

@@ -107,7 +107,7 @@ export default {
             console.log(msg.data);
           })
           .catch( error => {
-            this.consoleError(`${error.data.return_code}`)
+            this.consoleError(`服务器${error.response}`);
           });
         } else {
           this.consoleError('请完善必填信息');
@@ -141,7 +141,7 @@ export default {
         }
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`);
+        this.consoleError(`服务器${error.response}`);;
       });
     },
 

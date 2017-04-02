@@ -468,9 +468,10 @@ export default {
             // statement
             this.consoleError(msg.data.return_code)
           }
-        }, (response) => {
-          this.consoleError(response.return_code)
         })
+        .catch( error => {
+          this.consoleError(`服务器${error.response}`);
+        });
       } else {
         this.consoleError('获取商品详细信息失败!请稍后重试!')
       }
@@ -600,6 +601,9 @@ export default {
       .then( (msg) => {
         console.log(msg.data)
       })
+      .catch( error => {
+        this.consoleError(`服务器${error.response}`);
+      });
     },
 
     // 商品音频
@@ -628,6 +632,9 @@ export default {
       .then( (msg) => {
         console.log(msg.data)
       })
+      .catch( error => {
+        this.consoleError(`服务器${error.response}`);
+      });
     },
 
     // 商品视频
@@ -656,6 +663,9 @@ export default {
       .then( (msg) => {
         console.log(msg.data)
       })
+      .catch( error => {
+        this.consoleError(`服务器${error.response}`);
+      });
     },  
 
     // 获取商品品牌和商品分类
@@ -677,10 +687,10 @@ export default {
         this.getShopStyle();
         // 获取颜色和尺寸
         this.getSizeColor();
-      }, (response) => {
-        console.log('Error')
-        this.consoleError('服务器发生未知错误,请刷新后重试!')
       })
+      .catch( error => {
+        this.consoleError(`服务器${error.response}`);
+      });
     },
 
     // 根据商品品牌和商品分类获取属性
@@ -723,10 +733,10 @@ export default {
           console.log(msg.data.return_code)
         }
         
-      }, (response) => {
-        console.log('Error')
-        this.consoleError('服务器发生未知错误,请刷新后重试!')
       })
+      .catch( error => {
+        this.consoleError(`服务器${error.response}`);
+      });
     },
 
     // 填充商品分类属性
@@ -855,6 +865,9 @@ export default {
           this.consoleWarning(msg.data.return_code);
         }
       })
+      .catch( error => {
+        this.consoleError(`服务器${error.response}`);
+      });
     },
 
     // 服务器获取颜色分类 渲染至页面 [修改]
@@ -1025,6 +1038,9 @@ export default {
       .then( (msg) => {
         console.log(msg.data)
       })
+      .catch( error => {
+        this.consoleError(`服务器${error.response}`);
+      });
     },
 
     // 文件上传失败
@@ -1158,9 +1174,10 @@ export default {
           // statement
           this.consoleError(msg.data.return_code)
         }
-      }, (response) => {
-        this.consoleError(response.return_code)
       })
+      .catch( error => {
+        this.consoleError(`服务器${error.response}`);
+      });
     },
 
     consoleSuccess(success) {

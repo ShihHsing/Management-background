@@ -247,7 +247,7 @@ export default {
         }
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`)
+        this.consoleError(`服务器${error.response}`);
       });
     },
 
@@ -322,7 +322,7 @@ export default {
         }
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`)
+        this.consoleError(`服务器${error.response}`);
       });
       console.log(this.shopDateList)
     },
@@ -376,7 +376,7 @@ export default {
         this.loading = false;
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`)
+        this.consoleError(`服务器${error.response}`);
       });
       console.log(this.shopDateList,'根据用户输入条件搜索数据')
     },
@@ -401,7 +401,7 @@ export default {
         }
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`)
+        this.consoleError(`服务器${error.response}`);
       });
     },
 
@@ -425,7 +425,7 @@ export default {
         }
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`)
+        this.consoleError(`服务器${error.response}`);
       });
     },
 
@@ -451,7 +451,7 @@ export default {
         }
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`)
+        this.consoleError(`服务器${error.response}`);
       });
     },
 
@@ -474,7 +474,7 @@ export default {
         }
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`)
+        this.consoleError(`服务器${error.response}`);
       });
     },
 

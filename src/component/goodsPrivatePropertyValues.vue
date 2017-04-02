@@ -140,7 +140,7 @@ export default {
               }
             })
             .catch( error => {
-              this.consoleError(`${error.data.return_code}`)
+              this.consoleError(`服务器${error.response}`);
             });
           } else {
             this.consoleWarning('请完善商品分类属性属性值!')
@@ -160,7 +160,8 @@ export default {
         this.$axios.post(API.addTestCategoryArguments,{
           product_id: this.goodsPrivatePropertyValues.commodityBrand,
           category_id: this.goodsPrivatePropertyValues.commodityClassification,
-          request_flag: 'parent_list'
+          request_flag: 'parent_list',
+          needless: '1'
         })
         .then( (msg) => {
           console.log(msg.data)
@@ -175,7 +176,7 @@ export default {
           }
         })
         .catch( error => {
-          this.consoleError(`${error.data.return_code}`)
+          this.consoleError(`服务器${error.response}`);
         });
       }
     },
@@ -200,7 +201,7 @@ export default {
         _this.goodsPrivatePropertyValues.commodityClassificationList = category_list;
       })
       .catch( error => {
-        this.consoleError(`${error.data.return_code}`)
+        this.consoleError(`服务器${error.response}`);
       });
     },
 

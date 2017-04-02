@@ -1,7 +1,7 @@
 <template>
   <div id="navMenu">
     <el-menu theme="dark" :default-active="router_url" class="el-menu-demo" mode="vertical" @select="handleSelect" unique-opened router>
-  	  <el-menu-item index="/home">首页</el-menu-item>
+  	  <!-- <el-menu-item index="/home">首页</el-menu-item> -->
   	  <!-- <el-submenu index="门店管理">
   	    <template slot="title">门店管理</template>
       </el-submenu> -->
