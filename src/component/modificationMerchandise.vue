@@ -776,8 +776,23 @@ export default {
             //   }
             // }
 
+            Array.prototype.distinct = function(){
+              var self = this;
+              var _a = this.concat().sort();
+              _a.sort(function(a,b){
+                  if(a == b){
+                      var n = self.indexOf(a);
+                      var x = self.indexOf(b)
+                      self.splice(n,1);
+                      self.splice(x,1);
+                  }
+              });
+              return self;
+            };
+            
             var arr1 = [];
             var arr2 = [];
+            var arr3 = [];
 
             for(var i = 0, length1 = msg.data.category_color_list.length; i < length1; i++){
               arr1.push(msg.data.category_color_list[i].argument_value);
@@ -787,23 +802,11 @@ export default {
               arr2.push(this.goods_detail.image_url[i].color_name);
             }
 
-            var arr3 = '';
-            console.log(arr1,arr2,'传入的两个数组')
-            for (var i = 0; i < arr1.length;) {
-              for (var ii = 0; ii < arr2.length;) {
-                if (arr1[i] == arr2[ii]) {
-                  // statement
-                  arr1.splice(i,1);
-                  arr2.splice(ii,1);
-                  continue;
-                }
-                ii++
-              }
-              i++
-            }
-            arr3 = arr1.concat(arr2);
+            arr3 = (arr1.concat(arr2)).distinct();
+
+            // arr3 = arr1.concat(arr2);
             
-            this.four.cities = arr3;
+            // this.four.cities = arr3;
             console.log(arr3);
             
             this.four.colorList = msg.data.category_color_list;
