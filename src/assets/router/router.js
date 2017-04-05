@@ -98,6 +98,11 @@ const routes = [
         component: resolve => require(['../../component/addCarouselDrawing.vue'], 
           resolve)
       },
+      { 
+        path: '/trainList', //添加轮播图
+        component: resolve => require(['../../component/trainList.vue'], 
+          resolve)
+      },
     ]
   },
   { 
