@@ -496,42 +496,42 @@ export default {
     submitForm(formName) {
       if (formName == 'three') {
         // statement
-        if(!this.media()){
-          this.consoleError('请完善必填信息');
-          return false;
-        } else {
+        // if(!this.media()){
+        //   this.consoleError('请完善必填信息');
+        //   return false;
+        // } else {
           this.active ++ ;
           this.$refs.elCarousel.next();
           this.four.dialogVisible = true;
-        }
+        // }
       } else if (formName == 'four') {
         // statement
-        var count = 0;
-        for (var i = 0; i < this.four.colorAndImg.length; i++) {
-          if(this.four.colorAndImg[i].imgUrl !=''){
-            count ++;
-          }
-        }
-        if (this.four.checkedCities.length >= 0 && this.four.checkedSize.length > 0 && count == this.four.colorAndImg.length) {
+        // var count = 0;
+        // for (var i = 0; i < this.four.colorAndImg.length; i++) {
+        //   if(this.four.colorAndImg[i].imgUrl !=''){
+        //     count ++;
+        //   }
+        // }
+        // if (this.four.checkedCities.length >= 0 && this.four.checkedSize.length > 0 && count == this.four.colorAndImg.length) {
           // statement
           this.active ++ ;
           this.$refs.elCarousel.next();
-        } else {
-          this.consoleError('请完善必填信息');
-          return false;
-        }
+        // } else {
+        //   this.consoleError('请完善必填信息');
+        //   return false;
+        // }
       } else if (formName == 'End') {
         // statement
-        if (this.newDescription != '') {
+        // if (this.newDescription != '') {
           // statement
           ///////////////
           // 最终提交 //
           //////////////
           this.postAddShopData();
-        } else {
-          this.consoleError('请完善必填信息');
-          return false;
-        }
+        // } else {
+        //   this.consoleError('请完善必填信息');
+        //   return false;
+        // }
       } else {
         this.$refs[formName].validate((valid) => {
           console.log(2)
@@ -546,11 +546,11 @@ export default {
               ///////////////
               // statement //
               ///////////////
-              console.log(this.twoReg())
-              if(!this.twoReg()){
-                this.consoleError('请完善必填信息');
-                return false;
-              }
+              // console.log(this.twoReg())
+              // if(!this.twoReg()){
+              //   this.consoleError('请完善必填信息');
+              //   return false;
+              // }
             }
             this.active ++ ;
             this.$refs.elCarousel.next();
