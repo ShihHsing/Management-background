@@ -83,7 +83,6 @@
                     action="http://a001.aybc.so/Shop/addTestGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess1"
-                    :on-remove="handleRemove1"
                     :on-error="uploadError"
                     :multiple="false"
                     :file-list="three.thumb_image_file_list"
@@ -100,7 +99,6 @@
                     action="http://a001.aybc.so/Shop/addTestGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess2"
-                    :on-remove="handleRemove2"
                     :on-error="uploadError"
                     :multiple="false"
                     :file-list="three.audio_file_list"
@@ -116,7 +114,6 @@
                     class="upload-demo"
                     action="http://a001.aybc.so/Shop/addTestGoodsInfo"
                     list-type="picture"
-                    :on-remove="handleRemove3"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
                     :multiple="false"
@@ -168,7 +165,6 @@
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"
-                      :on-remove="colorAndImgRemove"
                       :on-error="uploadError"
                       name="normal_image"
                       :data="{'imgColor': four.checkedCities[index]}"
@@ -592,20 +588,6 @@ export default {
       }
     },
 
-    // 移除商品列表图
-    handleRemove1() {
-      this.three.thumb_image = true;
-      this.$axios.post(this.removeUploadedFile,{
-        file_url: this.three.thumb_image_url
-        })
-      .then( (msg) => {
-        console.log(msg.data)
-      })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
-    },
-
     // 商品音频
     handleSuccess2(response, file, fileList) {
      console.log(response);
@@ -621,20 +603,6 @@ export default {
         this.$refs.audio.clearFiles();
         this.consoleError(response.return_code)
       }
-    },
-
-    // 移除商品音频
-    handleRemove2() {
-      this.three.audio = true;
-      this.$axios.post(this.removeUploadedFile,{
-        file_url: this.three.audio_url
-        })
-      .then( (msg) => {
-        console.log(msg.data)
-      })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
     },
 
     // 商品视频
@@ -653,20 +621,6 @@ export default {
         this.consoleError(response.return_code)
       }
     },
-
-    // 移除商品视频
-    handleRemove3() {
-      this.three.video = true;
-      this.$axios.post(this.removeUploadedFile,{
-        file_url: this.three.video_url
-        })
-      .then( (msg) => {
-        console.log(msg.data)
-      })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
-    },  
 
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification() {
