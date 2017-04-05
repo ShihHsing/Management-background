@@ -85,40 +85,57 @@
               fixed="right"
               label="信息修改"
               width="180">
-              <template scope="scope">
-                <router-link size="small" class="el-button el-button--warning el-button--small" type="warning" :to="{path: 'modificationMerchandise', query: {shopID: scope.row.id}}">编辑</router-link>
+              <template scope="scope" >
+                <template v-if="shop_id == scope.row.shop_id">
+                  <router-link size="small" class="el-button el-button--warning el-button--small" type="warning" :to="{path: 'modificationMerchandise', query: {shopID: scope.row.id}}">编辑</router-link>
 
-                <el-button @click="dialogVisible[scope.$index].model = true" size="small" type="danger">删除</el-button>
+                  <el-button @click="dialogVisible[scope.$index].model = true" size="small" type="danger">删除</el-button>
 
-                <el-dialog title="提示" v-model="dialogVisible[scope.$index].model" size="tiny">
-                  <span>您确定要删除这件商品吗?</span>
-                  <span slot="footer" class="dialog-footer">
-                    <el-button @click="dialogVisible[scope.$index].model = false">取 消</el-button>
-                    <el-button type="primary" @click="deleteTestGoodsInfo(scope.row.id,scope.$index)">确 定</el-button>
-                  </span>
-                </el-dialog>
+                  <el-dialog title="提示" v-model="dialogVisible[scope.$index].model" size="tiny">
+                    <span>您确定要删除这件商品吗?</span>
+                    <span slot="footer" class="dialog-footer">
+                      <el-button @click="dialogVisible[scope.$index].model = false">取 消</el-button>
+                      <el-button type="primary" @click="deleteTestGoodsInfo(scope.row.id,scope.$index)">确 定</el-button>
+                    </span>
+                  </el-dialog>
+                </template>
+
+                <template v-else>
+                  <el-row type="flex" justify="center">
+                    <span>此商品为公共商品,您没有操作的权利</span>
+                  </el-row>
+                </template>
 
               </template>
+
+
             </el-table-column>
             <el-table-column
               fixed="right"
               label="商品设置"
               width="180">
               <template scope="scope">
-                <template v-for="(item,index) in scope.row.switch_list">
-                  <el-form>
-                    <el-form-item :label="item.switch_name">
-                      <!-- <span>{{ index }}</span> -->
-                      <el-switch v-model="goodsSetSwitchModel[scope.$index][index].model" @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
-                      </el-switch>
-                    </el-form-item>
-                  </el-form>
+                <template v-if="shop_id != 1">
+                  <template v-for="(item,index) in scope.row.switch_list">
+                    <el-form>
+                      <el-form-item :label="item.switch_name">
+                        <!-- <span>{{ index }}</span> -->
+                        <el-switch v-model="goodsSetSwitchModel[scope.$index][index].model" @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
+                        </el-switch>
+                      </el-form-item>
+                    </el-form>
+                  </template>
+                  <!-- 这是一个Debug的办法 为了配合商品属性开关动态效果的失效 -->
+                  <el-switch
+                    v-model="value1"
+                    style="display:none;">
+                  </el-switch>
                 </template>
-                <!-- 这是一个Debug的办法 为了配合商品属性开关动态效果的失效 -->
-                <el-switch
-                  v-model="value1"
-                  style="display:none;">
-                </el-switch>
+                <template v-else>
+                  <el-row type="flex" justify="center">
+                    <span>此商品为公共商品</span>
+                  </el-row>
+                </template>
               </template>
             </el-table-column>
 
@@ -213,8 +230,12 @@ export default {
           { validator: checkmodel, trigger: 'change' }
         ]
       },
+
       // 服务端数据
       shopDateList: [],
+
+      //shop_id 控制显示内容 1号为公有门店 其与为私有门店
+      shop_id: this.$store.state.user.userData.emp.shop_id,
     }
   },
 
@@ -223,6 +244,7 @@ export default {
     this.getCommodityBrandAndCommodityClassification();
     // 获取初始化数据
     this.getInitData();
+    console.log(this.$store.state.user.userData.emp.shop_id);
   },
 
   methods: {
