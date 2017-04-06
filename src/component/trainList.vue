@@ -17,7 +17,8 @@
               prop="id"
               label="序号"
               align="center"
-              width="100">
+              width="100"
+              sortable>
             </el-table-column>
             <el-table-column
               prop="classify_name"
@@ -29,10 +30,19 @@
               align="center"
               width="100">
               <template scope="scope">
+
                 <el-row type="flex" justify="space-around">
-                  <el-button type="text" icon="edit"></el-button>
-                  <el-button type="text" icon="delete"></el-button>
+                  <el-button 
+                    type="text" 
+                    icon="edit" 
+                    @click="modificationTrain(scope.row)"></el-button>
+                  <el-button 
+                    type="text" 
+                    icon="delete" 
+                    @click="deleteTrain(scope.row.id)"></el-button>
                 </el-row>
+
+
               </template>
             </el-table-column>
           </el-table>
@@ -78,21 +88,16 @@
         // 获取列表数据 ---> 服务端
         training_classify_list: [],
         // 修改 删除 控件数据模型
-        modification_delete_moduleData: {}
+        modification_delete_moduleData: {},
+        // 记录获取列表值
+        // 大于十条不允许再添加
+        // list_length: 0,
       }
     },
 
-    watch: {
-
-      // 根据后台返回数据 动态生成数据模型
-      training_classify_list: function(val) {
-        console.log(val);
-        for (var i = val.length - 1; i >= 0; i--) {
-          this.modification_delete_moduleData[val[i].id] = {
-            modification: false,
-            delete: false
-          }
-        }
+    computed: {
+      list_length: function () {
+        return this.training_classify_list.length;
       }
     },
 
@@ -102,6 +107,74 @@
     },
 
     methods: {
+
+      // 修改
+      modificationTrain (list) {
+        this.$prompt('请输入分类名称', '编辑分类', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputValue: list.classify_name,
+          inputPattern: /^[\u4E00-\u9FA5A-Za-z0-9]{0,15}$/,
+          inputErrorMessage: '分类名称不包含特殊字符,并名称长度在15字以内!'
+        }).then( ({value}) => {
+          this.$axios.post(API.modifyTrainingClassify,{
+            classify: value,
+            classify_id: list.id
+          })
+          .then( msg => {
+            console.log(msg.data);
+            const data = msg.data;
+
+            switch (data.flag) {
+              case 1000:
+                this.getTrainingClassifyList();
+                this.consoleSuccess(`修改培训分类成功!`);
+                break;
+              default:
+                this.consoleError(`修改分类失败,请重试!`);
+                break;
+            }
+          })
+          .catch( error => {
+            this.consoleError(`服务器${error.response}`);
+          });
+        }).catch( () => {
+          
+        });
+      },
+
+      // 删除
+      deleteTrain (id) {
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.post(API.removeTrainingClassify,{
+            classify_id: id
+          })
+          .then( msg => {
+            console.log(msg.data);
+            const data = msg.data;
+
+            switch (data.flag) {
+              case 1000:
+                this.getTrainingClassifyList();
+                this.consoleSuccess(`删除培训分类成功!`);
+                break;
+              default:
+                this.consoleError(`删除分类失败,请重试!`);
+                break;
+            }
+          })
+          .catch( error => {
+            this.consoleError(`服务器${error.response}`);
+          });
+        }).catch(() => {
+          
+        });
+      },
+
       // 获取分类列表
       getTrainingClassifyList () {
         this.$axios.post(API.getTrainingClassifyList)
@@ -113,8 +186,12 @@
             case 1000:
               this.training_classify_list = data.training_classify_list;
               break;
+            case 9001:
+              this.addTrain = true;
+              this.consoleSuccess(`暂无培训分类!请添加!`);
+              break;
             default:
-              this.consoleError(`新增分类失败,请重试!`);
+              this.consoleError(`获取分类失败,请重试!`);
               break;
           }
         })
@@ -125,9 +202,9 @@
 
       // 添加培训分类
       addTrainList () {
-        const reg = /^[\u4E00-\u9FA5A-Za-z0-9]+$/;
-        if (this.classify) {
-          if (this.classify.length < 15) {
+        const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{0,15}$/;
+        if (this.list_length < 10) {
+          if (this.classify) {
             if (reg.test(this.classify)) {
               this.$axios.post(API.addTrainingClassify,{
                 classify: this.classify
@@ -140,6 +217,7 @@
                   case 1000:
                     this.addTrain = false;
                     this.classify = '';
+                    this.getTrainingClassifyList();
                     this.consoleSuccess(`新增分类成功`);
                     break;
                   case 9005:
@@ -154,13 +232,13 @@
                 this.consoleError(`服务器${error.response}`);
               });
             } else {
-              this.consoleWarning(`分类名称不包含特殊字符!`);
+              this.consoleWarning(`分类名称不包含特殊字符,并名称长度在15字以内!`);
             }
           } else {
-            this.consoleWarning(`名称长度在15字以内!`);
+            this.consoleWarning(`数据不能为空`);
           }
         } else {
-          this.consoleWarning(`数据不能为空`);
+          this.consoleWarning(`最多添加十条培训分类!`);
         }
       },
 

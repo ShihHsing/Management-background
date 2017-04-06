@@ -29,6 +29,7 @@
         <el-submenu index="培训功能">
           <template slot="title">培训功能</template>
           <el-menu-item index="/trainList">培训分类列表</el-menu-item>
+          <el-menu-item index="/addTrain">新增培训</el-menu-item>
         </el-submenu>
       </el-submenu>
   	</el-menu>

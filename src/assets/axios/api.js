@@ -49,4 +49,10 @@ export const addTrainingClassify = 'Shop/addTrainingClassify';
 // 获取培训分类列表
 export const getTrainingClassifyList = 'Shop/getTrainingClassifyList';
 
+// 删除培训分类接口
+export const removeTrainingClassify = 'Shop/removeTrainingClassify';
+
+// 修改培训分类接口
+export const modifyTrainingClassify = 'Shop/modifyTrainingClassify';
+
 // import * as API from '../assets/axios/api.js';
