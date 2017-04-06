@@ -370,9 +370,6 @@ export default {
         ],
         price: [
           { required: true, message: '请输入商品价格', trigger: 'change' }
-        ],
-        shop_show: [
-          { required: true, message: '请输入易企秀链接', trigger: 'change' }
         ]
       },
       elCarousel: ''
