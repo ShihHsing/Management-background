@@ -452,9 +452,9 @@ export default {
         //   return false;
         // }
       } else {
-        this.$refs[formName].validate((valid) => {
-          console.log(2)
-          if (valid) {
+        // this.$refs[formName].validate((valid) => {
+        //   console.log(2)
+        //   if (valid) {
             if (formName == 'one') {
 
               // statement
@@ -476,10 +476,10 @@ export default {
                 this.$refs.elCarousel.next();
               // }
             }
-          } else {
-            this.consoleError('请完善必填信息');
-          }
-        });
+        //   } else {
+        //     this.consoleError('请完善必填信息');
+        //   }
+        // });
       }
     },
 
