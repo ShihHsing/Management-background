@@ -26,6 +26,10 @@
   	    <el-menu-item index="/privateBrandStores">添加自有品牌</el-menu-item>
         <el-menu-item index="/addRobotInstructions">机器人使用说明</el-menu-item>
         <el-menu-item index="/tvmFansList">TVM活动吸粉列表</el-menu-item>
+        <el-submenu index="培训功能">
+          <template slot="title">培训功能</template>
+          <el-menu-item index="/trainList">培训分类列表</el-menu-item>
+        </el-submenu>
       </el-submenu>
   	</el-menu>
   </div>

@@ -43,6 +43,10 @@ export const addTestGoodsInfo = 'Shop/addTestGoodsInfo';
 // 获取商品属性分类 (颜色、尺寸)
 export const addTestCategoryArguments = 'Shop/addTestCategoryArguments';
 
+// 添加培训分类
+export const addTrainingClassify = 'Shop/addTrainingClassify';
 
+// 获取培训分类列表
+export const getTrainingClassifyList = 'Shop/getTrainingClassifyList';
 
 // import * as API from '../assets/axios/api.js';
