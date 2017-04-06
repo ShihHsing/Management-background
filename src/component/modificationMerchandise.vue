@@ -371,9 +371,9 @@ export default {
         price: [
           { required: true, message: '请输入商品价格', trigger: 'change' }
         ],
-        shop_show: [
-          { required: true, message: '请输入易企秀链接', trigger: 'change' }
-        ]
+        // shop_show: [
+        //   { required: true, message: '请输入易企秀链接', trigger: 'change' }
+        // ]
       },
       elCarousel: ''
     }
@@ -533,9 +533,9 @@ export default {
         //   return false;
         // }
       } else {
-        this.$refs[formName].validate((valid) => {
-          console.log(2)
-          if (valid) {
+        // this.$refs[formName].validate((valid) => {
+        //   console.log(2)
+        //   if (valid) {
             if (formName == 'one') {
               // statement
               // 根据商品品牌和商品分类获取属性
@@ -554,11 +554,12 @@ export default {
             }
             this.active ++ ;
             this.$refs.elCarousel.next();
-          } else {
-            this.consoleError('请完善必填信息');
-          }
-        });
-      }
+          } 
+        //   else {
+        //     this.consoleError('请完善必填信息');
+        //   }
+        // });
+      // }
     },
 
     resetForm(formName) {

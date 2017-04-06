@@ -279,7 +279,7 @@ export default {
         price: '',
 
         // 易企秀
-        shop_show: 'http://',
+        shop_show: '',
 
         // 判断是否有商品属性
         // true则渲染页面 false反之
