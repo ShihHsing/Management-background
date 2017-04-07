@@ -108,6 +108,11 @@ const routes = [
         component: resolve => require(['../../component/addTraining.vue'], 
           resolve)
       },
+      { 
+        path: '/trainingList', //培训列表
+        component: resolve => require(['../../component/trainingList.vue'], 
+          resolve)
+      },
     ]
   },
   { 

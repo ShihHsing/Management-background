@@ -1,7 +1,7 @@
 <template>
   <div id="trainingClassifyList">
     <el-row type="flex" class="steps" justify="center">
-      <el-col :span="18">
+      <el-col :span="16">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <h2 style="float: left">培训分类列表</h2>
@@ -149,7 +149,8 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        })
+        .then(() => {
           this.$axios.post(API.removeTrainingClassify,{
             classify_id: id
           })
@@ -170,9 +171,7 @@
           .catch( error => {
             this.consoleError(`服务器${error.response}`);
           });
-        }).catch(() => {
-          
-        });
+        })
       },
 
       // 获取分类列表

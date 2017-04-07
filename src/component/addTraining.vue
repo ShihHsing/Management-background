@@ -135,6 +135,9 @@
               break;
             case 9001:
               this.consoleSuccess(`暂无培训分类!请先添加!`);
+              setTimeout( () => {
+                this.$router.push({ path: 'trainingClassifyList' });
+              },2000);
               break;
             default:
               this.consoleError(`获取分类失败,请重试!`);
@@ -241,8 +244,8 @@
           case 1000:
             this.consoleSuccess(`培训内容添加成功!`);
             setTimeout( () => {
-              this.$router.push({ path: 'listOfGoods' });
-            });
+              this.$router.push({ path: 'trainingList' });
+            },2000);
             break;
           default:
             this.consoleError(`服务器状态:${res.return_code}`);

@@ -164,7 +164,7 @@
           :current-page="current_page"
           :page-size="20"
           layout="prev, pager, next, jumper"
-          :total="20*total_pages"
+          :total="10*total_pages"
           style="float: right;padding: 0;">
         </el-pagination>
       </el-col>
