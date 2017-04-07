@@ -1,5 +1,5 @@
 <template>
-  <div id="trainList">
+  <div id="trainingClassifyList">
     <el-row type="flex" class="steps" justify="center">
       <el-col :span="18">
         <el-card class="box-card">
@@ -79,7 +79,7 @@
 <script>
   import * as API from '../assets/axios/api.js';
   export default{
-    name: 'trainList',
+    name: 'trainingClassifyList',
     data () {
       return {
         // 添加分类名称

@@ -1,7 +1,7 @@
 <template>
   <div id="logoTop">
     <el-col :span="12" class="logoTitle">
-      <router-link to="/home"><h1>哎哟不错店家管理系统</h1></router-link>
+      <router-link to="/home"><h1>哎哟不错店家管理系统(dev版)</h1></router-link>
     </el-col>
     <el-col :span="3" :offset="7" class="storeSelect">
       <el-select v-model="value" placeholder="请选择">

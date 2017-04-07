@@ -55,4 +55,7 @@ export const removeTrainingClassify = 'Shop/removeTrainingClassify';
 // 修改培训分类接口
 export const modifyTrainingClassify = 'Shop/modifyTrainingClassify';
 
+// 添加培训信息
+export const addTrainingInfo = 'Shop/addTrainingInfo';
+
 // import * as API from '../assets/axios/api.js';
