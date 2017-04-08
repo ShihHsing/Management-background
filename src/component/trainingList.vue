@@ -252,6 +252,9 @@
 
         // 修改数据
         modify_form: {
+          // 修改信息id
+          training_id: '',
+
           // 培训标题:
           training_title: '',
 
@@ -291,11 +294,27 @@
             switch (this.modify_form.training_type) {
               case '1':
                 // statements_1
-                
+                let Data = {
+                  training_id: this.modify_form.training_id,
+                  training_classify: this.modify_form.training_classify,
+                  training_type: this.modify_form.training_type,
+                  thumb_image_url: this.modify_form.thumb_image_url,
+                  training_value: this.modify_form.newDescription || this.modify_form.content,
+                  request_flag: 'modify'
+                }
+                this.modifyTrainingInfoAxios(Data);
                 break;
               case '2':
                 // statements_1
-                
+                Data = {
+                  training_id: this.modify_form.training_id,
+                  training_classify: this.modify_form.training_classify,
+                  training_type: this.modify_form.training_type,
+                  thumb_image_url: this.modify_form.thumb_image_url,
+                  training_value: this.modify_form.video_url,
+                  request_flag: 'modify'
+                }
+                this.modifyTrainingInfoAxios(Data);
                 break;
               default:
                 // statements_def
@@ -309,12 +328,34 @@
         }
       },
 
+      modifyTrainingInfoAxios (Data) {
+        this.$axios.post(API.modifyTrainingInfo,Data)
+        .then( msg => {
+          console.log(msg);
+          const data = msg.data;
+          switch (data.flag) {
+            case 1000:
+              this.searchTraining();
+              this.consoleSuccess(`培训信息修改成功`);
+              this.dialogFormVisible = false;
+              break;
+            default:
+              this.consoleError(`设置失败,请重试!`);
+              break;
+          }
+        })
+        .catch( error => {
+          this.consoleError(`服务器${error.response}`);
+          });
+      },
+
       // 富文本数据更新 第一次进入初始化 为上传准确性
       // 如果用户操则会更新数据 最终上传以 newDescription 数据为准
       updateData (data) {
         this.modify_form.newDescription = data;
         console.log(data)
       },
+      
       // 图片上传成功后
       handleAvatarSuccess(res, file) {
         switch (res.flag) {
@@ -355,6 +396,8 @@
             case 1000:
 
               this.modify_form = {
+                // 修改信息id
+                training_id: data.training_detail.id,
                 // 培训标题:
                 training_title: data.training_detail.title,
 
@@ -378,11 +421,6 @@
                   this.modify_form.video_url = '';
                   break;
               }
-                // // 图文详情
-                // newDescription: '',
-
-                // // 视频地址
-                // video_url: ''
 
               this.dialogFormVisible = true;
               break;
