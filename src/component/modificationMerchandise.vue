@@ -495,7 +495,6 @@ export default {
     // 下一步&提交数据
     submitForm(formName) {
       if (formName == 'three') {
-        // statement
         // if(!this.media()){
         //   this.consoleError('请完善必填信息');
         //   return false;
@@ -505,7 +504,6 @@ export default {
           this.four.dialogVisible = true;
         // }
       } else if (formName == 'four') {
-        // statement
         // var count = 0;
         // for (var i = 0; i < this.four.colorAndImg.length; i++) {
         //   if(this.four.colorAndImg[i].imgUrl !=''){

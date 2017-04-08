@@ -99,8 +99,18 @@ const routes = [
           resolve)
       },
       { 
-        path: '/trainList', //添加轮播图
-        component: resolve => require(['../../component/trainList.vue'], 
+        path: '/trainingClassifyList', //添加培训分类&&培训分类列表
+        component: resolve => require(['../../component/trainingClassifyList.vue'], 
+          resolve)
+      },
+      { 
+        path: '/addTraining', //添加培训详情
+        component: resolve => require(['../../component/addTraining.vue'], 
+          resolve)
+      },
+      { 
+        path: '/trainingList', //培训列表
+        component: resolve => require(['../../component/trainingList.vue'], 
           resolve)
       },
     ]

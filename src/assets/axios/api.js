@@ -49,4 +49,25 @@ export const addTrainingClassify = 'Shop/addTrainingClassify';
 // 获取培训分类列表
 export const getTrainingClassifyList = 'Shop/getTrainingClassifyList';
 
+// 删除培训分类接口
+export const removeTrainingClassify = 'Shop/removeTrainingClassify';
+
+// 修改培训分类接口
+export const modifyTrainingClassify = 'Shop/modifyTrainingClassify';
+
+// 添加培训信息
+export const addTrainingInfo = 'Shop/addTrainingInfo';
+
+// 修改培训信息
+export const modifyTrainingInfo = 'Shop/modifyTrainingInfo';
+
+// 删除培训信息
+export const removeTraining = 'Shop/removeTraining';
+
+// 培训列表
+export const listTrainingInfo = 'Shop/listTrainingInfo';
+
+// 培训置顶设置
+export const handleTrainingRecommend = 'Shop/handleTrainingRecommend';
+
 // import * as API from '../assets/axios/api.js';
