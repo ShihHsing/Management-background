@@ -65,7 +65,8 @@
               align="center"
               width="180">
               <template scope="scope">
-                <img  
+                <img
+                  class="imgList"
                   v-show="scope.row.thumb_image"
                   :src="scope.row.thumb_image" 
                   :alt="scope.row.classify_name">
@@ -123,7 +124,7 @@
                   <el-button 
                     type="text" 
                     icon="delete" 
-                    @click="removeTraining(scope.row.id)">
+                    @click="removeTraining(scope.row.id, scope.$index, training_list)">
                   </el-button>
                 </el-row>
 
@@ -287,6 +288,39 @@
 
     methods: {
 
+      // 删除
+      removeTraining (id, index, list) {
+        const Data = {
+          training_id: id >> 0
+        };
+        this.$confirm('是否确认删除该培训课程?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        .then( () => {
+          console.log(Data)                  
+          this.$axios.post(API.removeTraining,Data)
+          .then( msg => {
+            console.log(msg);
+            const data = msg.data;
+            switch (data.flag) {
+              case 1000:
+                this.consoleSuccess(`培训信息删除成功`);
+                list.splice(index, 1);
+                this.searchTraining();
+                break;
+              default:
+                this.consoleError(`培训信息删除失败,请重试!`);
+                break;
+            }
+          })
+          .catch( error => {
+            this.consoleError(`服务器${error.response}`);
+          });
+        })
+      },
+
       // 提交修改数据
       modifyTrainingInfo () {
         if (this.modify_form.training_classify) {
@@ -346,7 +380,7 @@
         })
         .catch( error => {
           this.consoleError(`服务器${error.response}`);
-          });
+        });
       },
 
       // 富文本数据更新 第一次进入初始化 为上传准确性
@@ -355,7 +389,7 @@
         this.modify_form.newDescription = data;
         console.log(data)
       },
-      
+
       // 图片上传成功后
       handleAvatarSuccess(res, file) {
         switch (res.flag) {
@@ -621,5 +655,8 @@
     width: 178px;
     height: 133.5px;
     display: block;
+  }
+  .imgList{
+    width: 100% !important;
   }
 </style>
