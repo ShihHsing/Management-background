@@ -162,9 +162,9 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="current_page"
-          :page-size="20"
+          :page-size="page-size"
           layout="prev, pager, next, jumper"
-          :total="10*total_pages"
+          :total="page-size*total_pages"
           style="float: right;padding: 0;">
         </el-pagination>
       </el-col>
@@ -206,6 +206,8 @@ export default {
       current_page: 0,
       // 总页数
       total_pages: 0,
+      // 每页条数
+      page_size: 0,
       searchShopList:{
         // 商品品牌
         commodityBrand: '',
@@ -379,6 +381,7 @@ export default {
           // 设置当前页和总页数
           this.total_pages = (msg.data.total_pages) >> 0;
           this.current_page = (msg.data.current_page) >> 0;
+          this.page_size = (msg.data.page_size) >> 0;
           console.log(this.total_pages,this.current_page);
           // 商品设置开关
           this.goodsSetSwitchModel = [];
