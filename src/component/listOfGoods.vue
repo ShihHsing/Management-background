@@ -162,9 +162,9 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="current_page"
-          :page-size="page-size"
+          :page-size="page_size"
           layout="prev, pager, next, jumper"
-          :total="page-size*total_pages"
+          :total="page_size*total_pages"
           style="float: right;padding: 0;">
         </el-pagination>
       </el-col>
