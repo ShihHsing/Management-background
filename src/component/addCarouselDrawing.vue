@@ -46,7 +46,7 @@
               <el-form-item label="轮播图类型:">
                 <el-radio-group v-model="carousel_drawing_type">
                   <template v-for="item in carousel_drawing_type_list">
-                    <el-radio-button :label="item.id">
+                    <el-radio-button :label="item.id" v-if="!(item.id == 2 && location == 3)">
                       {{ item.name }}
                     </el-radio-button>
                   </template>
