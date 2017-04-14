@@ -95,7 +95,7 @@
                     <span>您确定要删除这件商品吗?</span>
                     <span slot="footer" class="dialog-footer">
                       <el-button @click="dialogVisible[scope.$index].model = false">取 消</el-button>
-                      <el-button type="primary" @click="deleteTestGoodsInfo(scope.row.id,scope.$index)">确 定</el-button>
+                      <el-button type="primary" @click="deleteNewerGoodsInfo(scope.row.id,scope.$index)">确 定</el-button>
                     </span>
                   </el-dialog>
                 </template>
@@ -253,7 +253,7 @@ export default {
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification() {
       var _this = this;
-      this.$axios.post(API.addTestGoodsInfo,{
+      this.$axios.post(API.addNewerGoodsInfo,{
         request_flag: 'product_list'
       })
       .then( (msg) => {
@@ -303,7 +303,7 @@ export default {
 
     searchShopData(val) {
       var _this = this;
-      this.$axios.post(API.listTestGoodsInfo,{
+      this.$axios.post(API.listNewerGoodsInfo,{
         product_id: this.searchShopList.commodityBrand,
         category_id: this.searchShopList.commodityClassification,
         model: this.searchShopList.model,
@@ -360,7 +360,7 @@ export default {
     // 服务器获取数据
     getShopData() {
       // var _this = this;
-      this.$axios.post(API.listTestGoodsInfo,{
+      this.$axios.post(API.listNewerGoodsInfo,{
         current_page: ''
       })
       .then( (msg) => {
@@ -459,9 +459,9 @@ export default {
     },
 
     // 删除
-    deleteTestGoodsInfo(id,index) {
+    deleteNewerGoodsInfo(id,index) {
       console.log(index)
-      this.$axios.post(API.deleteTestGoodsInfoUrl,{
+      this.$axios.post(API.deleteNewerGoodsInfoUrl,{
         goods_id: id
       })
       .then( (msg) => {

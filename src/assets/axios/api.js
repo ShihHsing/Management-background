@@ -20,10 +20,10 @@ export const addGoodsSwitchNameUrl = 'Shop/addGoodsSwitchName';
 export const listSwitchName = 'Shop/listSwitchName';
 
 // 设置自有品牌
-export const addTestOwnProduct = 'Shop/addTestOwnProduct';
+export const addNewerOwnProduct = 'Shop/addNewerOwnProduct';
 
 // 获取初始化数据接口
-export const listTestGoodsInfo = 'Shop/listTestGoodsInfo';
+export const listNewerGoodsInfo = 'Shop/listNewerGoodsInfo';
 
 // 置顶接口
 export const popularHandleUrl = 'Shop/popularHandle';
@@ -35,13 +35,13 @@ export const specialPowerHandleUrl = 'Shop/specialPowerHandle';
 export const switchHandleUrl = 'Shop/switchHandle';
 
 // 删除接口
-export const deleteTestGoodsInfoUrl = 'Shop/deleteTestGoodsInfo'; 
+export const deleteNewerGoodsInfoUrl = 'Shop/deleteNewerGoodsInfo'; 
 
 // 获取商品品牌和分类 (颜色、尺寸)
-export const addTestGoodsInfo = 'Shop/addTestGoodsInfo';
+export const addNewerGoodsInfo = 'Shop/addNewerGoodsInfo';
 
 // 获取商品属性分类 (颜色、尺寸)
-export const addTestCategoryArguments = 'Shop/addTestCategoryArguments';
+export const addNewerCategoryArguments = 'Shop/addNewerCategoryArguments';
 
 // 添加培训分类
 export const addTrainingClassify = 'Shop/addTrainingClassify';

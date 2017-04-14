@@ -204,7 +204,7 @@
         const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{0,15}$/;
         if (this.list_length < 10) {
           if (this.classify) {
-            if (reg.test(this.classify)) {
+            if (reg.Newer(this.classify)) {
               this.$axios.post(API.addTrainingClassify,{
                 classify: this.classify
               })

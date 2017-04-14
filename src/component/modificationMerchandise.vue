@@ -80,7 +80,7 @@
                 <el-form-item label="商品列表图"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addTestGoodsInfo"
+                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess1"
                     :on-error="uploadError"
@@ -96,7 +96,7 @@
                 <el-form-item label="商品音频"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addTestGoodsInfo"
+                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess2"
                     :on-error="uploadError"
@@ -112,7 +112,7 @@
                 <el-form-item label="商品视频"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addTestGoodsInfo"
+                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
@@ -161,7 +161,7 @@
                   <!-- action冒号问题 -->
                    <el-upload
                       class="upload-demo"
-                      action="http://a001.aybc.so/Shop/addTestGoodsInfo"
+                      action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"
@@ -247,17 +247,17 @@ export default {
     return {
       active: 0,
       // 唯一接口
-      onlyUrl: 'Shop/addTestGoodsInfo',
+      onlyUrl: 'Shop/addNewerGoodsInfo',
       // 删除接口
       removeUploadedFile: 'Shop/removeUploadedFile',
       // 获取颜色、尺寸接口
-      getColorClassificationUrl: 'Shop/addTestGoodsInfo',
+      getColorClassificationUrl: 'Shop/addNewerGoodsInfo',
       //////
       //  //
       //////
       // 初始化获取商品ID
       shopID: '',
-      modifyTestGoodsInfoUrl: 'Shop/modifyTestGoodsInfo',
+      modifyNewerGoodsInfoUrl: 'Shop/modifyNewerGoodsInfo',
       // 服务器获取商品详情
       goods_detail: [],
       //////
@@ -398,7 +398,7 @@ export default {
     getGoodsDetail() {
       if (this.shopID != '') {
         // statement
-        this.$axios.post(this.modifyTestGoodsInfoUrl,{
+        this.$axios.post(this.modifyNewerGoodsInfoUrl,{
           goods_id: this.$route.query.shopID,
           request_flag: 'goods_detail'
         })
@@ -1113,7 +1113,7 @@ export default {
     // 提交数据
     postAddShopData() {
       // this.buildAddShopData()
-      this.$axios.post(this.modifyTestGoodsInfoUrl,{
+      this.$axios.post(this.modifyNewerGoodsInfoUrl,{
         arguments: this.buildAddShopData(),
         request_flag: 'modify',
         goods_id: this.goods_detail.id

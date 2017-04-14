@@ -119,7 +119,7 @@ export default {
           // success
           if (this.goodsPrivatePropertyValues.dynamicTags.length > 0) {
             // statement
-            this.$axios.post(API.addTestCategoryArguments,{
+            this.$axios.post(API.addNewerCategoryArguments,{
               product_id: this.goodsPrivatePropertyValues.commodityBrand,
               category_id: this.goodsPrivatePropertyValues.commodityClassification,
               parent_id: this.goodsPrivatePropertyValues.commodityClassificationProperties,
@@ -157,7 +157,7 @@ export default {
       var _this = this;
       if ( this.goodsPrivatePropertyValues.commodityBrand != '' && this.goodsPrivatePropertyValues.commodityClassification != '' ) {
         // statement
-        this.$axios.post(API.addTestCategoryArguments,{
+        this.$axios.post(API.addNewerCategoryArguments,{
           product_id: this.goodsPrivatePropertyValues.commodityBrand,
           category_id: this.goodsPrivatePropertyValues.commodityClassification,
           request_flag: 'parent_list',
@@ -188,7 +188,7 @@ export default {
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification() {
       var _this = this;
-      this.$axios.post(API.addTestGoodsInfo,{
+      this.$axios.post(API.addNewerGoodsInfo,{
         request_flag: 'product_list'
       })
       .then( (msg) => {

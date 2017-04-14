@@ -85,7 +85,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // success
-          this.$axios.post(API.addTestCategoryArguments,{
+          this.$axios.post(API.addNewerCategoryArguments,{
             product_id: this.goodsPrivateProperty.commodityBrand,
             category_id: this.goodsPrivateProperty.commodityClassification,
             // 0代表商品分类属性
@@ -123,7 +123,7 @@ export default {
 	  // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification() {
       var _this = this;
-      this.$axios.post(API.addTestGoodsInfo,{
+      this.$axios.post(API.addNewerGoodsInfo,{
         request_flag: 'product_list'
       })
       .then( msg => {

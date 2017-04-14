@@ -28,7 +28,7 @@
               header-align="center"
               width="180">
               <template scope="scope">
-                <el-button type="primary" @click="addTestOwnProduct(scope.row.id)">添加</el-button>
+                <el-button type="primary" @click="addNewerOwnProduct(scope.row.id)">添加</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -68,7 +68,7 @@ export default {
     
     // 获取商品列表
     getOwnProductList () {
-      this.$axios.post(API.addTestOwnProduct)
+      this.$axios.post(API.addNewerOwnProduct)
       .then( msg => {
         console.log(msg)
         let data = msg.data;
@@ -83,9 +83,9 @@ export default {
       });
     },
 
-    addTestOwnProduct (id) {
+    addNewerOwnProduct (id) {
       if (id) {
-        this.$axios.post(API.addTestOwnProduct,{
+        this.$axios.post(API.addNewerOwnProduct,{
           product_id: id
         })
         .then( msg => {
