@@ -38,7 +38,7 @@
 
     <!-- 提示用户页面操作须知 -->
     <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
-      <span>待定!</span>
+      <span>1.添加自有品牌,做为公共商品</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
@@ -70,7 +70,7 @@ export default {
       .then(msg => {
         console.log(msg)
         var data = msg.data
-        if (data.flag === '1000') {
+        if (data.flag === 1000) {
           this.ownProductList = data.product_list
         } else {
           this.consoleError(`${msg.data.return_code}`)
@@ -89,11 +89,12 @@ export default {
         .then(msg => {
           console.log(msg)
           var data = msg.data
-          if (data.flag === '1000') {
+          if (data.flag === 1000) {
             this.consoleSuccess(`${msg.data.return_code}`)
             this.getOwnProductList()
           } else {
             this.consoleError(`${msg.data.return_code}`)
+            this.getOwnProductList()
           }
         })
         .catch(error => {

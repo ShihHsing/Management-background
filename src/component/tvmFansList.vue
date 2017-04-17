@@ -50,9 +50,9 @@ export default {
       // 服务器端获取数据
       listTVMFans: [],
       // 当前页
-      current_page: 0,
+      current_page: 1,
       // 总页数
-      total_pages: 0
+      total_pages: 1
     }
   },
 
@@ -68,7 +68,7 @@ export default {
       })
       .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag === 1000) {
           // statement
           this.listTVMFans = msg.data.fans_list
           this.total_pages = msg.data.total_pages

@@ -107,7 +107,7 @@
                 <el-form-item label="商品列表图"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess1"
                     :on-remove="handleRemove1"
@@ -124,7 +124,7 @@
                   <el-upload
                     list-type="picture"
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
                     :on-success="handleSuccess2"
                     :on-remove="handleRemove2"
                     :on-error="uploadError"
@@ -140,7 +140,7 @@
                   <el-upload
                     list-type="picture"
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
                     :on-remove="handleRemove3"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
@@ -188,7 +188,7 @@
                   <!-- action冒号问题 -->
                     <el-upload
                       class="upload-demo"
-                      action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                      action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"
@@ -489,7 +489,7 @@ export default {
     // 商品列表图
     handleSuccess1 (response, file, fileList) {
       console.log(response)
-      if (response.flag === '1000') {
+      if (response.flag >> 0 === 1000) {
         // false数据不存在 true数据上传成功
         this.three.thumb_image = false
         this.three.thumb_imageList = response
@@ -516,7 +516,7 @@ export default {
     // 商品音频
     handleSuccess2 (response, file, fileList) {
       console.log(response)
-      if (response.flag === '1000') {
+      if (response.flag >> 0 === 1000) {
         // statement
         // false数据不存在 true数据上传成功
         this.three.audio = false
@@ -544,7 +544,7 @@ export default {
     // 商品视频
     handleSuccess3 (response, file, fileList) {
       console.log(response)
-      if (response.flag === '1000') {
+      if (response.flag >> 0 === 1000) {
         // statement
         // false数据不存在 true数据上传成功
         this.three.video = false
@@ -577,7 +577,7 @@ export default {
       })
       .then(msg => {
         console.log(msg.data, '获取商品品牌和商品分类')
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           // 商品品牌列表
           var product_list = msg.data.product_list
@@ -604,7 +604,7 @@ export default {
         'category_id': this.one.commodityClassification
       })
       .then((msg) => {
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           this.active ++
           this.$refs.elCarousel.next()
           // statement
@@ -691,18 +691,18 @@ export default {
         'request_flag': request_flag
       })
       .then((msg) => {
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           if (request_flag === 'color_list') {
             // statement
             console.log(msg.data, '颜色分类')
-            for (var i = 0; i < msg.data.category_color_list.length; i++) {
+            for (let i = 0; i < msg.data.category_color_list.length; i++) {
               this.four.cities.push(msg.data.category_color_list[i].argument_value)
             }
             this.four.colorList = msg.data.category_color_list
           } else if (request_flag === 'size_list') {
             console.log(msg.data, '尺码分类')
-            for (var i = 0; i < msg.data.category_size_list.length; i++) {
+            for (let i = 0; i < msg.data.category_size_list.length; i++) {
               this.four.size_list.push(msg.data.category_size_list[i].argument_value)
             }
             this.four.sizeList = msg.data.category_size_list
@@ -714,7 +714,6 @@ export default {
           } else {
             this.consoleWarning(`尺码分类${msg.data.return_code}`)
           }
-
         }
       })
     },
@@ -722,12 +721,11 @@ export default {
     // 服务器获取尺寸分类
     // 动态生成颜色图片对应关系数据模型
     createColorAndImg () {
-
       // 初始化数据模型 可能要做DeBug处理 若用户上传图片又改动选择颜色 图片对应关系也会被初始化
-      if (this.four.colorAndImg.length === '0') {
+      if (this.four.colorAndImg.length >> 0 === 0) {
         // statement
         for (var j = 0; j < this.four.checkedCities.length; j++) {
-          let colorImg = {
+          const colorImg = {
             color: this.four.checkedCities[j],
             imgUrl: ''
           }
@@ -738,15 +736,15 @@ export default {
         // 0代表删除 1代表添加
         var userOperation = (this.userColorHistoricalRecord[1].length) > (this.userColorHistoricalRecord[0].length) ? 1 : 0
         var userOperationColor = this.removeDuplicate()
-        if (userOperation === '1') {
+        if (userOperation >> 0 === 1) {
           // statement
           console.log('执行添加')
-          let colorImg = {
+          const colorImg = {
             color: userOperationColor[0],
             imgUrl: ''
           }
           this.four.colorAndImg.push(colorImg)
-        } else if (userOperation === '0') {
+        } else if (userOperation >> 0 === 0) {
           // statement
           console.log('执行删除')
           for (var i = 0; i < this.four.colorAndImg.length; i++) {
@@ -807,7 +805,7 @@ export default {
 
     // 商品颜色图片
     colorAndImgSuccess (response, file, fileList) {
-      if (response.flag === '1000') {
+      if (response.flag >> 0 === 1000) {
         console.log(response, file)
         // statement
         var imgColor = response.imgColor
@@ -871,35 +869,35 @@ export default {
       argument.push({ imgsUrl: imgsUrl })
 
       var colorAndImg = this.four.colorAndImg.concat()
-      for (var i = 0; i < colorAndImg.length; i++) {
-        for (var ii = 0; ii < this.four.colorList.length; ii++) {
+      for (let i = 0; i < colorAndImg.length; i++) {
+        for (let ii = 0; ii < this.four.colorList.length; ii++) {
           if (this.four.colorList[ii].argument_value === colorAndImg[i].color) {
             colorAndImg[i].color = this.four.colorList[ii].id
           }
         }
       }
-      argument.push({ imgAndColor:colorAndImg })
+      argument.push({ imgAndColor: colorAndImg })
 
       // 属性数组
       var sub_args = []
-      for (var i = 0; i < this.four.checkedCities.length; i++) {
-        for (var ii = 0; ii < this.four.colorList.length; ii++) {
+      for (let i = 0; i < this.four.checkedCities.length; i++) {
+        for (let ii = 0; ii < this.four.colorList.length; ii++) {
           if (this.four.colorList[ii].argument_value === this.four.checkedCities[i]) {
             sub_args.push(this.four.colorList[ii].id)
           }
         }
       }
-      for (var i = 0; i < this.four.checkedSize.length; i++) {
-        for (var ii = 0; ii < this.four.sizeList.length; ii++) {
+      for (let i = 0; i < this.four.checkedSize.length; i++) {
+        for (let ii = 0; ii < this.four.sizeList.length; ii++) {
           if (this.four.sizeList[ii].argument_value === this.four.checkedSize[i]) {
             sub_args.push(this.four.sizeList[ii].id)
           }
         }
       }
-      for (var i = 0; i < this.two.privatePropertyList.length; i++) {
+      for (let i = 0; i < this.two.privatePropertyList.length; i++) {
         sub_args.push(this.two.privatePropertyList[i].attributeValue)
       }
-      argument.push({ 'sub-args':sub_args })
+      argument.push({ 'sub-args': sub_args })
 
       console.log(argument)
       return argument
@@ -912,7 +910,7 @@ export default {
       })
       .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           this.consoleSuccess(msg.data.return_code)
           setTimeout(() => {
             this.$router.push({ path: 'listOfGoods' })

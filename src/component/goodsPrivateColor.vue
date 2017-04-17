@@ -18,7 +18,6 @@
                 placeholder="请选择商品品牌"
                 @change="getParentId">
                 <el-option v-for="item in goodsPrivatePropertyValues.commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
-                <!-- <el-option label="区域二" value="beijing"></el-option> -->
               </el-select>
             </el-form-item>
             <el-form-item label="商品分类" prop="commodityClassification">
@@ -27,7 +26,6 @@
                 placeholder="请选择商品分类"
                 @change="getParentId">
                 <el-option v-for="item in goodsPrivatePropertyValues.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
-                <!-- <el-option label="区域二" value="beijing"></el-option> -->
               </el-select>
             </el-form-item>
 
@@ -55,7 +53,7 @@
 
             <el-form-item>
               <el-button type="primary" @click="submitForm('goodsPrivatePropertyValues')">提交</el-button>
-              <el-button @click="resetForm('goodsPrivatePropertyValues')">重置</el-button>
+              <!-- <el-button @click="resetForm('goodsPrivatePropertyValues')">重置</el-button> -->
             </el-form-item>
           </el-form>
         </el-card>
@@ -86,7 +84,7 @@ export default {
       goodsPrivatePropertyValues: {
         // 商品品牌
         commodityBrand: '',
-        commodityBrandList : [],
+        commodityBrandList: [],
         // 商品分类
         commodityClassification: '',
         commodityClassificationList: [],
@@ -129,9 +127,8 @@ export default {
         })
         .then(msg => {
           console.log(msg)
-
           const data = msg.data
-          if (data.flag === '1000') {
+          if (data.flag === 1000) {
             for (var i = data.parent_argument_list.length - 1; i >= 0; i--) {
               if (data.parent_argument_list[i].argument_value === '颜色') {
                 _this.parent_id = data.parent_argument_list[i].id
@@ -143,7 +140,7 @@ export default {
             _this.consoleError(`服务器发生未知错误!`)
           }
         })
-        .catch(response => {
+        .catch(error => {
           _this.consoleError(`服务器${error.response}`)
         })
       }
@@ -162,7 +159,7 @@ export default {
               'argument': this.goodsPrivatePropertyValues.dynamicTags
             })
             .then(msg => {
-              if (msg.data.flag === '1000') {
+              if (msg.data.flag === 1000) {
                 this.consoleSuccess(msg.data.return_code)
                 console.log(msg.data)
                 setTimeout(() => {
@@ -200,7 +197,7 @@ export default {
       })
       .then(msg => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag === 1000) {
           // statement
           // 商品品牌列表
           var product_list = msg.data.product_list
@@ -226,7 +223,7 @@ export default {
     },
 
     handleInputConfirm () {
-      let inputValue = this.goodsPrivatePropertyValues.inputValue
+      const inputValue = this.goodsPrivatePropertyValues.inputValue
       if (inputValue) {
         this.goodsPrivatePropertyValues.dynamicTags.push(inputValue)
       }

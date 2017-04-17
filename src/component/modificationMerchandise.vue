@@ -80,7 +80,7 @@
                 <el-form-item label="商品列表图"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess1"
                     :on-error="uploadError"
@@ -96,7 +96,7 @@
                 <el-form-item label="商品音频"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess2"
                     :on-error="uploadError"
@@ -112,7 +112,7 @@
                 <el-form-item label="商品视频"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
@@ -161,7 +161,7 @@
                   <!-- action冒号问题 -->
                    <el-upload
                       class="upload-demo"
-                      action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                      action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"
@@ -266,7 +266,7 @@ export default {
       one: {
         // 商品品牌
         commodityBrand: '',
-        commodityBrandList : [],
+        commodityBrandList: [],
         // 商品分类
         commodityClassification: '',
         commodityClassificationList: []
@@ -403,7 +403,7 @@ export default {
           'request_flag': 'goods_detail'
         })
         .then((msg) => {
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag >> 0 === 1000) {
             console.log(msg.data)
             if (msg.data.goods_detail !== '' || msg.data.goods_detail !== 'null') {
               // statement
@@ -427,23 +427,29 @@ export default {
               // 易企秀
               this.two.shop_show = goods_detail.show_url
               // 商品列表图
-              this.three.thumb_image_file_list = [{
-                name: '商品列表图.jpg(若修改请删除后重新添加!)',
-                url: goods_detail.thumb_image
-              }]
+              if (goods_detail.thumb_image !== '无') {
+                this.three.thumb_image_file_list = [{
+                  name: '商品列表图.jpg(若修改请删除后重新添加!)',
+                  url: goods_detail.thumb_image
+                }]
+              }
               this.three.thumb_image_url = goods_detail.thumb_image
               // 商品音频
-              this.three.audio_file_list = [{
-                name: '商品音频.mp3(若修改请删除后重新添加!)',
-                url: goods_detail.audio
-              }]
-              this.three.audio_url = goods_detail.audio
+              if (goods_detail.audio !== '无') {
+                this.three.audio_file_list = [{
+                  name: '商品音频.mp3(若修改请删除后重新添加!)',
+                  url: goods_detail.audio
+                }]
+                this.three.audio_url = goods_detail.audio
+              }
               // 商品视频
-              this.three.video_file_list = [{
-                name: '商品视频.mp4(若修改请删除后重新添加!)',
-                url: goods_detail.video
-              }]
-              this.three.video_url = goods_detail.video
+              if (goods_detail.video !== '无') {
+                this.three.video_file_list = [{
+                  name: '商品视频.mp4(若修改请删除后重新添加!)',
+                  url: goods_detail.video
+                }]
+                this.three.video_url = goods_detail.video
+              }
 
               // 尺码
               for (var i = 0; i < goods_detail.sub_args.length; i++) {
@@ -572,7 +578,7 @@ export default {
     // 商品列表图
     handleSuccess1 (response, file, fileList) {
       console.log(response)
-      if (response.flag === '1000') {
+      if (response.flag >> 0 === 1000) {
         // statement
         // false数据不存在 true数据上传成功
         this.three.thumb_image = false
@@ -589,7 +595,7 @@ export default {
     // 商品音频
     handleSuccess2 (response, file, fileList) {
       console.log(response)
-      if (response.flag === '1000') {
+      if (response.flag >> 0 === 1000) {
         // statement
         // false数据不存在 true数据上传成功
         this.three.audio = false
@@ -606,7 +612,7 @@ export default {
     // 商品视频
     handleSuccess3 (response, file, fileList) {
       console.log(response)
-      if (response.flag === '1000') {
+      if (response.flag >> 0 === 1000) {
         // statement
         // false数据不存在 true数据上传成功
         this.three.video = false
@@ -655,7 +661,7 @@ export default {
       })
       .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           // 获取数据信息 渲染页面
           _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list
@@ -745,7 +751,7 @@ export default {
         request_flag: request_flag
       })
       .then((msg) => {
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           if (request_flag === 'color_list') {
             // statement
@@ -1106,7 +1112,7 @@ export default {
       })
       .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           this.consoleSuccess(msg.data.return_code)
           setTimeout(() => {

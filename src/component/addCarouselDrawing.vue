@@ -22,7 +22,7 @@
               <el-form-item label="上传轮播图:">
                 <el-upload
                   class="avatar-uploader"
-                  action="http://a001.aybc.so/Shop/addCarouselDrawing"
+                  action="https://a001.aybc.so/Shop/addCarouselDrawing"
                   name="image_url"
                   :on-success="addCarouselDrawingImg"
                   :on-error="uploadError"
@@ -537,7 +537,7 @@
       // 上传轮播图
       addCarouselDrawingImg (response, file) {
         console.log(response)
-        if (response.flag === '1000') {
+        if (response.flag >> 0 === 1000) {
           // statement
           this.consoleSuccess(`轮播图上传成功${response.return_code}`)
           this.imageUrl = window.URL.createObjectURL(file.raw)
@@ -570,7 +570,7 @@
       getLocationTypeList () {
         this.$axios.post(this.location_type_api)
         .then(msg => {
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag >> 0 === 1000) {
             // statement
             console.log('轮播图位置', msg.data)
             this.consoleSuccess(`获取轮播图位置${msg.data.return_code}`)
@@ -587,7 +587,7 @@
       getcarouselDrawingTypeList () {
         this.$axios.post(this.carousel_drawing_type_api)
         .then(msg => {
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag >> 0 === 1000) {
             // statement
             console.log('轮播图类型', msg.data)
             this.consoleSuccess(`获取轮播图类型${msg.data.return_code}`)
@@ -606,7 +606,7 @@
           model: this.model
         })
         .then(msg => {
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag >> 0 === 1000) {
             // statement
             console.log(msg.data)
             this.model_img = msg.data.thumb_image
@@ -639,7 +639,7 @@
                         'description': this.newDetails
                       })
                       .then(msg => {
-                        if (msg.data.flag === '1000') {
+                        if (msg.data.flag >> 0 === 1000) {
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
                           setTimeout(() => {
                             this.tabCheck = 'carouselDrawingList'
@@ -668,7 +668,7 @@
                         'description': this.model
                       })
                       .then(msg => {
-                        if (msg.data.flag === '1000') {
+                        if (msg.data.flag >> 0 === 1000) {
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
                           setTimeout(() => {
                             this.tabCheck = 'carouselDrawingList'
@@ -697,7 +697,7 @@
                         'description': this.carousel_drawing_video_url
                       })
                       .then(msg => {
-                        if (msg.data.flag === '1000') {
+                        if (msg.data.flag >> 0 === 1000) {
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
                           setTimeout(() => {
                             this.tabCheck = 'carouselDrawingList'
@@ -738,7 +738,7 @@
           'current_page': current_page || this.current_page
         })
         .then(msg => {
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag >> 0 === 1000) {
             console.log(msg.data)
             this.consoleSuccess(`轮播图获取成功${msg.data.return_code}`)
 
@@ -776,7 +776,7 @@
             'carousel_drawing_id': row.id
           })
           .then(msg => {
-            if (msg.data.flag === '1000') {
+            if (msg.data.flag >> 0 === 1000) {
               // statement
               // 获取当前页的总条数
               // 保护用户删除某一页最后一条后 依旧请求当前页数据 返回空数据
@@ -817,7 +817,7 @@
           carousel_drawing_id: id
         })
         .then(msg => {
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag >> 0 === 1000) {
             // statement
             this.consoleSuccess(`修改数据获取${msg.data.return_code}`)
 
@@ -859,7 +859,7 @@
       // 上传轮播图
       modificationAddCarouselDrawingImg (response, file) {
         console.log(response)
-        if (response.flag === '1000') {
+        if (response.flag >> 0 === 1000) {
           this.consoleSuccess(`轮播图上传成功${response.return_code}`)
           this.modification.imageUrl = window.URL.createObjectURL(file.raw)
           this.modification.carousel_drawing_url = response.file_url
@@ -879,7 +879,7 @@
           model: this.modification.model
         })
         .then(msg => {
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag >> 0 === 1000) {
             // statement
             console.log(msg.data)
             this.modification.model_img = msg.data.thumb_image
@@ -913,7 +913,7 @@
                         'description': this.modification.newDetails
                       })
                       .then(msg => {
-                        if (msg.data.flag === '1000') {
+                        if (msg.data.flag >> 0 === 1000) {
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
                           this.modification.dialogFormVisible = false
                           this.getCarouselDrawingListData()
@@ -941,7 +941,7 @@
                         'description': this.modification.model
                       })
                       .then(msg => {
-                        if (msg.data.flag === '1000') {
+                        if (msg.data.flag >> 0 === 1000) {
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
                           this.modification.dialogFormVisible = false
                           this.getCarouselDrawingListData()
@@ -969,7 +969,7 @@
                         'description': this.modification.carousel_drawing_video_url
                       })
                       .then(msg => {
-                        if (msg.data.flag === '1000') {
+                        if (msg.data.flag >> 0 === 1000) {
                           this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
                           this.modification.dialogFormVisible = false
                           this.getCarouselDrawingListData()
@@ -1003,10 +1003,10 @@
         console.log(`${id}${status}`)
         this.$axios.post(this.handleCarouselDrawing, {
           'carousel_drawing_id': id,
-          'carousel_drawing_status': (status === '1' ? '0' : '1')
+          'carousel_drawing_status': (status.toString() === '1' ? '0' : '1')
         })
         .then(msg => {
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag >> 0 === 1000) {
             // statement
             this.consoleSuccess(`${msg.data.return_code}`)
             this.getCarouselDrawingListData()

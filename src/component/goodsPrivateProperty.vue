@@ -92,7 +92,7 @@ export default {
             'argument': this.goodsPrivateProperty.addGoodsPrivateProperty
           })
           .then(msg => {
-            if (msg.data.flag === '1000') {
+            if (msg.data.flag >> 0 === 1000) {
               // statement
               this.consoleSuccess(`${msg.data.return_code}`)
               setTimeout(() => {
@@ -127,7 +127,7 @@ export default {
       })
       .then(msg => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           // 商品品牌列表
           var product_list = msg.data.product_list

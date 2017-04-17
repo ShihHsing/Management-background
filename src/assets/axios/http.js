@@ -7,7 +7,7 @@ import Qs from 'qs'
 axios.defaults.timeout = 5000
 
 // https://bird.ioliu.cn/v1/?url=
-axios.defaults.baseURL = 'http://a001.aybc.so/'
+axios.defaults.baseURL = 'https://a001.aybc.so/'
 // axios.defaults.withCredentials = true
 
 // 请求前对数据做处理

@@ -60,7 +60,26 @@ export default {
             console.log(msg)
             if (msg.data.flag === '01') {
               // statement
-              this.consoleSuccess(msg.data.return_code)
+              var data = null
+              switch (msg.data.emp.level >> 0) {
+                case 1:
+                  data = '店员!欢迎你的登录!'
+                  break
+                case 2:
+                  data = '店长!欢迎你的登录!'
+                  break
+                case 3:
+                  if (msg.data.emp.shop_id >> 0 === 1) {
+                    data = '最大BOSS!欢迎您!'
+                  } else {
+                    data = '老板!欢迎您的登录!'
+                  }
+                  break
+                default:
+                  data = '管理员!注意使用规则!'
+                  break
+              }
+              this.consoleSuccess(data)
               var userData = msg.data
               this.USER_SIGNIN({ userData })
               setTimeout(() => {

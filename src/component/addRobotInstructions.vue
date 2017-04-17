@@ -64,7 +64,7 @@ export default {
         })
         .then((msg) => {
           console.log(msg.data, '服务器')
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag === '01') {
             // statement
             this.consoleSuccess(msg.data.return_code)
             window.location.reload()
@@ -84,7 +84,7 @@ export default {
       this.$axios.post(API.recordTheInstructions)
       .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag === '01') {
           // statement
           this.initData = msg.data.instructions
         } else {

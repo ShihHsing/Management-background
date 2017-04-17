@@ -30,7 +30,7 @@
           <el-form-item label="IOS unity模型:">
             <el-upload
               class="upload-demo"
-              action="http://a001.aybc.so/Shop/handle3DModel"
+              action="https://a001.aybc.so/Shop/handle3DModel"
               name="ios_unity_file"
               :on-success="addIosUnity"
               :on-error="uploadError">
@@ -41,7 +41,7 @@
           <el-form-item label="Android unity模型:">
             <el-upload
               class="upload-demo"
-              action="http://a001.aybc.so/Shop/handle3DModel"
+              action="https://a001.aybc.so/Shop/handle3DModel"
               name="android_unity_file"
               :on-success="addAndroidUnity"
               :on-error="uploadError">
@@ -52,7 +52,7 @@
           <el-form-item label="添加3D缩略图:">
             <div v-for="(city,index) in colorImg">
               <el-upload
-                action="http://a001.aybc.so/Shop/handle3DModel"
+                action="https://a001.aybc.so/Shop/handle3DModel"
                 :multiple="false"
                 :on-success="colorAndImgSuccess"
                 :on-error="uploadError"
@@ -138,7 +138,7 @@
 
       // 商品颜色图片
       colorAndImgSuccess (response, file, fileList) {
-        if (response.flag === '1000') {
+        if (response.flag >> 0 === 1000) {
           console.log(response, file)
           // statement
           var imgColor = response.imgColor
@@ -160,7 +160,7 @@
 
       // ios模型上传
       addIosUnity (response, file) {
-        if (response.flag === '1000') {
+        if (response.flag >> 0 === 1000) {
           console.log(response)
           // statement
           this.ios = response.file_url
@@ -173,7 +173,7 @@
 
        // 安卓模型上传
       addAndroidUnity (response) {
-        if (response.flag === '1000') {
+        if (response.flag >> 0 === 1000) {
           console.log(response)
           // statement
           this.android = response.file_url
@@ -214,7 +214,7 @@
                 })
                 .then(msg => {
                   console.log(msg.data)
-                  if (msg.data.flag === '1000') {
+                  if (msg.data.flag >> 0 === 1000) {
                     // statement
                     this.consoleSuccess(msg.data.return_code)
                     setTimeout(() => {
