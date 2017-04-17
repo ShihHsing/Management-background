@@ -47,20 +47,20 @@ export default {
     }
   },
 
-  created: function() {
+  created: function () {
     // 初始化获取路由地址
-    this.getRouterUrl();
+    this.getRouterUrl()
   },
 
   methods: {
-	  handleSelect(key, keyPath) {
-	    console.log(key, keyPath);
-	  },
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
+    },
 
     // 获取当前路由地址
     // 动态绑定导航和路由对应关系
     getRouterUrl () {
-      this.router_url = this.$route.path;
+      this.router_url = this.$route.path
     }
   }
 }

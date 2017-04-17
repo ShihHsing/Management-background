@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import '../assets/style/privateBrandStores.less';
-import * as API from '../assets/axios/api.js';
+import '../assets/style/privateBrandStores.less'
+import * as API from '../assets/axios/api.js'
 export default {
   name: 'privateBrandStores',
   data () {
@@ -59,84 +59,80 @@ export default {
       ownProductList: []
     }
   },
-  
-  created: function() {
-    this.getOwnProductList();
+  created: function () {
+    this.getOwnProductList()
   },
 
   methods: {
-    
     // 获取商品列表
     getOwnProductList () {
       this.$axios.post(API.addNewerOwnProduct)
-      .then( msg => {
+      .then(msg => {
         console.log(msg)
-        let data = msg.data;
-        if (data.flag == '1000') {
-          this.ownProductList = data.product_list;
+        var data = msg.data
+        if (data.flag === '1000') {
+          this.ownProductList = data.product_list
         } else {
-          this.consoleError(`${msg.data.return_code}`);
+          this.consoleError(`${msg.data.return_code}`)
         }
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
     },
 
     addNewerOwnProduct (id) {
       if (id) {
-        this.$axios.post(API.addNewerOwnProduct,{
+        this.$axios.post(API.addNewerOwnProduct, {
           product_id: id
         })
-        .then( msg => {
+        .then(msg => {
           console.log(msg)
-          let data = msg.data;
-          if (data.flag == '1000') {
-            this.consoleSuccess(`${msg.data.return_code}`);
-            this.getOwnProductList();
+          var data = msg.data
+          if (data.flag === '1000') {
+            this.consoleSuccess(`${msg.data.return_code}`)
+            this.getOwnProductList()
           } else {
-            this.consoleError(`${msg.data.return_code}`);
+            this.consoleError(`${msg.data.return_code}`)
           }
         })
-        .catch( error => {
-          this.consoleError(`服务器${error.response}`);
-        });
+        .catch(error => {
+          this.consoleError(`服务器${error.response}`)
+        })
       } else {
-        this.consoleError(`发生未知错误,门店ID丢失,请稍后重试!`);
+        this.consoleError(`发生未知错误,门店ID丢失,请稍后重试!`)
       }
     },
 
-    consoleSuccess(success) {
+    consoleSuccess (success) {
       this.$notify({
         title: '成功',
         message: success,
         type: 'success'
-      });
+      })
     },
 
-    consoleWarning(warning) {
+    consoleWarning (warning) {
       this.$notify({
         title: '警告',
         message: warning,
         type: 'warning'
-      });
+      })
     },
 
-    consoleNews(news) {
+    consoleNews (news) {
       this.$notify.info({
         title: '消息',
         message: news
-      });
+      })
     },
 
-    consoleError(error) {
+    consoleError (error) {
       this.$notify.error({
         title: '错误',
         message: error
-      });
+      })
     }
-  },
-
-
+  }
 }
 </script>

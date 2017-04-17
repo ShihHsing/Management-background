@@ -174,25 +174,25 @@
 
 <script>
 // 样式文件
-import '../assets/style/listOfGoods.less';
-import * as API from '../assets/axios/api.js';
+import '../assets/style/listOfGoods.less'
+import * as API from '../assets/axios/api.js'
 export default {
   name: 'listOfGoods',
   data () {
     var checkmodel = (rule, value, callback) => {
-      if (value != '') {
+      if (value !== '') {
         // statement
         setTimeout(() => {
           if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
+            callback(new Error('请输入数字值'))
           } else {
-            callback();
+            callback()
           }
         }, 300)
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       // 加载数据蒙层
       loading: true,
@@ -208,7 +208,7 @@ export default {
       total_pages: 0,
       // 每页条数
       page_size: 0,
-      searchShopList:{
+      searchShopList: {
         // 商品品牌
         commodityBrand: '',
         // 商品分类
@@ -235,55 +235,54 @@ export default {
 
       // 服务端数据
       shopDateList: [],
-
-      //shop_id 控制显示内容 1号为公有门店 其与为私有门店
-      shop_id: this.$store.state.user.userData.emp.shop_id,
+      // shop_id 控制显示内容 1号为公有门店 其与为私有门店
+      shop_id: this.$store.state.user.userData.emp.shop_id
     }
   },
 
-  created: function() {
+  created: function () {
     // 初始化获取商品品牌和商品分类
-    this.getCommodityBrandAndCommodityClassification();
+    this.getCommodityBrandAndCommodityClassification()
     // 获取初始化数据
-    this.getInitData();
-    console.log(this.$store.state.user.userData.emp.shop_id);
+    this.getInitData()
+    console.log(this.$store.state.user.userData.emp.shop_id)
   },
 
   methods: {
     // 获取商品品牌和商品分类
-    getCommodityBrandAndCommodityClassification() {
-      var _this = this;
-      this.$axios.post(API.addNewerGoodsInfo,{
-        request_flag: 'product_list'
+    getCommodityBrandAndCommodityClassification () {
+      var _this = this
+      this.$axios.post(API.addNewerGoodsInfo, {
+        'request_flag': 'product_list'
       })
-      .then( (msg) => {
-        console.log(msg.data,'获取商品品牌和商品分类');
-        if (msg.data.flag == '1000') {
+      .then((msg) => {
+        console.log(msg.data, '获取商品品牌和商品分类')
+        if (msg.data.flag === '1000') {
           // statement
           // 商品品牌列表
-          var product_list = msg.data.product_list;
-          _this.commodityBrandList = product_list;
+          var product_list = msg.data.product_list
+          _this.commodityBrandList = product_list
           // 商品分类列表
-          var category_list = msg.data.category_list;
-          _this.commodityClassificationList = category_list;
+          var category_list = msg.data.category_list
+          _this.commodityClassificationList = category_list
         } else {
-          this.consoleError(`${msg.data.return_code}`);
+          this.consoleError(`${msg.data.return_code}`)
         }
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
     },
 
     // 搜索商品
-    onSubmit() {
-      if (this.searchShopList.commodityBrand != '' || this.searchShopList.commodityClassification != '' || this.searchShopList.model != '') {
+    onSubmit () {
+      if (this.searchShopList.commodityBrand !== '' || this.searchShopList.commodityClassification !== '' || this.searchShopList.model !== '') {
         // statement
-        console.log(this.searchShopList);
+        console.log(this.searchShopList)
         this.searchShopData()
       } else {
-        this.consoleError('请完善搜索信息!至少需要一个搜索条件!');
-        return false;
+        this.consoleError('请完善搜索信息!至少需要一个搜索条件!')
+        return false
       }
     },
 
@@ -291,247 +290,243 @@ export default {
     // TODO
     //  还需传入页数
 
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
     },
 
-    handleCurrentChange(val) {
-      this.currentPage = val;
+    handleCurrentChange (val) {
+      this.currentPage = val
       this.searchShopData(val)
-      console.log(`当前页: ${val}`);
+      console.log(`当前页: ${val}`)
     },
 
-    searchShopData(val) {
-      var _this = this;
-      this.$axios.post(API.listNewerGoodsInfo,{
-        product_id: this.searchShopList.commodityBrand,
-        category_id: this.searchShopList.commodityClassification,
-        model: this.searchShopList.model,
-        current_page: val || ''
+    searchShopData (val) {
+      this.$axios.post(API.listNewerGoodsInfo, {
+        'product_id': this.searchShopList.commodityBrand,
+        'category_id': this.searchShopList.commodityClassification,
+        'model': this.searchShopList.model,
+        'current_page': val || ''
       })
-      .then( (msg) => {
+      .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag == '1000') {
+        if (msg.data.flag === '1000') {
           // statement
-          this.shopDateList = msg.data.goods_list;
+          this.shopDateList = msg.data.goods_list
           // 构建二次确认数据模型
-          this.dialogVisible = [];
+          this.dialogVisible = []
           for (var i = 0; i < this.shopDateList.length; i++) {
             this.dialogVisible.push({
               model: false
-            });
+            })
           }
           // 设置当前页和总页数
-          this.total_pages = (msg.data.total_pages) >> 0;
-          this.current_page = (msg.data.current_page) >> 0;
-          console.log(this.total_pages,this.current_page);
+          this.total_pages = (msg.data.total_pages) >> 0
+          this.current_page = (msg.data.current_page) >> 0
+          console.log(this.total_pages, this.current_page)
          // 商品设置开关
-          this.goodsSetSwitchModel = [];
+          this.goodsSetSwitchModel = []
           for (var i = 0; i < this.shopDateList.length; i++) {
-            var model = [];
+            var model = []
             for (var ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
               model.push({
-                model: !!(this.shopDateList[i].switch_list[ii].switch >> 0),
-                goods_id: this.shopDateList[i].id
-              });
+                'model': !!(this.shopDateList[i].switch_list[ii].switch >> 0),
+                'goods_id': this.shopDateList[i].id
+              })
             }
-            this.goodsSetSwitchModel[i] = model;
+            this.goodsSetSwitchModel[i] = model
           }
           // this.consoleSuccess('获取商品信息成功!')
         } else {
           this.consoleError(`${msg.data.return_code}`)
-          this.total_pages = 0;
-          this.current_page = 0;
-          this.shopDateList = [];
+          this.total_pages = 0
+          this.current_page = 0
+          this.shopDateList = []
         }
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
       console.log(this.shopDateList)
     },
 
     // 初始化数据渲染页面
-    getInitData() {
+    getInitData () {
       // 服务器获取数据
-      this.getShopData();
+      this.getShopData()
     },
-    
     // 服务器获取数据
-    getShopData() {
+    getShopData () {
       // var _this = this;
-      this.$axios.post(API.listNewerGoodsInfo,{
-        current_page: ''
+      this.$axios.post(API.listNewerGoodsInfo, {
+        'current_page': ''
       })
-      .then( (msg) => {
+      .then((msg) => {
         console.log(msg.data)
         // 初始化
-        this.shopDateList = [];
-        if (msg.data.flag == '1000') {
-
-          // statement
-          this.shopDateList = msg.data.goods_list;
+        this.shopDateList = []
+        if (msg.data.flag === '1000') {
+          this.shopDateList = msg.data.goods_list
           // 构建二次确认数据模型
-          this.dialogVisible = [];
+          this.dialogVisible = []
           for (var i = 0; i < this.shopDateList.length; i++) {
             this.dialogVisible.push({
               model: false
-            });
+            })
           }
           // 设置当前页和总页数
-          this.total_pages = (msg.data.total_pages) >> 0;
-          this.current_page = (msg.data.current_page) >> 0;
-          this.page_size = (msg.data.page_size) >> 0;
-          console.log(this.total_pages,this.current_page);
+          this.total_pages = (msg.data.total_pages) >> 0
+          this.current_page = (msg.data.current_page) >> 0
+          this.page_size = (msg.data.page_size) >> 0
+          console.log(this.total_pages, this.current_page)
           // 商品设置开关
-          this.goodsSetSwitchModel = [];
+          this.goodsSetSwitchModel = []
           for (var i = 0; i < this.shopDateList.length; i++) {
-            var model = [];
+            var model = []
             for (var ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
               model.push({
-                model: !!(this.shopDateList[i].switch_list[ii].switch >> 0),
-                goods_id: this.shopDateList[i].id
-              });
+                'model': !!(this.shopDateList[i].switch_list[ii].switch >> 0),
+                'goods_id': this.shopDateList[i].id
+              })
             }
-            this.goodsSetSwitchModel[i] = model;
+            this.goodsSetSwitchModel[i] = model
           }
         } else {
           this.consoleError(`${msg.data.return_code}`)
         }
-        this.loading = false;
+        this.loading = false
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
-      console.log(this.shopDateList,'根据用户输入条件搜索数据')
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
+      console.log(this.shopDateList, '根据用户输入条件搜索数据')
     },
 
     // 商品设置置顶&取消
-    toGoTop(scope) {
-      var popular = scope.row.popular == 1?0:1;
+    toGoTop (scope) {
+      var popular = scope.row.popular === 1 ? 0 : 1
       // scope.row
       // 当前点击数据的所有值
-      this.$axios.post(API.popularHandleUrl,{
-        goods_id: scope.row.id,
-        popular: popular
+      this.$axios.post(API.popularHandleUrl, {
+        'goods_id': scope.row.id,
+        'popular': popular
       })
-      .then( (msg) => {
+      .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag == '1000') {
+        if (msg.data.flag === '1000') {
           // statement
           this.consoleSuccess(`${msg.data.return_code}`)
-          this.getShopData();
+          this.getShopData()
         } else {
           this.consoleError(`${msg.data.return_code}`)
         }
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
     },
 
     // 商品设置推荐&取消
-    toGoRecommend(scope) {
-      var special_power = scope.row.special_power == 1?0:1;
+    toGoRecommend (scope) {
+      var special_power = scope.row.special_power === 1 ? 0 : 1
       // scope.row
       // 当前点击数据的所有值
-      this.$axios.post(API.specialPowerHandleUrl,{
-        goods_id: scope.row.id,
-        special_power: special_power
+      this.$axios.post(API.specialPowerHandleUrl, {
+        'goods_id': scope.row.id,
+        'special_power': special_power
       })
-      .then( (msg) => {
+      .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag == '1000') {
+        if (msg.data.flag === '1000') {
           // statement
           this.consoleSuccess(`${msg.data.return_code}`)
-          this.getShopData();
+          this.getShopData()
         } else {
           this.consoleError(`${msg.data.return_code}`)
         }
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
     },
 
-    deleteRow(index, rows) {
-      rows.splice(index, 1);
+    deleteRow (index, rows) {
+      rows.splice(index, 1)
     },
 
     // 删除
-    deleteNewerGoodsInfo(id,index) {
+    deleteNewerGoodsInfo (id, index) {
       console.log(index)
-      this.$axios.post(API.deleteNewerGoodsInfoUrl,{
-        goods_id: id
+      this.$axios.post(API.deleteNewerGoodsInfoUrl, {
+        'goods_id': id
       })
-      .then( (msg) => {
+      .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag == '1000') {
+        if (msg.data.flag === '1000') {
           // statement
-          this.dialogVisible[index].model = false;
-          this.consoleSuccess(`${msg.data.return_code}`);
-          this.getShopData();
+          this.dialogVisible[index].model = false
+          this.consoleSuccess(`${msg.data.return_code}`)
+          this.getShopData()
         } else {
           this.consoleError(`${msg.data.return_code}`)
         }
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
     },
 
     // 商品设置开关
-    goodsSetSwitch(goods_id,switch_id,switch_value) {
+    goodsSetSwitch(goods_id, switch_id, switch_value) {
       // Debug 处理
       this.value1 = !this.value1
-      this.$axios.post(API.switchHandleUrl,{
-        goods_id: goods_id,
-        switch_id: switch_id,
-        switch_value: Number(switch_value) 
+      this.$axios.post(API.switchHandleUrl, {
+        'goods_id': goods_id,
+        'switch_id': switch_id,
+        'switch_value': Number(switch_value)
       })
-      .then( msg => {
-        if (msg.data.flag == "1000") {
+      .then(msg => {
+        if (msg.data.flag === '1000') {
           // statement
-          this.consoleSuccess(`${msg.data.return_code}`);
-          this.searchShopData();
+          this.consoleSuccess(`${msg.data.return_code}`)
+          this.searchShopData()
         } else {
           this.consoleError(`${msg.data.return_code}`)
         }
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
     },
 
-    consoleSuccess(success) {
+    consoleSuccess (success) {
       this.$notify({
         title: '成功',
         message: success,
         type: 'success'
-      });
+      })
     },
 
-    consoleWarning(warning) {
+    consoleWarning (warning) {
       this.$notify({
         title: '警告',
         message: warning,
         type: 'warning'
-      });
+      })
     },
 
-    consoleNews(news) {
+    consoleNews (news) {
       this.$notify.info({
         title: '消息',
         message: news
-      });
+      })
     },
 
-    consoleError(error) {
+    consoleError (error) {
       this.$notify.error({
         title: '错误',
         message: error
-      });
+      })
     }
-  },
+  }
 }
 </script>

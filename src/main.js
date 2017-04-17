@@ -4,28 +4,27 @@ import VueResource from 'vue-resource'
 import 'element-ui/lib/theme-default/index.css'
 import App from './App.vue'
 import router from './assets/router/router.js'
-import jQuery from 'jquery'
-import store from './assets/store/';
-import axios from './assets/axios/http.js';
-import './assets/editor/editor.config.js';
-import Qs from 'qs';
+import store from './assets/store/'
+import axios from './assets/axios/http.js'
+import './assets/editor/editor.config.js'
+import Qs from 'qs'
 
 Vue.use(ElementUI)
 Vue.use(VueResource)
 
 // 将axios挂载到prototype上，在组件中可以直接使用this.axios访问
-Vue.prototype.$axios = axios;
+Vue.prototype.$axios = axios
 
 // 将Qs挂载到prototype上，在组件中可以直接使用this.Qs访问
-Vue.prototype.$Qs = Qs;
+Vue.prototype.$Qs = Qs
 
-router.beforeEach(({meta, path}, from, next) => {
-  var { auth = true } = meta;
-  var isLogin = Boolean(store.state.user.userData) //true用户已登录， false用户未登录
+router.beforeEach(({ meta, path }, from, next) => {
+  var { auth = true } = meta
+  var isLogin = Boolean(store.state.user.userData) // true用户已登录， false用户未登录
   if (auth && !isLogin && path !== '/login') {
     return next({ path: '/login' })
   }
-  next();
+  next()
 })
 
 new Vue({
@@ -36,8 +35,8 @@ new Vue({
   render: h => h(App)
 })
 
-console.log("%c↘ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↙", "color:red")
-console.log("%c→                            ←", "color:red")
-console.log("%c→  嗨~~  http://www.aybc.so  ←", "color:red")
-console.log("%c→                            ←", "color:red")
-console.log("%c↗ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↖", "color:red")
+console.log('%c↘ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↙', 'color:red')
+console.log('%c→                            ←', 'color:red')
+console.log('%c→  嗨~~  http://www.aybc.so  ←', 'color:red')
+console.log('%c→                            ←', 'color:red')
+console.log('%c↗ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↖', 'color:red')

@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { USER_SIGNIN } from '../assets/store/user.js';
-import * as API from '../assets/axios/api.js';
-import '../assets/style/login.less';
+import { mapActions } from 'vuex'
+import { USER_SIGNIN } from '../assets/store/user.js'
+import * as API from '../assets/axios/api.js'
+import '../assets/style/login.less'
 
 export default {
   name: 'login',
@@ -46,26 +46,26 @@ export default {
   methods: {
     ...mapActions([USER_SIGNIN]),
 
-    login() {
-      if (this.phone_number != '') {
+    login () {
+      if (this.phone_number !== '') {
         // statement
-        if (this.password != '') {
+        if (this.password !== '') {
           // statement
           let data = {
-            phone_number: this.phone_number,
-            password: this.password
+            'phone_number': this.phone_number,
+            'password': this.password
           }
-          this.$axios.post(API.loginUrl,data)
-          .then( msg => {
+          this.$axios.post(API.loginUrl, data)
+          .then(msg => {
             console.log(msg)
-            if (msg.data.flag == '01') {
+            if (msg.data.flag === '01') {
               // statement
-              this.consoleSuccess(msg.data.return_code);
-              var userData = msg.data;
-              this.USER_SIGNIN({userData});
-              setTimeout( () => {
+              this.consoleSuccess(msg.data.return_code)
+              var userData = msg.data
+              this.USER_SIGNIN({ userData })
+              setTimeout(() => {
                 this.$router.push({ path: 'home' })
-              }, 1000);
+              }, 1000)
             } else {
               this.consoleError(msg.data.return_code)
             }
@@ -81,34 +81,34 @@ export default {
       }
     },
 
-    consoleSuccess(success) {
+    consoleSuccess (success) {
       this.$notify({
         title: '成功',
         message: success,
         type: 'success'
-      });
+      })
     },
 
-    consoleWarning(warning) {
+    consoleWarning (warning) {
       this.$notify({
         title: '警告',
         message: warning,
         type: 'warning'
-      });
+      })
     },
 
-    consoleNews(news) {
+    consoleNews (news) {
       this.$notify.info({
         title: '消息',
         message: news
-      });
+      })
     },
 
-    consoleError(error) {
+    consoleError (error) {
       this.$notify.error({
         title: '错误',
         message: error
-      });
+      })
     }
   }
 }

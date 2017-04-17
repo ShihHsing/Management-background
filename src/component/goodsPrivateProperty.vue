@@ -74,112 +74,111 @@ export default {
           { required: true, message: '请选择商品分类', trigger: 'change' }
         ],
         addGoodsPrivateProperty: [
-          { required: true, message:'请添加商品私有属性', trigger: 'change' }
+          { required: true, message: '请添加商品私有属性', trigger: 'change' }
         ]
       }
     }
   },
-  
   methods: {
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // success
-          this.$axios.post(API.addNewerCategoryArguments,{
-            product_id: this.goodsPrivateProperty.commodityBrand,
-            category_id: this.goodsPrivateProperty.commodityClassification,
+          this.$axios.post(API.addNewerCategoryArguments, {
+            'product_id': this.goodsPrivateProperty.commodityBrand,
+            'category_id': this.goodsPrivateProperty.commodityClassification,
             // 0代表商品分类属性
-            parent_id: 0,
-            argument: this.goodsPrivateProperty.addGoodsPrivateProperty
+            'parent_id': 0,
+            'argument': this.goodsPrivateProperty.addGoodsPrivateProperty
           })
-          .then( msg => {
-            if (msg.data.flag == '1000') {
+          .then(msg => {
+            if (msg.data.flag === '1000') {
               // statement
-              this.consoleSuccess(`${msg.data.return_code}`);
+              this.consoleSuccess(`${msg.data.return_code}`)
               setTimeout(() => {
                 console.log('执行')
-                this.resetForm('goodsPrivateProperty');
-              },1200)
+                this.resetForm('goodsPrivateProperty')
+              }, 1200)
             } else {
               // statement
-              this.consoleError(`${msg.data.return_code}`);
+              this.consoleError(`${msg.data.return_code}`)
             }
-            console.log(msg.data);
+            console.log(msg.data)
           })
-          .catch( error => {
-            this.consoleError(`服务器${error.response}`);
-          });
+          .catch(error => {
+            this.consoleError(`服务器${error.response}`)
+          })
         } else {
-          this.consoleError('请完善必填信息');
-          return false;
+          this.consoleError('请完善必填信息')
+          return false
         }
-      });
-    },
-
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-
-	  // 获取商品品牌和商品分类
-    getCommodityBrandAndCommodityClassification() {
-      var _this = this;
-      this.$axios.post(API.addNewerGoodsInfo,{
-        request_flag: 'product_list'
       })
-      .then( msg => {
+    },
+
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    },
+
+    // 获取商品品牌和商品分类
+    getCommodityBrandAndCommodityClassification () {
+      var _this = this
+      this.$axios.post(API.addNewerGoodsInfo, {
+        'request_flag': 'product_list'
+      })
+      .then(msg => {
         console.log(msg.data)
-        if (msg.data.flag == '1000') {
+        if (msg.data.flag === '1000') {
           // statement
           // 商品品牌列表
-          var product_list = msg.data.product_list;
-          _this.goodsPrivateProperty.commodityBrandList = product_list;
+          var product_list = msg.data.product_list
+          _this.goodsPrivateProperty.commodityBrandList = product_list
           // 商品分类列表
-          var category_list = msg.data.category_list;
-          _this.goodsPrivateProperty.commodityClassificationList = category_list;
+          var category_list = msg.data.category_list
+          _this.goodsPrivateProperty.commodityClassificationList = category_list
         } else {
-          this.consoleError(`${msg.data.return_code}`);
+          this.consoleError(`${msg.data.return_code}`)
         }
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);;
-      });
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
     },
 
-    consoleSuccess(success) {
+    consoleSuccess (success) {
       this.$notify({
         title: '成功',
         message: success,
         type: 'success'
-      });
+      })
     },
 
-    consoleWarning(warning) {
+    consoleWarning (warning) {
       this.$notify({
         title: '警告',
         message: warning,
         type: 'warning'
-      });
+      })
     },
 
-    consoleNews(news) {
+    consoleNews (news) {
       this.$notify.info({
         title: '消息',
         message: news
-      });
+      })
     },
 
-    consoleError(error) {
+    consoleError (error) {
       this.$notify.error({
         title: '错误',
         message: error
-      });
+      })
     }
   },
 
-  created: function() {
+  created: function () {
     // 初始化获取商品品牌和商品分类
-    this.getCommodityBrandAndCommodityClassification();
-  },
+    this.getCommodityBrandAndCommodityClassification()
+  }
 
 }
 </script>

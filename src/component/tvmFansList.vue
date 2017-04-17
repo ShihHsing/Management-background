@@ -44,7 +44,6 @@
 <script>
 export default {
   name: 'tvmFansList',
-
   data () {
     return {
       listTVMFansInfoUrl: 'Shop/listTVMFansInfo',
@@ -57,24 +56,23 @@ export default {
     }
   },
 
-  created: function() {
+  created: function () {
     // 初始化
-    this.getTvmData(0);
+    this.getTvmData(0)
   },
 
   methods: {
-    getTvmData(current_page) {
-      var _this = this;
-      this.$axios.post(this.listTVMFansInfoUrl,{
+    getTvmData (current_page) {
+      this.$axios.post(this.listTVMFansInfoUrl, {
         current_page: current_page
       })
-      .then( (msg) => {
+      .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag == '1000') {
+        if (msg.data.flag === '1000') {
           // statement
-          this.listTVMFans = msg.data.fans_list;
-          this.total_pages = msg.data.total_pages;
-          this.current_page = msg.data.current_page;
+          this.listTVMFans = msg.data.fans_list
+          this.total_pages = msg.data.total_pages
+          this.current_page = msg.data.current_page
         } else {
           this.consoleError(msg.data.return_code)
         }
@@ -83,44 +81,44 @@ export default {
       })
     },
 
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
     },
 
-    handleCurrentChange(val) {
-      this.currentPage = val;
+    handleCurrentChange (val) {
+      this.currentPage = val
       this.getTvmData(val)
-      console.log(`当前页: ${val}`);
+      console.log(`当前页: ${val}`)
     },
 
-    consoleSuccess(success) {
+    consoleSuccess (success) {
       this.$notify({
         title: '成功',
         message: success,
         type: 'success'
-      });
+      })
     },
 
-    consoleWarning(warning) {
+    consoleWarning (warning) {
       this.$notify({
         title: '警告',
         message: warning,
         type: 'warning'
-      });
+      })
     },
 
-    consoleNews(news) {
+    consoleNews (news) {
       this.$notify.info({
         title: '消息',
         message: news
-      });
+      })
     },
 
-    consoleError(error) {
+    consoleError (error) {
       this.$notify.error({
         title: '错误',
         message: error
-      });
+      })
     }
   }
 }

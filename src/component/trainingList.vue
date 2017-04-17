@@ -220,7 +220,7 @@
 </template>
 
 <script>
-  import * as API from '../assets/axios/api.js';
+  import * as API from '../assets/axios/api.js'
   export default{
     name: 'trainingList',
     data () {
@@ -275,15 +275,15 @@
           newDescription: '',
 
           // 视频地址
-          video_url: '',
+          video_url: ''
         }
       }
     },
     created () {
       // 获取培训列表
-      this.getTrainingList();
+      this.getTrainingList()
       // 获取分类
-      this.getTrainingClassifyList();
+      this.getTrainingClassifyList()
     },
 
     methods: {
@@ -292,32 +292,32 @@
       removeTraining (id, index, list) {
         const Data = {
           training_id: id >> 0
-        };
+        }
         this.$confirm('是否确认删除该培训课程?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         })
-        .then( () => {
-          console.log(Data)                  
-          this.$axios.post(API.removeTraining,Data)
-          .then( msg => {
-            console.log(msg);
-            const data = msg.data;
+        .then(() => {
+          console.log(Data)
+          this.$axios.post(API.removeTraining, Data)
+          .then(msg => {
+            console.log(msg)
+            const data = msg.data
             switch (data.flag) {
               case 1000:
-                this.consoleSuccess(`培训信息删除成功`);
-                list.splice(index, 1);
-                this.searchTraining();
-                break;
+                this.consoleSuccess(`培训信息删除成功`)
+                list.splice(index, 1)
+                this.searchTraining()
+                break
               default:
-                this.consoleError(`培训信息删除失败,请重试!`);
-                break;
+                this.consoleError(`培训信息删除失败,请重试!`)
+                break
             }
           })
-          .catch( error => {
-            this.consoleError(`服务器${error.response}`);
-          });
+          .catch(error => {
+            this.consoleError(`服务器${error.response}`)
+          })
         })
       },
 
@@ -336,8 +336,8 @@
                   training_value: this.modify_form.newDescription || this.modify_form.content,
                   request_flag: 'modify'
                 }
-                this.modifyTrainingInfoAxios(Data);
-                break;
+                this.modifyTrainingInfoAxios(Data)
+                break
               case '2':
                 // statements_1
                 Data = {
@@ -348,45 +348,45 @@
                   training_value: this.modify_form.video_url,
                   request_flag: 'modify'
                 }
-                this.modifyTrainingInfoAxios(Data);
-                break;
+                this.modifyTrainingInfoAxios(Data)
+                break
               default:
                 // statements_def
-                break;
+                break
             }
           } else {
-            this.consoleError(`请上传培训缩略图!`);
+            this.consoleError(`请上传培训缩略图!`)
           }
         } else {
-          this.consoleError(`请选择培训分类!`);
+          this.consoleError(`请选择培训分类!`)
         }
       },
 
       modifyTrainingInfoAxios (Data) {
-        this.$axios.post(API.modifyTrainingInfo,Data)
-        .then( msg => {
-          console.log(msg);
-          const data = msg.data;
+        this.$axios.post(API.modifyTrainingInfo, Data)
+        .then(msg => {
+          console.log(msg)
+          const data = msg.data
           switch (data.flag) {
             case 1000:
-              this.searchTraining();
-              this.consoleSuccess(`培训信息修改成功`);
-              this.dialogFormVisible = false;
-              break;
+              this.searchTraining()
+              this.consoleSuccess(`培训信息修改成功`)
+              this.dialogFormVisible = false
+              break
             default:
-              this.consoleError(`设置失败,请重试!`);
-              break;
+              this.consoleError(`设置失败,请重试!`)
+              break
           }
         })
-        .catch( error => {
-          this.consoleError(`服务器${error.response}`);
-        });
+        .catch(error => {
+          this.consoleError(`服务器${error.response}`)
+        })
       },
 
       // 富文本数据更新 第一次进入初始化 为上传准确性
       // 如果用户操则会更新数据 最终上传以 newDescription 数据为准
       updateData (data) {
-        this.modify_form.newDescription = data;
+        this.modify_form.newDescription = data
         console.log(data)
       },
 
@@ -394,27 +394,27 @@
       handleAvatarSuccess(res, file) {
         switch (res.flag) {
           case 1000:
-            this.modify_form.thumb_image_url = res.file_url;
-            this.consoleSuccess(`缩略图上传成功!`);
-            break;
+            this.modify_form.thumb_image_url = res.file_url
+            this.consoleSuccess(`缩略图上传成功!`)
+            break
           default:
-            this.consoleError(`服务器状态:${res.return_code}`);
-            break;
+            this.consoleError(`服务器状态:${res.return_code}`)
+            break
         }
       },
 
       // 图片上传前
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg' || 'image/png';
-        const isLt1M = file.size / 1024 / 1024 < 1;
+      beforeAvatarUpload (file) {
+        const isJPG = file.type === 'image/jpeg' || 'image/png'
+        const isLt1M = file.size / 1024 / 1024 < 1
 
         if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG、PNG 格式!');
+          this.$message.error('上传头像图片只能是 JPG、PNG 格式!')
         }
         if (!isLt1M) {
-          this.$message.error('上传头像图片大小不能超过 1MB!');
+          this.$message.error('上传头像图片大小不能超过 1MB!')
         }
-        return isJPG && isLt1M;
+        return isJPG && isLt1M
       },
 
       // 修改获取数据
@@ -422,13 +422,12 @@
         const Data = {
           training_id: id
         }
-        this.$axios.post(API.modifyTrainingInfo,Data)
-        .then( msg => {
-          console.log(msg);
-          const data = msg.data;
+        this.$axios.post(API.modifyTrainingInfo, Data)
+        .then(msg => {
+          console.log(msg)
+          const data = msg.data
           switch (data.flag) {
             case 1000:
-
               this.modify_form = {
                 // 修改信息id
                 training_id: data.training_detail.id,
@@ -442,30 +441,29 @@
                 thumb_image_url: data.training_detail.thumb_image,
 
                 // 培训类型
-                training_type: data.training_detail.type_id,
+                training_type: data.training_detail.type_id
               }
               switch (data.training_detail.type_id) {
                 case '1':
-                  this.modify_form.content = data.training_detail.training_value;
-                  break;
+                  this.modify_form.content = data.training_detail.training_value
+                  break
                 case '2':
-                  this.modify_form.video_url = data.training_detail.training_value;
-                  break;
+                  this.modify_form.video_url = data.training_detail.training_value
+                  break
                 default:
-                  this.modify_form.video_url = '';
-                  break;
+                  this.modify_form.video_url = ''
+                  break
               }
 
-              this.dialogFormVisible = true;
-              break;
+              this.dialogFormVisible = true
+              break
             default:
-              
-              break;
+              break
           }
         })
-        .catch( error => {
-          this.consoleError(`服务器${error.response}`);
-        });
+        .catch(error => {
+          this.consoleError(`服务器${error.response}`)
+        })
       },
 
       // 置顶设置
@@ -479,37 +477,37 @@
           cancelButtonText: '取消',
           type: 'warning'
         })
-        .then( () => {
-          this.$axios.post(API.handleTrainingRecommend,Data)
-          .then( msg => {
-            console.log(msg);
-            const data = msg.data;
+        .then(() => {
+          this.$axios.post(API.handleTrainingRecommend, Data)
+          .then(msg => {
+            console.log(msg)
+            const data = msg.data
             switch (data.flag) {
               case 1000:
-                this.consoleSuccess(`设置成功`);
-                this.getTrainingList();
-                break;
+                this.consoleSuccess(`设置成功`)
+                this.getTrainingList()
+                break
               case 9009:
-                this.consoleWarning(`推荐课程最多显示10条,请先取消一条推荐课程在尝试!`);
-                this.getTrainingList();
-                break;
+                this.consoleWarning(`推荐课程最多显示10条,请先取消一条推荐课程在尝试!`)
+                this.getTrainingList()
+                break
               default:
-                this.consoleError(`设置失败,请重试!`);
-                this.initData();
-                break;
+                this.consoleError(`设置失败,请重试!`)
+                this.initData()
+                break
             }
           })
-          .catch( error => {
-            this.consoleError(`服务器${error.response}`);
-          });
+          .catch(error => {
+            this.consoleError(`服务器${error.response}`)
+          })
         })
       },
 
       // 数据初始化
       initData () {
-        this.training_list = [];
-        this.total_pages = 1;
-        this.current_page = 1;
+        this.training_list = []
+        this.total_pages = 1
+        this.current_page = 1
       },
 
       // 分页
@@ -519,8 +517,8 @@
           training_type: this.form.training_type,
           keyword: this.form.keyword,
           current_page: val
-        };
-        this.getTrainingList(Data);
+        }
+        this.getTrainingList(Data)
       },
 
       // 搜索
@@ -531,89 +529,88 @@
           training_type: this.form.training_type,
           keyword: this.form.keyword,
           current_page: 1
-        };
-        this.getTrainingList(Data);
+        }
+        this.getTrainingList(Data)
       },
 
       // 获取列表
       getTrainingList (Data) {
-        this.$axios.post(API.listTrainingInfo,Data)
-        .then( msg => {
-          console.log(msg);
-          const data = msg.data;
+        this.$axios.post(API.listTrainingInfo, Data)
+        .then(msg => {
+          console.log(msg)
+          const data = msg.data
           switch (data.flag) {
             case 1000:
-              this.training_list = data.training_list;
-              this.current_page = data.current_page;
-              this.total_pages = data.pages;
-              break;
+              this.training_list = data.training_list
+              this.current_page = data.current_page
+              this.total_pages = data.pages
+              break
             case 9001:
-              this.consoleWarning(`请先添加至少一条培训!`);
-              this.initData();
-              break;
+              this.consoleWarning(`请先添加至少一条培训!`)
+              this.initData()
+              break
             default:
-              this.consoleError(`获取培训列表失败,请重试!`);
-              this.initData();
-              break;
+              this.consoleError(`获取培训列表失败,请重试!`)
+              this.initData()
+              break
           }
         })
-        .catch( error => {
-          this.consoleError(`服务器${error.response}`);
-        });
+        .catch(error => {
+          this.consoleError(`服务器${error.response}`)
+        })
       },
-
 
       // 获取分类
       getTrainingClassifyList () {
         this.$axios.post(API.getTrainingClassifyList)
-        .then( msg => {
-          console.log(msg);
-          const data = msg.data;
+        .then(msg => {
+          console.log(msg)
+          const data = msg.data
           switch (data.flag) {
             case 1000:
-              this.form.training_classify_list = data.training_classify_list;
-              break;
+              this.form.training_classify_list = data.training_classify_list
+              break
             case 9001:
-              this.consoleSuccess(`请先添加至少一条培训分类!`);
-              break;
+              this.consoleSuccess(`请先添加至少一条培训分类!`)
+              break
             default:
-              this.consoleError(`获取分类失败,请重试!`);
-              break;
+              this.consoleError(`获取分类失败,请重试!`)
+              break
           }
         })
-        .catch( error => {
-          this.consoleError(`服务器${error.response}`);
-        });
+        .catch(error => {
+          this.consoleError(`服务器${error.response}`)
+        })
       },
 
-      consoleSuccess(success) {
+      consoleSuccess (success) {
         this.$notify({
           title: '成功',
           message: success,
           type: 'success'
-        });
+        })
       },
 
-      consoleWarning(warning) {
+      consoleWarning (warning) {
         this.$notify({
           title: '警告',
           message: warning,
           type: 'warning'
-        });
+        })
       },
 
-      consoleNews(news) {
+      consoleNews (news) {
         this.$notify.info({
           title: '消息',
           message: news
-        });
+        })
       },
 
-      consoleError(error) {
+      consoleError (error) {
         this.$notify.error({
           title: '错误',
           message: error
-        });
+        })
       }
     }
   }

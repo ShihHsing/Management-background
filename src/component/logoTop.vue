@@ -28,12 +28,12 @@
 </template>
 
 <script>
-import store from '../assets/store';
-import { mapActions } from 'vuex';
-import { USER_SIGNOUT } from '../assets/store/user';
-import '../assets/style/logoTop.less';
-import axios from 'axios';
-import * as API from '../assets/axios/api.js';
+import store from '../assets/store'
+import { mapActions } from 'vuex'
+import { USER_SIGNOUT } from '../assets/store/user'
+import '../assets/style/logoTop.less'
+// import axios from 'axios'
+import * as API from '../assets/axios/api.js'
 
 export default {
   name: 'logoTop',
@@ -63,7 +63,7 @@ export default {
       userImgUrl: 'http://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1484901235476&di=0b91b607a22beca9c92ce65a9c64084f&imgtype=0&src=http%3A%2F%2Fb.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Ff603918fa0ec08faf0f7ace15cee3d6d54fbda85.jpg',
       // 用户名字
       userName: '石鑫',
-      userPhone: store.state.user.userData.phone_number,
+      userPhone: store.state.user.userData.phone_number
       // session_id: store.state.user.userData.session_id
     }
   },
@@ -71,54 +71,52 @@ export default {
     ...mapActions([USER_SIGNOUT]),
     logOut () {
       this.$axios.post(API.logOut)
-      .then( msg => {
+      .then(msg => {
         console.log(msg)
-        if (msg.data.flag == '01') {
-
-          // statement
-          this.dialogVisible = false;
-          this.USER_SIGNOUT();// 退出登录
-          this.consoleSuccess(msg.data.return_code);
-          setTimeout( () => {
+        if (msg.data.flag === '01') {
+          this.dialogVisible = false
+          this.USER_SIGNOUT() // 退出登录
+          this.consoleSuccess(msg.data.return_code)
+          setTimeout(() => {
             this.$router.replace({ path: '/login' })
-          },1000)
+          }, 1000)
         } else {
-          this.consoleError(msg.data.return_code);
+          this.consoleError(msg.data.return_code)
         }
       })
-      .catch( response => {
+      .catch(response => {
         console.log(response.data)
-        this.dialogVisible = true;
-      });
+        this.dialogVisible = true
+      })
     },
-    consoleSuccess(success) {
+    consoleSuccess (success) {
       this.$notify({
         title: '成功',
         message: success,
         type: 'success'
-      });
+      })
     },
 
-    consoleWarning(warning) {
+    consoleWarning (warning) {
       this.$notify({
         title: '警告',
         message: warning,
         type: 'warning'
-      });
+      })
     },
 
-    consoleNews(news) {
+    consoleNews (news) {
       this.$notify.info({
         title: '消息',
         message: news
-      });
+      })
     },
 
-    consoleError(error) {
+    consoleError (error) {
       this.$notify.error({
         title: '错误',
         message: error
-      });
+      })
     }
   }
 }

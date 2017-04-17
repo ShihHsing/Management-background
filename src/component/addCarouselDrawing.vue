@@ -375,22 +375,20 @@
 </style>
 
 <script>
-  import * as API from '../assets/axios/api.js';
+  import * as API from '../assets/axios/api.js'
   export default{
     name: 'addCarouselDrawing',
 
-    created: function() {
+    created: function () {
 
       // 后台获取轮播图位置
-      this.getLocationTypeList();
+      this.getLocationTypeList()
 
       // 后台获取轮播图类型
-      this.getcarouselDrawingTypeList();
+      this.getcarouselDrawingTypeList()
     },
-
     data () {
       return {
-        
         // 最终上传数据
         addCarouselDrawing: 'Shop/addCarouselDrawing',
 
@@ -454,9 +452,7 @@
         // 视频地址
         carousel_drawing_video_url: '',
 
-
         // 轮播图列表
-        
         // 后台获取数据列表
         search_get_carousel_drawing_list_data: [],
 
@@ -474,7 +470,6 @@
 
         // 轮播图名字
         search_name: '',
-
 
         // 弹出框 修改页面
         modification: {
@@ -520,7 +515,7 @@
 
           // 视频地址
           carousel_drawing_video_url: '',
-        },
+        }
       }
     },
 
@@ -528,228 +523,198 @@
 
       // 获取轮播图列表
       getCarouselDrawingList (tab, event) {
-        if (tab.label == '轮播图列表') {
-
+        if (tab.label === '轮播图列表') {
           // statement
-          console.log('轮播图列表');
-
+          console.log('轮播图列表')
           // 初始化获取列表数据
-          this.getCarouselDrawingListData();
-
+          this.getCarouselDrawingListData()
         } else {
-
-          window.location.reload();
-          console.log('新增轮播图');
+          window.location.reload()
+          console.log('新增轮播图')
         }
       },
 
       // 上传轮播图
       addCarouselDrawingImg (response, file) {
-        console.log(response);
-        if (response.flag == '1000') {
-
+        console.log(response)
+        if (response.flag === '1000') {
           // statement
-          this.consoleSuccess(`轮播图上传成功${response.return_code}`);
-          this.imageUrl = URL.createObjectURL(file.raw);
-          this.carousel_drawing_url = response.file_url;
+          this.consoleSuccess(`轮播图上传成功${response.return_code}`)
+          this.imageUrl = window.URL.createObjectURL(file.raw)
+          this.carousel_drawing_url = response.file_url
         } else {
-          this.consoleError(response.return_code);
+          this.consoleError(response.return_code)
         }
       },
 
       // 检验图片
-      beforeAvatarUpload(file) {
-        const isLt2M = file.size / 1024 / 1024 < 1;
-
+      beforeAvatarUpload (file) {
+        const isLt2M = file.size / 1024 / 1024 < 1
         if (!isLt2M) {
-          this.consoleError(`上传图片大小不能超过 1MB!`);
+          this.consoleError(`上传图片大小不能超过 1MB!`)
         }
-        return isLt2M;
+        return isLt2M
       },
 
        // 文件上传失败
-      uploadError() {
+      uploadError () {
         this.consoleError('上传文件有误!请重新上传!')
       },
 
       // 富文本每次改变的回调 更新数据
       updateData (data) {
-        this.newDetails = data;
+        this.newDetails = data
       },
-
 
       // 后台获取轮播图位置
       getLocationTypeList () {
         this.$axios.post(this.location_type_api)
-        .then( msg => {
-          if (msg.data.flag == '1000') {
-
+        .then(msg => {
+          if (msg.data.flag === '1000') {
             // statement
-            console.log('轮播图位置',msg.data);
-            this.consoleSuccess(`获取轮播图位置${msg.data.return_code}`);
-            this.location_type_list = msg.data.location_list;
+            console.log('轮播图位置', msg.data)
+            this.consoleSuccess(`获取轮播图位置${msg.data.return_code}`)
+            this.location_type_list = msg.data.location_list
           } else {
-            this.consoleError(msg.data.return_code);
+            this.consoleError(msg.data.return_code)
           }
         }, response => {
-          this.consoleError(response.return_code);
+          this.consoleError(response.return_code)
         })
       },
 
       // 后台获取轮播图类型
       getcarouselDrawingTypeList () {
         this.$axios.post(this.carousel_drawing_type_api)
-        .then( msg => {
-          if (msg.data.flag == '1000') {
-
+        .then(msg => {
+          if (msg.data.flag === '1000') {
             // statement
-            console.log('轮播图类型',msg.data);
-            this.consoleSuccess(`获取轮播图类型${msg.data.return_code}`);
-            this.carousel_drawing_type_list = msg.data.type_list;
+            console.log('轮播图类型', msg.data)
+            this.consoleSuccess(`获取轮播图类型${msg.data.return_code}`)
+            this.carousel_drawing_type_list = msg.data.type_list
           } else {
-            this.consoleError(msg.data.return_code);
+            this.consoleError(msg.data.return_code)
           }
         }, response => {
-          this.consoleError(response.return_code);
+          this.consoleError(response.return_code)
         })
       },
 
       // 获取指定商品对应缩略图
-      getShopIdThumbImg() {
-        this.$axios.post(this.shop_id_thumb_img_api,{
+      getShopIdThumbImg () {
+        this.$axios.post(this.shop_id_thumb_img_api, {
           model: this.model
         })
-        .then( msg => {
-          if (msg.data.flag == '1000') {
-
+        .then(msg => {
+          if (msg.data.flag === '1000') {
             // statement
-            console.log(msg.data);
-            this.model_img = msg.data.thumb_image;
-            this.consoleSuccess(msg.data.return_code);
+            console.log(msg.data)
+            this.model_img = msg.data.thumb_image
+            this.consoleSuccess(msg.data.return_code)
           } else {
-            this.consoleError(msg.data.return_code);
+            this.consoleError(msg.data.return_code)
           }
         }, response => {
-          this.consoleError(response.return_code);
+          this.consoleError(response.return_code)
         })
       },
 
       // 添加轮播图
       phpPostData () {
-        const type = this.carousel_drawing_type >> 0;
+        const type = this.carousel_drawing_type >> 0
         console.log(this.name)
         if (this.name) {
-
-          // statement
           if (this.location) {
-
-            // statement
             if (this.carousel_drawing_url) {
-
-              // statement
               if (this.carousel_drawing_type) {
-                // statement
                 switch (type) {
-
                   // 轮播图类型 图文
                   case 1:
                     if (this.newDetails) {
-
-                      // statement
-                      this.$axios.post(API.addCarouselDrawing,{
-                        name: this.name,
-                        carousel_drawing_url: this.carousel_drawing_url,
-                        location: this.location,
-                        carousel_drawing_type: this.carousel_drawing_type,
-                        description: this.newDetails
+                      this.$axios.post(API.addCarouselDrawing, {
+                        'name': this.name,
+                        'carousel_drawing_url': this.carousel_drawing_url,
+                        'location': this.location,
+                        'carousel_drawing_type': this.carousel_drawing_type,
+                        'description': this.newDetails
                       })
-                      .then( msg => {
-                        if (msg.data.flag == '1000') {
-
-                          // statement
-                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
-                            setTimeout( () => {
-                              this.tabCheck = 'carouselDrawingList';
-                              // 初始化获取列表数据
-                              this.getCarouselDrawingListData();
-                            },1000)
+                      .then(msg => {
+                        if (msg.data.flag === '1000') {
+                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
+                          setTimeout(() => {
+                            this.tabCheck = 'carouselDrawingList'
+                            // 初始化获取列表数据
+                            this.getCarouselDrawingListData()
+                          }, 1000)
                         } else {
-                          this.consoleError(`${msg.data.return_code}`);
+                          this.consoleError(`${msg.data.return_code}`)
                         }
                       }, response => {
-                        this.consoleError(`${response.return_code}`);
+                        this.consoleError(`${response.return_code}`)
                       })
                     } else {
                       this.consoleError(`请完善图文详情!`)
                     }
-                    break;
+                    break
 
                   // 轮播图类型 商品
                   case 2:
                     if (this.model) {
-                      
-                      // statement
-                      this.$axios.post(API.addCarouselDrawing,{
-                        name: this.name,
-                        carousel_drawing_url: this.carousel_drawing_url,
-                        location: this.location,
-                        carousel_drawing_type: this.carousel_drawing_type,
-                        description: this.model
+                      this.$axios.post(API.addCarouselDrawing, {
+                        'name': this.name,
+                        'carousel_drawing_url': this.carousel_drawing_url,
+                        'location': this.location,
+                        'carousel_drawing_type': this.carousel_drawing_type,
+                        'description': this.model
                       })
-                      .then( msg => {
-                        if (msg.data.flag == '1000') {
-
-                          // statement
-                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
-                          setTimeout( () => {
-                            this.tabCheck = 'carouselDrawingList';
+                      .then(msg => {
+                        if (msg.data.flag === '1000') {
+                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
+                          setTimeout(() => {
+                            this.tabCheck = 'carouselDrawingList'
                             // 初始化获取列表数据
-                            this.getCarouselDrawingListData();
-                          },1000)
+                            this.getCarouselDrawingListData()
+                          }, 1000)
                         } else {
-                          this.consoleError(`${msg.data.return_code}`);
+                          this.consoleError(`${msg.data.return_code}`)
                         }
                       }, response => {
-                        this.consoleError(`${response.return_code}`);
+                        this.consoleError(`${response.return_code}`)
                       })
                     } else {
                       this.consoleError(`请输入需要绑定的商品款号!`)
                     }
-                    break;
+                    break
 
                   // 轮播图类型 视频
                   case 3:
                     if (this.carousel_drawing_video_url) {
-
-                      // statement
-                      this.$axios.post(API.addCarouselDrawing,{
-                        name: this.name,
-                        carousel_drawing_url: this.carousel_drawing_url,
-                        location: this.location,
-                        carousel_drawing_type: this.carousel_drawing_type,
-                        description: this.carousel_drawing_video_url
+                      this.$axios.post(API.addCarouselDrawing, {
+                        'name': this.name,
+                        'carousel_drawing_url': this.carousel_drawing_url,
+                        'location': this.location,
+                        'carousel_drawing_type': this.carousel_drawing_type,
+                        'description': this.carousel_drawing_video_url
                       })
-                      .then( msg => {
-                        if (msg.data.flag == '1000') {
-
-                          // statement
-                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
-                          setTimeout( () => {
-                            this.tabCheck = 'carouselDrawingList';
+                      .then(msg => {
+                        if (msg.data.flag === '1000') {
+                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
+                          setTimeout(() => {
+                            this.tabCheck = 'carouselDrawingList'
                             // 初始化获取列表数据
-                            this.getCarouselDrawingListData();
-                          },1000)
+                            this.getCarouselDrawingListData()
+                          }, 1000)
                         } else {
-                          this.consoleError(`${msg.data.return_code}`);
+                          this.consoleError(`${msg.data.return_code}`)
                         }
                       }, response => {
-                        this.consoleError(`${response.return_code}`);
+                        this.consoleError(`${response.return_code}`)
                       })
                     } else {
                       this.consoleError(`请输入视频地址!`)
                     }
-                    break;
-                };
+                    break
+                }
               } else {
                 this.consoleError(`请选择轮播图类型!`)
               }
@@ -766,299 +731,259 @@
 
       // 获取数据
       getCarouselDrawingListData (current_page) {
-        this.$axios.post(this.carousel_drawing_list_data_api,{
-          name: this.search_name,
-          location: this.search_location,
-          carousel_drawing_type: this.search_carousel_drawing_type,
-          current_page: current_page || this.current_page
+        this.$axios.post(this.carousel_drawing_list_data_api, {
+          'name': this.search_name,
+          'location': this.search_location,
+          'carousel_drawing_type': this.search_carousel_drawing_type,
+          'current_page': current_page || this.current_page
         })
-        .then( msg => {
-          if (msg.data.flag == '1000') {
-
-            // statement
-            console.log(msg.data);
-            this.consoleSuccess(`轮播图获取成功${msg.data.return_code}`);
+        .then(msg => {
+          if (msg.data.flag === '1000') {
+            console.log(msg.data)
+            this.consoleSuccess(`轮播图获取成功${msg.data.return_code}`)
 
             // 列表数据
-            this.search_get_carousel_drawing_list_data = msg.data.carousel_drawing_list;
+            this.search_get_carousel_drawing_list_data = msg.data.carousel_drawing_list
 
             // 总页数
-            this.pages = msg.data.pages;
+            this.pages = msg.data.pages
 
             // 当前页
-            this.current_page = msg.data.current_page;
+            this.current_page = msg.data.current_page
           } else {
-            this.consoleError(`${msg.data.return_code}`);
-            this.search_get_carousel_drawing_list_data = [];
+            this.consoleError(`${msg.data.return_code}`)
+            this.search_get_carousel_drawing_list_data = []
           }
         }, response => {
-          this.consoleError(`${response.return_code}`);
+          this.consoleError(`${response.return_code}`)
         })
       },
 
       // 用户点击搜索数据
-      userSearchData(current_page) {
+      userSearchData (current_page) {
         if (this.search_name || this.search_location || this.search_carousel_drawing_type) {
-
-          // statement
-          this.getCarouselDrawingListData(current_page);
+          this.getCarouselDrawingListData(current_page)
         } else {
           this.consoleError(`至少一条搜索项不为空!`)
         }
       },
 
       // 删除
-      deleteCarouseDrawing(index, row, rows) {
-        console.log(row);
-        if (confirm('确认删除吗?')) {
-
-          // statement
-          this.$axios.post(this.removeCarouselDrawing,{
-            carousel_drawing_id: row.id
+      deleteCarouseDrawing (index, row, rows) {
+        console.log(row)
+        if (window.confirm('确认删除吗?')) {
+          this.$axios.post(this.removeCarouselDrawing, {
+            'carousel_drawing_id': row.id
           })
-          .then( msg => {
-            if (msg.data.flag == '1000') {
-              
+          .then(msg => {
+            if (msg.data.flag === '1000') {
               // statement
               // 获取当前页的总条数
               // 保护用户删除某一页最后一条后 依旧请求当前页数据 返回空数据
               // 若当前页--后小于零 则请求第一页
-              const number_of_branches = rows.length;
-              console.log(number_of_branches);
-              if (number_of_branches == 1) {
-
-                // statement
-                let current_page = this.current_page;
+              const number_of_branches = rows.length
+              console.log(number_of_branches)
+              if (number_of_branches === 1) {
+                let current_page = this.current_page
                 if (--current_page <= 1) {
-
-                  // statement
-                  this.getCarouselDrawingListData();
+                  this.getCarouselDrawingListData()
                 } else {
-                  this.getCarouselDrawingListData(--current_page);
+                  this.getCarouselDrawingListData(--current_page)
                 }
               } else {
-                this.getCarouselDrawingListData();
+                this.getCarouselDrawingListData()
               }
             } else {
-              this.consoleError(`${msg.data.return_code}`);
+              this.consoleError(`${msg.data.return_code}`)
             }
           }, response => {
-            this.consoleError(`${response.data.return_code}`);
+            this.consoleError(`${response.data.return_code}`)
           })
         }
       },
 
       // 分页
       handleCurrentChange (val) {
-        console.log(`当前页${val}`);
-        this.current_page = val;
-        this.getCarouselDrawingListData();
+        console.log(`当前页${val}`)
+        this.current_page = val
+        this.getCarouselDrawingListData()
       },
 
       // 修改轮播图获取数据
       getModificationData (id) {
-        console.log(`获取修改id:${id}`);
-        this.modification.carousel_drawing_id = id;
-        this.$axios.post(this.modification_api,{
+        console.log(`获取修改id:${id}`)
+        this.modification.carousel_drawing_id = id
+        this.$axios.post(this.modification_api, {
           carousel_drawing_id: id
         })
-        .then( msg => {
-          if (msg.data.flag == '1000') {
+        .then(msg => {
+          if (msg.data.flag === '1000') {
             // statement
-            this.consoleSuccess(`修改数据获取${msg.data.return_code}`);
+            this.consoleSuccess(`修改数据获取${msg.data.return_code}`)
 
             // 显示弹出层
-            this.modification.dialogFormVisible = true;
+            this.modification.dialogFormVisible = true
 
             // 保存数据到本地
-            this.modification.phpGetmodificationData = msg.data.carousel_drawing_detail;
+            this.modification.phpGetmodificationData = msg.data.carousel_drawing_detail
 
             // 绑定数据
-            this.modification.name = this.modification.phpGetmodificationData.name;
+            this.modification.name = this.modification.phpGetmodificationData.name
 
-            this.modification.imageUrl = this.modification.phpGetmodificationData.url;
+            this.modification.imageUrl = this.modification.phpGetmodificationData.url
 
-            this.modification.location = this.modification.phpGetmodificationData.location;
+            this.modification.location = this.modification.phpGetmodificationData.location
 
-            this.modification.carousel_drawing_type = this.modification.phpGetmodificationData.type;
+            this.modification.carousel_drawing_type = this.modification.phpGetmodificationData.type
 
-            this.modification.carousel_drawing_type_name = this.modification.phpGetmodificationData.type_name;
-            
-            if (this.modification.carousel_drawing_type == 1) {
-
-              // statement
-              this.modification.newDetails = this.modification.phpGetmodificationData.value;
-              this.modification.initData = this.modification.phpGetmodificationData.value;
-            } else if (this.modification.carousel_drawing_type == 2) {
-
-              // statement
-              this.modification.model = this.modification.phpGetmodificationData.value;
-              this.modificationGetShopIdThumbImg();
-            } else if (this.modification.carousel_drawing_type == 3) {
-
-              // statement
-              this.modification.carousel_drawing_video_url = this.modification.phpGetmodificationData.value;
+            this.modification.carousel_drawing_type_name = this.modification.phpGetmodificationData.type_name
+         
+            if (this.modification.carousel_drawing_type === 1) {
+              this.modification.newDetails = this.modification.phpGetmodificationData.value
+              this.modification.initData = this.modification.phpGetmodificationData.value
+            } else if (this.modification.carousel_drawing_type === 2) {
+              this.modification.model = this.modification.phpGetmodificationData.value
+              this.modificationGetShopIdThumbImg()
+            } else if (this.modification.carousel_drawing_type === 3) {
+              this.modification.carousel_drawing_video_url = this.modification.phpGetmodificationData.value
             }
           } else {
-            this.consoleError(`${msg.data.return_code}`);
+            this.consoleError(`${msg.data.return_code}`)
           }
         }, response => {
-          this.consoleError(`${response.return_code}`);
+          this.consoleError(`${response.return_code}`)
         })
       },
 
       // 修改
       // 上传轮播图
       modificationAddCarouselDrawingImg (response, file) {
-        console.log(response);
-        if (response.flag == '1000') {
-
-          // statement
-          this.consoleSuccess(`轮播图上传成功${response.return_code}`);
-          this.modification.imageUrl = URL.createObjectURL(file.raw);
-          this.modification.carousel_drawing_url = response.file_url;
+        console.log(response)
+        if (response.flag === '1000') {
+          this.consoleSuccess(`轮播图上传成功${response.return_code}`)
+          this.modification.imageUrl = window.URL.createObjectURL(file.raw)
+          this.modification.carousel_drawing_url = response.file_url
         } else {
-          this.consoleError(response.return_code);
+          this.consoleError(response.return_code)
         }
       },
 
       // 富文本每次改变的回调 更新数据
       modificationUpdateData (data) {
-        this.modification.newDetails = data;
+        this.modification.newDetails = data
       },
 
       // 获取指定商品对应缩略图
-      modificationGetShopIdThumbImg() {
-        this.$axios.post(this.shop_id_thumb_img_api,{
+      modificationGetShopIdThumbImg () {
+        this.$axios.post(this.shop_id_thumb_img_api, {
           model: this.modification.model
         })
-        .then( msg => {
-          if (msg.data.flag == '1000') {
-
+        .then(msg => {
+          if (msg.data.flag === '1000') {
             // statement
-            console.log(msg.data);
-            this.modification.model_img = msg.data.thumb_image;
-            this.consoleSuccess(msg.data.return_code);
+            console.log(msg.data)
+            this.modification.model_img = msg.data.thumb_image
+            this.consoleSuccess(msg.data.return_code)
           } else {
-            this.consoleError(msg.data.return_code);
+            this.consoleError(msg.data.return_code)
           }
         }, response => {
-          this.consoleError(response.return_code);
+          this.consoleError(response.return_code)
         })
       },
 
       // 上传修改后的数据请求
       modificationPhpPostData () {
-        const type = this.modification.carousel_drawing_type >> 0;
+        const type = this.modification.carousel_drawing_type >> 0
         if (this.modification.name) {
-
-          // statement
           if (this.modification.location) {
-
-            // statement
             if (this.modification.carousel_drawing_url || this.modification.imageUrl) {
-
-              // statement
               if (this.modification.carousel_drawing_type) {
-                // statement
                 switch (type) {
-
                   // 轮播图类型 图文
                   case 1:
                     if (this.modification.newDetails) {
-
-                      // statement
-                      this.$axios.post(this.modification_api,{
-                        request_flag: 'modify',
-                        carousel_drawing_id: this.modification.carousel_drawing_id,
-                        name: this.modification.name,
-                        carousel_drawing_url: this.modification.carousel_drawing_url || this.modification.imageUrl,
-                        location: this.modification.location,
-                        carousel_drawing_type: this.modification.carousel_drawing_type,
-                        description: this.modification.newDetails
+                      this.$axios.post(this.modification_api, {
+                        'request_flag': 'modify',
+                        'carousel_drawing_id': this.modification.carousel_drawing_id,
+                        'name': this.modification.name,
+                        'carousel_drawing_url': this.modification.carousel_drawing_url || this.modification.imageUrl,
+                        'location': this.modification.location,
+                        'carousel_drawing_type': this.modification.carousel_drawing_type,
+                        'description': this.modification.newDetails
                       })
-                      .then( msg => {
-                        if (msg.data.flag == '1000') {
-
-                          // statement
-                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
-                          this.modification.dialogFormVisible = false;
-                          this.getCarouselDrawingListData();
+                      .then(msg => {
+                        if (msg.data.flag === '1000') {
+                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
+                          this.modification.dialogFormVisible = false
+                          this.getCarouselDrawingListData()
                         } else {
-                          this.consoleError(`${msg.data.return_code}`);
+                          this.consoleError(`${msg.data.return_code}`)
                         }
                       }, response => {
-                        this.consoleError(`${response.return_code}`);
+                        this.consoleError(`${response.return_code}`)
                       })
                     } else {
                       this.consoleError(`请完善图文详情!`)
                     }
-                    break;
+                    break
 
                   // 轮播图类型 商品
                   case 2:
                     if (this.modification.model) {
-                      
-                      // statement
-                      this.$axios.post(this.modification_api,{
-                        request_flag: 'modify',
-                        carousel_drawing_id: this.modification.carousel_drawing_id,
-                        name: this.modification.name,
-                        carousel_drawing_url: this.modification.carousel_drawing_url || this.modification.imageUrl,
-                        location: this.modification.location,
-                        carousel_drawing_type: this.modification.carousel_drawing_type,
-                        description: this.modification.model
+                      this.$axios.post(this.modification_api, {
+                        'request_flag': 'modify',
+                        'carousel_drawing_id': this.modification.carousel_drawing_id,
+                        'name': this.modification.name,
+                        'carousel_drawing_url': this.modification.carousel_drawing_url || this.modification.imageUrl,
+                        'location': this.modification.location,
+                        'carousel_drawing_type': this.modification.carousel_drawing_type,
+                        'description': this.modification.model
                       })
-                      .then( msg => {
-                        if (msg.data.flag == '1000') {
-
-                          // statement
-                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
-                          this.modification.dialogFormVisible = false;
-                          this.getCarouselDrawingListData();
+                      .then(msg => {
+                        if (msg.data.flag === '1000') {
+                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
+                          this.modification.dialogFormVisible = false
+                          this.getCarouselDrawingListData()
                         } else {
-                          this.consoleError(`${msg.data.return_code}`);
+                          this.consoleError(`${msg.data.return_code}`)
                         }
                       }, response => {
-                        this.consoleError(`${response.return_code}`);
+                        this.consoleError(`${response.return_code}`)
                       })
                     } else {
                       this.consoleError(`请输入需要绑定的商品款号!`)
                     }
-                    break;
+                    break
 
                   // 轮播图类型 视频
                   case 3:
                     if (this.modification.carousel_drawing_video_url) {
-
-                      // statement
-                      this.$axios.post(this.modification_api,{
-                        request_flag: 'modify',
-                        carousel_drawing_id: this.modification.carousel_drawing_id,
-                        name: this.modification.name,
-                        carousel_drawing_url: this.modification.carousel_drawing_url || this.modification.imageUrl,
-                        location: this.modification.location,
-                        carousel_drawing_type: this.modification.carousel_drawing_type,
-                        description: this.modification.carousel_drawing_video_url
+                      this.$axios.post(this.modification_api, {
+                        'request_flag': 'modify',
+                        'carousel_drawing_id': this.modification.carousel_drawing_id,
+                        'name': this.modification.name,
+                        'carousel_drawing_url': this.modification.carousel_drawing_url || this.modification.imageUrl,
+                        'location': this.modification.location,
+                        'carousel_drawing_type': this.modification.carousel_drawing_type,
+                        'description': this.modification.carousel_drawing_video_url
                       })
-                      .then( msg => {
-                        if (msg.data.flag == '1000') {
-
-                          // statement
-                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`);
-                          this.modification.dialogFormVisible = false;
-                          this.getCarouselDrawingListData();
+                      .then(msg => {
+                        if (msg.data.flag === '1000') {
+                          this.consoleSuccess(`创建轮播图${msg.data.return_code}`)
+                          this.modification.dialogFormVisible = false
+                          this.getCarouselDrawingListData()
                         } else {
-                          this.consoleError(`${msg.data.return_code}`);
+                          this.consoleError(`${msg.data.return_code}`)
                         }
                       }, response => {
-                        this.consoleError(`${response.return_code}`);
+                        this.consoleError(`${response.return_code}`)
                       })
                     } else {
                       this.consoleError(`请输入视频地址!`)
                     }
-                    break;
-                };
+                    break
+                }
               } else {
                 this.consoleError(`请选择轮播图类型!`)
               }
@@ -1073,55 +998,53 @@
         }
       },
 
-
       // 轮播图禁用 启用
-      forbiddenOrStartUsing (id,status) {
-        console.log(`${id}${status}`);
-        this.$axios.post(this.handleCarouselDrawing,{
-          carousel_drawing_id: id,
-          carousel_drawing_status: (status == '1'?'0':'1')
+      forbiddenOrStartUsing (id, status) {
+        console.log(`${id}${status}`)
+        this.$axios.post(this.handleCarouselDrawing, {
+          'carousel_drawing_id': id,
+          'carousel_drawing_status': (status === '1' ? '0' : '1')
         })
-        .then( msg => {
-          if (msg.data.flag == '1000') {
+        .then(msg => {
+          if (msg.data.flag === '1000') {
             // statement
-            this.consoleSuccess(`${msg.data.return_code}`);
-            this.getCarouselDrawingListData();
+            this.consoleSuccess(`${msg.data.return_code}`)
+            this.getCarouselDrawingListData()
           } else {
-            this.consoleError(`${msg.data.return_code}`);
+            this.consoleError(`${msg.data.return_code}`)
           }
         }, response => {
-            this.consoleError(`${response.data.return_code}`);
+          this.consoleError(`${response.data.return_code}`)
         })
       },
-      
-      consoleSuccess(success) {
+      consoleSuccess (success) {
         this.$notify({
           title: '成功',
           message: success,
           type: 'success'
-        });
+        })
       },
 
-      consoleWarning(warning) {
+      consoleWarning (warning) {
         this.$notify({
           title: '警告',
           message: warning,
           type: 'warning'
-        });
+        })
       },
 
-      consoleNews(news) {
+      consoleNews (news) {
         this.$notify.info({
           title: '消息',
           message: news
-        });
+        })
       },
 
-      consoleError(error) {
+      consoleError (error) {
         this.$notify.error({
           title: '错误',
           message: error
-        });
+        })
       }
     }
   }

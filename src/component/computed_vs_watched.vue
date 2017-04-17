@@ -24,7 +24,7 @@
     data () {
       return {
         firstName: 'Foo',
-        lastName: 'Bar',
+        lastName: 'Bar'
       }
     },
     computed: {
@@ -42,15 +42,3 @@
     }
   }
 </script>
-
-<style lang="less">
-@media (max-width: 1200px){
-
-}
-@media (max-width: 992px){
-  
-}
-@media (max-width: 768px){
-  
-}
-</style>

@@ -28,19 +28,17 @@
 
 <script>
 // 导航栏
-import navMenu from './navMenu.vue';
+import navMenu from './navMenu.vue'
 // 页头
-import logoTop from './logoTop.vue';
+import logoTop from './logoTop.vue'
 // 面包屑
-import breadcrumb from './Breadcrumb.vue';
+import breadcrumb from './Breadcrumb.vue'
 // 样式
-import '../assets/style/children.less';
+import '../assets/style/children.less'
 export default {
   name: 'children',
   data () {
-    return {
-      
-    }
+    return {}
   },
   components: { navMenu, logoTop, breadcrumb }
 }

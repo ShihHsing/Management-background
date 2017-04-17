@@ -77,7 +77,7 @@
 </style>
 
 <script>
-  import * as API from '../assets/axios/api.js';
+  import * as API from '../assets/axios/api.js'
   export default{
     name: 'trainingClassifyList',
     data () {
@@ -88,7 +88,7 @@
         // 获取列表数据 ---> 服务端
         training_classify_list: [],
         // 修改 删除 控件数据模型
-        modification_delete_moduleData: {},
+        modification_delete_moduleData: {}
         // 记录获取列表值
         // 大于十条不允许再添加
         // list_length: 0,
@@ -97,13 +97,13 @@
 
     computed: {
       list_length: function () {
-        return this.training_classify_list.length;
+        return this.training_classify_list.length
       }
     },
 
     created: function () {
       // 初始化获取分类列表
-      this.getTrainingClassifyList();
+      this.getTrainingClassifyList()
     },
 
     methods: {
@@ -116,31 +116,29 @@
           inputValue: list.classify_name,
           inputPattern: /^[\u4E00-\u9FA5A-Za-z0-9]{0,15}$/,
           inputErrorMessage: '分类名称不包含特殊字符,并名称长度在15字以内!'
-        }).then( ({value}) => {
-          this.$axios.post(API.modifyTrainingClassify,{
+        }).then(({ value }) => {
+          this.$axios.post(API.modifyTrainingClassify, {
             classify: value,
             classify_id: list.id
           })
-          .then( msg => {
-            console.log(msg.data);
-            const data = msg.data;
+          .then(msg => {
+            console.log(msg.data)
+            const data = msg.data
 
             switch (data.flag) {
               case 1000:
-                this.getTrainingClassifyList();
-                this.consoleSuccess(`修改培训分类成功!`);
-                break;
+                this.getTrainingClassifyList()
+                this.consoleSuccess(`修改培训分类成功!`)
+                break
               default:
-                this.consoleError(`修改分类失败,请重试!`);
-                break;
+                this.consoleError(`修改分类失败,请重试!`)
+                break
             }
           })
-          .catch( error => {
-            this.consoleError(`服务器${error.response}`);
-          });
-        }).catch( () => {
-          
-        });
+          .catch(error => {
+            this.consoleError(`服务器${error.response}`)
+          })
+        }).catch(() => {})
       },
 
       // 删除
@@ -151,124 +149,124 @@
           type: 'warning'
         })
         .then(() => {
-          this.$axios.post(API.removeTrainingClassify,{
+          this.$axios.post(API.removeTrainingClassify, {
             classify_id: id
           })
-          .then( msg => {
-            console.log(msg.data);
-            const data = msg.data;
+          .then(msg => {
+            console.log(msg.data)
+            const data = msg.data
 
             switch (data.flag) {
               case 1000:
-                this.getTrainingClassifyList();
-                this.consoleSuccess(`删除培训分类成功!`);
-                break;
+                this.getTrainingClassifyList()
+                this.consoleSuccess(`删除培训分类成功!`)
+                break
               default:
-                this.consoleError(`删除分类失败,请重试!`);
-                break;
+                this.consoleError(`删除分类失败,请重试!`)
+                break
             }
           })
-          .catch( error => {
-            this.consoleError(`服务器${error.response}`);
-          });
+          .catch(error => {
+            this.consoleError(`服务器${error.response}`)
+          })
         })
       },
 
       // 获取分类列表
       getTrainingClassifyList () {
         this.$axios.post(API.getTrainingClassifyList)
-        .then( msg => {
-          console.log(msg.data);
-          const data = msg.data;
+        .then(msg => {
+          console.log(msg.data)
+          const data = msg.data
 
           switch (data.flag) {
             case 1000:
-              this.training_classify_list = data.training_classify_list;
-              break;
+              this.training_classify_list = data.training_classify_list
+              break
             case 9001:
-              this.addTrain = true;
-              this.consoleSuccess(`暂无培训分类!请添加!`);
-              break;
+              this.addTrain = true
+              this.consoleSuccess(`暂无培训分类!请添加!`)
+              break
             default:
-              this.consoleError(`获取分类失败,请重试!`);
-              break;
+              this.consoleError(`获取分类失败,请重试!`)
+              break
           }
         })
-        .catch( error => {
-          this.consoleError(`服务器${error.response}`);
-        });
+        .catch(error => {
+          this.consoleError(`服务器${error.response}`)
+        })
       },
 
       // 添加培训分类
       addTrainList () {
-        const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{0,15}$/;
+        const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{0,15}$/
         if (this.list_length < 10) {
           if (this.classify) {
             if (reg.Newer(this.classify)) {
-              this.$axios.post(API.addTrainingClassify,{
+              this.$axios.post(API.addTrainingClassify, {
                 classify: this.classify
               })
-              .then( msg => {
-                console.log(msg.data);
-                const data = msg.data;
+              .then(msg => {
+                console.log(msg.data)
+                const data = msg.data
 
                 switch (data.flag) {
                   case 1000:
-                    this.addTrain = false;
-                    this.classify = '';
-                    this.getTrainingClassifyList();
-                    this.consoleSuccess(`新增分类成功`);
-                    break;
+                    this.addTrain = false
+                    this.classify = ''
+                    this.getTrainingClassifyList()
+                    this.consoleSuccess(`新增分类成功`)
+                    break
                   case 9005:
-                    this.consoleError(`该分类已被使用,请删除培训分类后再试!`);
-                    break;
+                    this.consoleError(`该分类已被使用,请删除培训分类后再试!`)
+                    break
                   default:
-                    this.consoleError(`新增分类失败,请重试!`);
-                    break;
+                    this.consoleError(`新增分类失败,请重试!`)
+                    break
                 }
               })
-              .catch( error => {
-                this.consoleError(`服务器${error.response}`);
-              });
+              .catch(error => {
+                this.consoleError(`服务器${error.response}`)
+              })
             } else {
-              this.consoleWarning(`分类名称不包含特殊字符,并名称长度在15字以内!`);
+              this.consoleWarning(`分类名称不包含特殊字符,并名称长度在15字以内!`)
             }
           } else {
-            this.consoleWarning(`数据不能为空`);
+            this.consoleWarning(`数据不能为空`)
           }
         } else {
-          this.consoleWarning(`最多添加十条培训分类!`);
+          this.consoleWarning(`最多添加十条培训分类!`)
         }
       },
 
-      consoleSuccess(success) {
+      consoleSuccess (success) {
         this.$notify({
           title: '成功',
           message: success,
           type: 'success'
-        });
+        })
       },
 
-      consoleWarning(warning) {
+      consoleWarning (warning) {
         this.$notify({
           title: '警告',
           message: warning,
           type: 'warning'
-        });
+        })
       },
 
-      consoleNews(news) {
+      consoleNews (news) {
         this.$notify.info({
           title: '消息',
           message: news
-        });
+        })
       },
 
-      consoleError(error) {
+      consoleError (error) {
         this.$notify.error({
           title: '错误',
           message: error
-        });
+        })
       }
     }
   }

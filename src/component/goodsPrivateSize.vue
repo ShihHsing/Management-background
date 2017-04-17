@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import * as API from '../assets/axios/api.js';
+import * as API from '../assets/axios/api.js'
 import '../assets/style/goodsPrivateSize.less'
 export default {
   name: 'goodsPrivateSize',
@@ -104,158 +104,153 @@ export default {
       }
     }
   },
-  
   methods: {
 
-    // 获取附属性ID 
+    // 获取附属性ID
     getParentId () {
-      if (this.goodsPrivatePropertyValues.commodityBrand != '' && this.goodsPrivatePropertyValues.commodityClassification != '') {
-        var _this = this;
-        this.$axios.post(API.addNewerCategoryArguments,{
-          product_id: this.goodsPrivatePropertyValues.commodityBrand,
-          category_id: this.goodsPrivatePropertyValues.commodityClassification,
-          request_flag: 'parent_list'
+      if (this.goodsPrivatePropertyValues.commodityBrand !== '' && this.goodsPrivatePropertyValues.commodityClassification !== '') {
+        var _this = this
+        this.$axios.post(API.addNewerCategoryArguments, {
+          'product_id': this.goodsPrivatePropertyValues.commodityBrand,
+          'category_id': this.goodsPrivatePropertyValues.commodityClassification,
+          'request_flag': 'parent_list'
         })
-        .then( msg => {
-          console.log(msg);
+        .then(msg => {
+          console.log(msg)
 
-          const data = msg.data;
-          if (data.flag == '1000') {
-
+          const data = msg.data
+          if (data.flag === '1000') {
             for (var i = data.parent_argument_list.length - 1; i >= 0; i--) {
-
-              if (data.parent_argument_list[i].argument_value == '尺寸') {
-
-                _this.parent_id = data.parent_argument_list[i].id;
-                console.log(`副属性ID:${_this.parent_id}`);
-                break;
+              if (data.parent_argument_list[i].argument_value === '尺寸') {
+                _this.parent_id = data.parent_argument_list[i].id
+                console.log(`副属性ID:${_this.parent_id}`)
+                break
               }
-
             }
           } else {
-            _this.consoleError(`服务器发生未知错误!`);
+            _this.consoleError(`服务器发生未知错误!`)
           }
         })
-        .catch( response => {
-          _this.consoleError(`服务器${error.response}`);
-        });
+        .catch(response => {
+          _this.consoleError(`服务器${error.response}`)
+        })
       }
     },
 
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // success
           if (this.goodsPrivatePropertyValues.dynamicTags.length > 0) {
             // statement
-            this.$axios.post(API.addNewerCategoryArguments,{
-              product_id: this.goodsPrivatePropertyValues.commodityBrand,
-              category_id: this.goodsPrivatePropertyValues.commodityClassification,
-              parent_id: this.parent_id,
-              argument: this.goodsPrivatePropertyValues.dynamicTags
+            this.$axios.post(API.addNewerCategoryArguments, {
+              'product_id': this.goodsPrivatePropertyValues.commodityBrand,
+              'category_id': this.goodsPrivatePropertyValues.commodityClassification,
+              'parent_id': this.parent_id,
+              'argument': this.goodsPrivatePropertyValues.dynamicTags
             })
-            .then( (msg) => {
-              if(msg.data.flag == '1000'){
-                console.log(msg.data);
-                this.consoleSuccess(`${msg.data.return_code}`);
+            .then((msg) => {
+              if (msg.data.flag === '1000') {
+                console.log(msg.data)
+                this.consoleSuccess(`${msg.data.return_code}`)
                 setTimeout(() => {
-                  this.resetForm('goodsPrivatePropertyValues');
-                  this.goodsPrivatePropertyValues.dynamicTags = [];
-                  this.goodsPrivatePropertyValues.commodityClassificationPropertiesList = [];
-                },1200)
+                  this.resetForm('goodsPrivatePropertyValues')
+                  this.goodsPrivatePropertyValues.dynamicTags = []
+                  this.goodsPrivatePropertyValues.commodityClassificationPropertiesList = []
+                }, 1200)
               } else {
                 // statement
-                this.consoleError(`${msg.data.return_code}`);
+                this.consoleError(`${msg.data.return_code}`)
               }
             })
-            .catch( error => {
-              this.consoleError(`服务器${error.response}`);
-            });
+            .catch(error => {
+              this.consoleError(`服务器${error.response}`)
+            })
           } else {
             this.consoleWarning('请完善商品分类属性属性值!')
           }
         } else {
-          this.consoleError('请完善必填信息');
-          return false;
+          this.consoleError('请完善必填信息')
+          return false
         }
-      });
+      })
     },
 
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     },
 
     // 获取商品品牌和商品分类
-    getCommodityBrandAndCommodityClassification() {
-      var _this = this;
-      this.$axios.post(API.addNewerGoodsInfo,{
-        request_flag: 'product_list'
+    getCommodityBrandAndCommodityClassification () {
+      var _this = this
+      this.$axios.post(API.addNewerGoodsInfo, {
+        'request_flag': 'product_list'
       })
-      .then( (msg) => {
+      .then((msg) => {
         console.log(msg.data)
         // 商品品牌列表
-        var product_list = msg.data.product_list;
-        _this.goodsPrivatePropertyValues.commodityBrandList = product_list;
+        var product_list = msg.data.product_list
+        _this.goodsPrivatePropertyValues.commodityBrandList = product_list
         // 商品分类列表
-        var category_list = msg.data.category_list;
-        _this.goodsPrivatePropertyValues.commodityClassificationList = category_list;
+        var category_list = msg.data.category_list
+        _this.goodsPrivatePropertyValues.commodityClassificationList = category_list
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);
-      });
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
     },
 
-    handleClose(tag) {
-      this.goodsPrivatePropertyValues.dynamicTags.splice(this.goodsPrivatePropertyValues.dynamicTags.indexOf(tag), 1);
+    handleClose (tag) {
+      this.goodsPrivatePropertyValues.dynamicTags.splice(this.goodsPrivatePropertyValues.dynamicTags.indexOf(tag), 1)
     },
 
-    showInput() {
-      this.goodsPrivatePropertyValues.inputVisible = true;
+    showInput () {
+      this.goodsPrivatePropertyValues.inputVisible = true
     },
 
-    handleInputConfirm() {
-      let inputValue = this.goodsPrivatePropertyValues.inputValue;
+    handleInputConfirm () {
+      let inputValue = this.goodsPrivatePropertyValues.inputValue
       if (inputValue) {
-        this.goodsPrivatePropertyValues.dynamicTags.push(inputValue);
+        this.goodsPrivatePropertyValues.dynamicTags.push(inputValue)
       }
-      this.goodsPrivatePropertyValues.inputVisible = false;
-      this.goodsPrivatePropertyValues.inputValue = '';
+      this.goodsPrivatePropertyValues.inputVisible = false
+      this.goodsPrivatePropertyValues.inputValue = ''
     },
 
-    consoleSuccess(success) {
+    consoleSuccess (success) {
       this.$notify({
         title: '成功',
         message: success,
         type: 'success'
-      });
+      })
     },
 
-    consoleWarning(warning) {
+    consoleWarning (warning) {
       this.$notify({
         title: '警告',
         message: warning,
         type: 'warning'
-      });
+      })
     },
 
-    consoleNews(news) {
+    consoleNews (news) {
       this.$notify.info({
         title: '消息',
         message: news
-      });
+      })
     },
 
-    consoleError(error) {
+    consoleError (error) {
       this.$notify.error({
         title: '错误',
         message: error
-      });
+      })
     }
   },
 
-  created: function() {
+  created: function () {
     // 初始化获取商品品牌和商品分类
-    this.getCommodityBrandAndCommodityClassification();
-  },
+    this.getCommodityBrandAndCommodityClassification()
+  }
 }
 </script>

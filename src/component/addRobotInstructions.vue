@@ -29,7 +29,7 @@
 </style>
 
 <script>
-import * as API from '../assets/axios/api.js';
+import * as API from '../assets/axios/api.js'
 export default {
   name: 'addRobotInstructions',
 
@@ -44,30 +44,30 @@ export default {
     }
   },
 
-  created: function() {
+  created: function () {
     // 初始化数据
-    this.initDate();
+    this.initDate()
   },
 
   methods: {
     updateData (data) {
-      this.newData = data;
+      this.newData = data
     },
 
     // 提交数据
-    postData() {
-      console.log(this.newData,'富文本数据')
+    postData () {
+      console.log(this.newData, '富文本数据')
       if (this.newData) {
         // statement
-        this.$axios.post(API.recordTheInstructions,{
-          instructions: this.newData
+        this.$axios.post(API.recordTheInstructions, {
+          'instructions': this.newData
         })
-        .then( (msg) => {
-          console.log(msg.data,'服务器')
-          if (msg.data.flag == '1000') {
+        .then((msg) => {
+          console.log(msg.data, '服务器')
+          if (msg.data.flag === '1000') {
             // statement
             this.consoleSuccess(msg.data.return_code)
-            window.location.reload();
+            window.location.reload()
           } else {
             // statement
             this.consoleError(msg.data.return_code)
@@ -80,13 +80,13 @@ export default {
       }
     },
 
-    initDate() {
+    initDate () {
       this.$axios.post(API.recordTheInstructions)
-      .then( (msg) => {
+      .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag == '1000') {
+        if (msg.data.flag === '1000') {
           // statement
-          this.initData = msg.data.instructions;
+          this.initData = msg.data.instructions
         } else {
           // statement
           this.consoleError(msg.data.return_code)
@@ -96,34 +96,34 @@ export default {
       })
     },
 
-    consoleSuccess(success) {
+    consoleSuccess (success) {
       this.$notify({
         title: '成功',
         message: success,
         type: 'success'
-      });
+      })
     },
 
-    consoleWarning(warning) {
+    consoleWarning (warning) {
       this.$notify({
         title: '警告',
         message: warning,
         type: 'warning'
-      });
+      })
     },
 
-    consoleNews(news) {
+    consoleNews (news) {
       this.$notify.info({
         title: '消息',
         message: news
-      });
+      })
     },
 
-    consoleError(error) {
+    consoleError (error) {
       this.$notify.error({
         title: '错误',
         message: error
-      });
+      })
     }
   }
 }

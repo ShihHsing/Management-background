@@ -77,8 +77,8 @@
 </template>
 
 <script>
-  import * as API from '../assets/axios/api.js';
-  import '../assets/style/add3DModel.less';
+  import * as API from '../assets/axios/api.js'
+  import '../assets/style/add3DModel.less'
   export default{
     name: 'add3DModel',
     data () {
@@ -97,27 +97,26 @@
         file_name: ''
       }
     },
-    
     methods: {
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
+      handleRemove (file, fileList) {
+        console.log(file, fileList)
       },
-      handlePreview(file) {
-        console.log(file);
+      handlePreview (file) {
+        console.log(file)
       },
 
       initData () {
         // 商品款号
-        this.code = this.$route.query.code;
+        this.code = this.$route.query.code
         // 商品id
-        this.id = this.$route.query.id;
+        this.id = this.$route.query.id
         // 门店id
-        this.shop_id = this.$route.query.shop_id;
+        this.shop_id = this.$route.query.shop_id
         // 商品颜色
-        for(var i = 0, length1 = this.$route.query.color.length; i < length1; i++){
-          this.color += this.$route.query.color[i].color_name + ' ';
+        for (var i = 0, length1 = this.$route.query.color.length; i < length1; i++) {
+          this.color += this.$route.query.color[i].color_name + ' '
           this.colorImg.push(this.$route.query.color[i].color_name)
-          let colorImg = {
+          var colorImg = {
             color: this.$route.query.color[i].color_name,
             imgUrl: '',
             id: this.$route.query.color[i].color_arg_id
@@ -126,25 +125,25 @@
         }
       },
 
-      uploadBefore(file){
-        if (file.size > 1024*1024) {
-          // statement
-          this.consoleError('上传文件过大!请重新上传!')
-          setTimeout( () => {
-            jQuery('.is-ready').hide()
-          },800)
-          return false;
-        }
-      },
+      // uploadBefore (file) {
+      //   if (file.size > 1024 * 1024) {
+      //     // statement
+      //     this.consoleError('上传文件过大!请重新上传!')
+      //     setTimeout(() => {
+      //       jQuery('.is-ready').hide()
+      //     }, 800)
+      //     return false
+      //   }
+      // },
 
       // 商品颜色图片
-      colorAndImgSuccess(response, file, fileList) {
-        if (response.flag == '1000') {
+      colorAndImgSuccess (response, file, fileList) {
+        if (response.flag === '1000') {
           console.log(response, file)
           // statement
-          var imgColor = response.imgColor;
+          var imgColor = response.imgColor
           for (var i = 0; i < this.colorAndImg.length; i++) {
-            if(this.colorAndImg[i].color == imgColor) {
+            if (this.colorAndImg[i].color === imgColor) {
               this.colorAndImg[i].imgUrl = response.file_url
             }
           }
@@ -155,42 +154,42 @@
       },
 
       // 文件上传失败
-      uploadError() {
+      uploadError () {
         this.consoleError('上传文件有误!请重新上传!')
       },
 
       // ios模型上传
-      addIosUnity (response,file) {
-        if (response.flag == '1000') {
-          console.log(response);
+      addIosUnity (response, file) {
+        if (response.flag === '1000') {
+          console.log(response)
           // statement
-          this.ios = response.file_url;
-          this.file_name = file.name;
-          this.consoleSuccess(response.return_code);
+          this.ios = response.file_url
+          this.file_name = file.name
+          this.consoleSuccess(response.return_code)
         } else {
-          this.consoleError(response.return_code);
+          this.consoleError(response.return_code)
         }
       },
 
        // 安卓模型上传
       addAndroidUnity (response) {
-        if (response.flag == '1000') {
-          console.log(response);
+        if (response.flag === '1000') {
+          console.log(response)
           // statement
-          this.android = response.file_url;
-          this.consoleSuccess(response.return_code);
+          this.android = response.file_url
+          this.consoleSuccess(response.return_code)
         } else {
-          this.consoleError(response.return_code);
+          this.consoleError(response.return_code)
         }
       },
 
       // 提交
       phpPostData () {
-        var count = 0;
-        for(var i = 0, length1 = this.colorAndImg.length; i < length1; i++){
+        var count = 0
+        for (var i = 0, length1 = this.colorAndImg.length; i < length1; i++) {
           if (!this.colorAndImg[i].imgUrl) {
             // statement
-            count++;
+            count++
           }
         }
 
@@ -200,32 +199,32 @@
             // statement
             if (this.android) {
               // statement
-              if (count == 0) {
+              if (count === 0) {
                 // statement
-                this.$axios.post(API.handle3DModel,{
+                this.$axios.post(API.handle3DModel, {
                   arguments: {
-                    code: this.code,
-                    ios_unity_url: this.ios,
-                    android_unity_url: this.android,
-                    colorAndImg: this.colorAndImg,
-                    id: this.id,
-                    shop_id: this.shop_id,
-                    file_name: this.file_name
+                    'code': this.code,
+                    'ios_unity_url': this.ios,
+                    'android_unity_url': this.android,
+                    'colorAndImg': this.colorAndImg,
+                    'id': this.id,
+                    'shop_id': this.shop_id,
+                    'file_name': this.file_name
                   }
                 })
-                .then( msg => {
-                  console.log(msg.data);
-                  if (msg.data.flag == '1000') {
+                .then(msg => {
+                  console.log(msg.data)
+                  if (msg.data.flag === '1000') {
                     // statement
-                    this.consoleSuccess(msg.data.return_code);
-                    setTimeout( () => {
-                      this.$router.push({ path: 'listOfGoods' });
-                    },2000)
+                    this.consoleSuccess(msg.data.return_code)
+                    setTimeout(() => {
+                      this.$router.push({ path: 'listOfGoods' })
+                    }, 2000)
                   } else {
-                    this.consoleError(msg.data.return_code);
+                    this.consoleError(msg.data.return_code)
                   }
                 }, response => {
-                  this.consoleError(response.return_code);
+                  this.consoleError(response.return_code)
                 })
               } else {
                 this.consoleError('请完善3D缩略图!还差' + count + '张未上传!')
@@ -241,39 +240,39 @@
         }
       },
 
-      consoleSuccess(success) {
+      consoleSuccess (success) {
         this.$notify({
           title: '成功',
           message: success,
           type: 'success'
-        });
+        })
       },
 
-      consoleWarning(warning) {
+      consoleWarning (warning) {
         this.$notify({
           title: '警告',
           message: warning,
           type: 'warning'
-        });
+        })
       },
 
-      consoleNews(news) {
+      consoleNews (news) {
         this.$notify.info({
           title: '消息',
           message: news
-        });
+        })
       },
 
-      consoleError(error) {
+      consoleError (error) {
         this.$notify.error({
           title: '错误',
           message: error
-        });
+        })
       }
     },
 
-    created: function() {
-      this.initData();
+    created: function () {
+      this.initData()
     }
   }
 </script>

@@ -55,7 +55,7 @@
 
 <script>
 import '../assets/style/goodsSetSwitch.less'
-import * as API from '../assets/axios/api.js';
+import * as API from '../assets/axios/api.js'
 export default {
   name: 'goodsSetSwitch',
   data () {
@@ -73,97 +73,94 @@ export default {
       dialogVisible: true
     }
   },
-  
-  created: function() {
+
+  created: function () {
     // 获取以后商品设置开关
-    this.getShopData();
+    this.getShopData()
   },
 
   methods: {
     // 获取现有商品设置开关
-    getShopData() {
+    getShopData () {
       this.$axios.post(API.listSwitchName)
-      .then( (msg) => {
+      .then((msg) => {
         console.log(msg.data)
         // 初始化
-        const data = msg.data;
+        const data = msg.data
 
         switch (data.flag) {
           case 1000:
-            this.items = data.switch_list;
-            break;
-          // 初始化数据为空 
+            this.items = data.switch_list
+            break
+          // 初始化数据为空
           case 4001:
-            this.items = '';
-            break;
+            this.items = ''
+            break
           default:
-            this.consoleError(`${msg.data.return_code}`);
+            this.consoleError(`${msg.data.return_code}`)
         }
       })
-      .catch( error => {
-        this.consoleError(`服务器${error.response}`);;
-      });
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
     },
 
     // 上传商品设置开关
-    postAddGoodsSwitchName() {
+    postAddGoodsSwitchName () {
       if (this.postData.addGoodsSwitchVal) {
         // statement
-        this.$axios.post(API.addGoodsSwitchNameUrl,{
-          switch_name: this.postData.addGoodsSwitchVal
+        this.$axios.post(API.addGoodsSwitchNameUrl, {
+          'switch_name': this.postData.addGoodsSwitchVal
         })
-        .then( msg => {
-          console.log(msg.data);
-          if (msg.data.flag == '1000') {
+        .then(msg => {
+          console.log(msg.data)
+          if (msg.data.flag === '1000') {
             // statement
-            this.consoleSuccess(`${msg.data.return_code}`);
-            this.addGoodsSwitchVal = false;
-            this.postData.addGoodsSwitchVal = '';
-            this.getShopData();
+            this.consoleSuccess(`${msg.data.return_code}`)
+            this.addGoodsSwitchVal = false
+            this.postData.addGoodsSwitchVal = ''
+            this.getShopData()
           } else {
-            this.consoleError(`${msg.data.return_code}`);
+            this.consoleError(`${msg.data.return_code}`)
           }
         })
-        .catch( error => {
-          this.consoleError(`服务器${error.response}`);;
-        });
-
+        .catch(error => {
+          this.consoleError(`服务器${error.response}`)
+        })
       } else {
-        this.consoleError('请完善信息后提交!!!');
+        this.consoleError('请完善信息后提交!!!')
       }
     },
 
-    consoleSuccess(success) {
+    consoleSuccess (success) {
       this.$notify({
         title: '成功',
         message: success,
         type: 'success'
-      });
+      })
     },
 
-    consoleWarning(warning) {
+    consoleWarning (warning) {
       this.$notify({
         title: '警告',
         message: warning,
         type: 'warning'
-      });
+      })
     },
 
-    consoleNews(news) {
+    consoleNews (news) {
       this.$notify.info({
         title: '消息',
         message: news
-      });
+      })
     },
 
-    consoleError(error) {
+    consoleError (error) {
       this.$notify.error({
         title: '错误',
         message: error
-      });
+      })
     }
-  },
-
-
+  }
 }
 </script>
