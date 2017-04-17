@@ -138,7 +138,7 @@
 
       // 商品颜色图片
       colorAndImgSuccess (response, file, fileList) {
-        if (response.flag === '1000') {
+        if (response.flag >> 0 === 1000) {
           console.log(response, file)
           // statement
           var imgColor = response.imgColor
@@ -160,7 +160,7 @@
 
       // ios模型上传
       addIosUnity (response, file) {
-        if (response.flag === '1000') {
+        if (response.flag >> 0 === 1000) {
           console.log(response)
           // statement
           this.ios = response.file_url
@@ -173,7 +173,7 @@
 
        // 安卓模型上传
       addAndroidUnity (response) {
-        if (response.flag === '1000') {
+        if (response.flag >> 0 === 1000) {
           console.log(response)
           // statement
           this.android = response.file_url
@@ -214,7 +214,7 @@
                 })
                 .then(msg => {
                   console.log(msg.data)
-                  if (msg.data.flag === '1000') {
+                  if (msg.data.flag >> 0 === 1000) {
                     // statement
                     this.consoleSuccess(msg.data.return_code)
                     setTimeout(() => {

@@ -125,7 +125,7 @@ export default {
               'argument': this.goodsPrivatePropertyValues.dynamicTags
             })
             .then((msg) => {
-              if (msg.data.flag === '1000') {
+              if (msg.data.flag >> 0 === 1000) {
                 this.consoleSuccess(`${msg.data.return_code}`)
                 console.log(msg.data)
                 setTimeout(() => {
@@ -165,7 +165,7 @@ export default {
         .then((msg) => {
           console.log(msg.data)
           this.consoleNews('获取商品属性分类属性中,请稍等!')
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag >> 0 === 1000) {
             // statement
             this.consoleSuccess('获取商品属性分类属性成功!')
             _this.goodsPrivatePropertyValues.commodityClassificationPropertiesList = msg.data.parent_argument_list

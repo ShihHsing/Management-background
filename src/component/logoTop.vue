@@ -1,7 +1,7 @@
 <template>
   <div id="logoTop">
     <el-col :span="12" class="logoTitle">
-      <router-link to="/home"><h1>哎哟不错店家管理系统(master版)</h1></router-link>
+      <router-link to="/home"><h1>哎哟不错店家管理系统</h1></router-link>
     </el-col>
     <!-- <el-col :span="3" :offset="7" class="storeSelect">
       <el-select v-model="value" placeholder="请选择">
@@ -12,13 +12,13 @@
         </el-option>
       </el-select>
     </el-col> -->
-    <el-col :span="2" class="user">
-      <div>
-        <img :src="userImgUrl" :alt="userName" @click="dialogVisible = true">
+    <el-col :offset="10" :span="2" class="user">
+      <div @click="dialogVisible = true">
+        <img :src="userImgUrl" :alt="userName">
       </div>
     </el-col>
     <el-dialog title="提示" v-model="dialogVisible" size="tiny">
-      <span>确定要退出{{ userPhone }}这个用户吗?</span>
+      <span>您好确定要退出{{ userPhone }}这个账户吗?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="logOut">确 定</el-button>
@@ -60,8 +60,10 @@ export default {
       }],
       value: '选项1',
       // 用户名字
-      userName: '',
-      userPhone: store.state.user.userData.phone_number
+      userName: '哎哟不错',
+      // 用户头像
+      userImgUrl: 'http://img.ivsky.com/img/tupian/pre/201701/04/shatan_shangde_gou.jpg',
+      userPhone: store.state.user.userData.phone_number,
       // session_id: store.state.user.userData.session_id
     }
   },

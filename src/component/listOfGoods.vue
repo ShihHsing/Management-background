@@ -105,10 +105,7 @@
                     <span>此商品为公共商品,您没有操作的权利</span>
                   </el-row>
                 </template>
-
               </template>
-
-
             </el-table-column>
             <el-table-column
               fixed="right"
@@ -144,12 +141,18 @@
               label="添加3D模型"
               width="120">
               <template scope="scope">
-                <router-link :to="{path: 'add3DModel', query: {code: scope.row.code, id: scope.row.id, shop_id: scope.row.shop_id, color: scope.row.image_url}}" replace>
-                  <el-button type="info" size="small">添加</el-button>
-                </router-link>
+                <template v-if="shop_id == 1">
+                  <router-link :to="{path: 'add3DModel', query: {code: scope.row.code, id: scope.row.id, shop_id: scope.row.shop_id, color: scope.row.image_url}}" replace>
+                    <el-button type="info" size="small">添加</el-button>
+                  </router-link>
+                </template>
+                <template v-else>
+                  <el-row type="flex" justify="center">
+                    <span>3D模型由公司本部上传,如有需求请联系客服</span>
+                  </el-row>
+                </template>
               </template>
             </el-table-column>
-
           </el-table-column>
         </el-table>
       </el-col>
@@ -214,10 +217,10 @@ export default {
         // 商品分类
         commodityClassification: '',
         // 商品款号
-        model: '',
+        model: ''
       },
       // 服务端商品品牌
-      commodityBrandList : [],
+      commodityBrandList: [],
       // 服务端商品分类
       commodityClassificationList: [],
       // 验证规则
@@ -257,7 +260,7 @@ export default {
       })
       .then((msg) => {
         console.log(msg.data, '获取商品品牌和商品分类')
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           // 商品品牌列表
           var product_list = msg.data.product_list
@@ -309,12 +312,12 @@ export default {
       })
       .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           this.shopDateList = msg.data.goods_list
           // 构建二次确认数据模型
           this.dialogVisible = []
-          for (var i = 0; i < this.shopDateList.length; i++) {
+          for (let i = 0; i < this.shopDateList.length; i++) {
             this.dialogVisible.push({
               model: false
             })
@@ -325,9 +328,9 @@ export default {
           console.log(this.total_pages, this.current_page)
          // 商品设置开关
           this.goodsSetSwitchModel = []
-          for (var i = 0; i < this.shopDateList.length; i++) {
+          for (let i = 0; i < this.shopDateList.length; i++) {
             var model = []
-            for (var ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
+            for (let ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
               model.push({
                 'model': !!(this.shopDateList[i].switch_list[ii].switch >> 0),
                 'goods_id': this.shopDateList[i].id
@@ -364,7 +367,7 @@ export default {
         console.log(msg.data)
         // 初始化
         this.shopDateList = []
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           this.shopDateList = msg.data.goods_list
           // 构建二次确认数据模型
           this.dialogVisible = []
@@ -380,9 +383,9 @@ export default {
           console.log(this.total_pages, this.current_page)
           // 商品设置开关
           this.goodsSetSwitchModel = []
-          for (var i = 0; i < this.shopDateList.length; i++) {
+          for (let i = 0; i < this.shopDateList.length; i++) {
             var model = []
-            for (var ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
+            for (let ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
               model.push({
                 'model': !!(this.shopDateList[i].switch_list[ii].switch >> 0),
                 'goods_id': this.shopDateList[i].id
@@ -412,7 +415,7 @@ export default {
       })
       .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           this.consoleSuccess(`${msg.data.return_code}`)
           this.getShopData()
@@ -436,7 +439,7 @@ export default {
       })
       .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           this.consoleSuccess(`${msg.data.return_code}`)
           this.getShopData()
@@ -461,7 +464,7 @@ export default {
       })
       .then((msg) => {
         console.log(msg.data)
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           this.dialogVisible[index].model = false
           this.consoleSuccess(`${msg.data.return_code}`)
@@ -476,7 +479,7 @@ export default {
     },
 
     // 商品设置开关
-    goodsSetSwitch(goods_id, switch_id, switch_value) {
+    goodsSetSwitch (goods_id, switch_id, switch_value) {
       // Debug 处理
       this.value1 = !this.value1
       this.$axios.post(API.switchHandleUrl, {
@@ -485,7 +488,7 @@ export default {
         'switch_value': Number(switch_value)
       })
       .then(msg => {
-        if (msg.data.flag === '1000') {
+        if (msg.data.flag >> 0 === 1000) {
           // statement
           this.consoleSuccess(`${msg.data.return_code}`)
           this.searchShopData()

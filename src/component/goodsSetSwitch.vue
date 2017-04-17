@@ -114,7 +114,7 @@ export default {
         })
         .then(msg => {
           console.log(msg.data)
-          if (msg.data.flag === '1000') {
+          if (msg.data.flag >> 0 === 1000) {
             // statement
             this.consoleSuccess(`${msg.data.return_code}`)
             this.addGoodsSwitchVal = false

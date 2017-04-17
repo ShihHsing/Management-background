@@ -1,0 +1,200 @@
+<html>
+
+<head>
+    <meta http-equiv='Content-type' content='text/htmll;charset=utf-8' />
+    <meta charset="UTF-8">
+    <title>哎哟不错店家管理系统</title>
+    <!--重置样式表-->
+    <link rel="stylesheet" type="text/css" href="../Public/css/reset.css" />
+    <!--主题样式-->
+    <link rel="stylesheet" type="text/css" href="../Public/css/list.css" />
+    <!--模态框-->
+    <link rel="stylesheet" type="text/css" href="../Public/css/model.css" />
+</head>
+
+<body>
+    <!--头部-->
+    <div class="headWrap">
+        <div class="header">
+            <!--logo-->
+            <div class="logo"><img src="../Public/img/logo.png" /></div>
+            <!--title-->
+            <span class="title">哎哟不错店家管理系统</span>
+            <!--user-->
+            <div onclick="Modal();" class="user">
+                注销
+            </div>
+        </div>
+    </div>
+    <div id="modal_wrap">
+        <div class="pab">
+            <div class="modal">
+                <!--头部-->
+                <div class="modal_top">
+                    <span>提示</span>
+                    <span class="cancel">×</span>
+                </div>
+                <!--信息展示区-->
+                <div class="modal_body">确定要退出吗?</div>
+                <!--按钮组-->
+                <div class="sub_gulop">
+                    <form action="https://a001.aybc.so/Emp/logoutWithWeb" method="POST">
+                        <input type="submit" value="确定">
+                    </form>
+                    <span class="cancel">取消</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bodyWrap">
+        <div class="body">
+            <!--坑爹的罗主管-->
+            <a class="return" href="https://192.168.1.110/a001/Emp/homepage">←返回</a>
+            <!--标题-->
+            <div class="body_title">添加门店信息</div>
+            <form action='addShop' method='POST'>
+                <input type='hidden' name='session_id' value='{$result[' session_id ']}' />
+                <div class="input_text">
+                    <span class="input_text_title">门店名称:</span>
+                    <input type="text" name="name" id="" value="" />
+                </div>
+                <div class="input_comboBox">
+                    <span class="input_text_title">省份:</span>
+                    <select type="text" name="province_name" id="province" value=""></select>
+                </div>
+                <div class="input_comboBox">
+                    <span class="input_text_title">城市:</span>
+                    <select type="text" name="city_name" id="city" value=""></select>
+                </div>
+                <div class="input_comboBox">
+                    <span class="input_text_title">区/县:</span>
+                    <select type="text" name="district_name" id="district" value=""></select>
+                </div>
+                <div class="input_text">
+                    <span class="input_text_title">门店电话:</span>
+                    <input type="text" name="telephone" id="" value="" />
+                </div>
+                <div class="input_text">
+                    <span class="input_text_title">添加积分规则:</span>
+                    <input type="text" name="formula" id="" value="" />
+                </div>
+                <div class="input_text">
+                    <span class="input_text_title">老板手机号码:</span>
+                    <input type="text" name="boss_phone_number" id="" value="" />
+                </div>
+                <div class="input_textarea">
+                    <span class="input_text_title">门店信息:</span>
+                    <textarea name="info" style="height: 180px;width: 425px;resize: none;box-sizing:border-box;padding: 15px;"></textarea>
+                    <!--附文本提示语-->
+                    <span class="hint"></span>
+                </div>
+                <div class="sub_body">
+                    <input class="sub" type="submit" name="" id="" value="提交" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <!--脚部-->
+    <div class="footerWrap">
+        <div class="footer">
+            Coptright©2016Aiyobucuo粤ICP备16038767号
+        </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+    <script type='text/javascript'>
+        jQuery(document).ready(function () {
+            var url = 'https://a001.aybc.so/Shop/addShop';
+            var data = 'post_flag=province';
+
+            jQuery.ajax({
+                url: url,
+                dataType: 'text',
+                cache: true,
+                type: 'POST',
+                data: data,
+                success: getProvinceList
+
+            });
+            jQuery('#province').change(function () {
+                var provinceId = jQuery('#province').val();
+                jQuery('#district').empty();
+                var data = 'post_flag=city&province_id=' + provinceId;
+                jQuery.ajax({
+                    url: url,
+                    data: data,
+                    cache: true,
+                    type: 'POST',
+                    dataType: 'text',
+                    success: getCityList
+                });
+            });
+
+
+
+            jQuery('#city').change(function () {
+                var cityId = jQuery('#city').val();
+                var data = 'post_flag=district&city_id=' + cityId;
+                jQuery.ajax({
+                    url: url,
+                    data: data,
+                    cache: true,
+                    type: 'POST',
+                    dataType: 'text',
+                    success: getDistrictList,
+
+                });
+            });
+
+
+
+            function getProvinceList(data) {
+                //document.write(data);
+                //alert(typeof(data));
+                var jsonData = eval('(' + data + ')');
+                var count = jsonData.province_list.length;
+                jQuery('#province').empty();
+                for (var i = 0; i < count; i++) {
+                    //alert(jsonData.province_list[i].area_no);
+
+                    jQuery('#province').append('<option value=\'' + jsonData.province_list[i].area_no + '\'>' + jsonData.province_list[i].area_name + '</option>');
+                }
+                jQuery('#province').trigger('change')
+            }
+
+            function getCityList(data) {
+                var jsonData = eval('(' + data + ')');
+                var count = jsonData.city_list.length;
+                jQuery('#city').empty();
+                for (var i = 0; i < count; i++) {
+                    jQuery('#city').append('<option value=\'' + jsonData.city_list[i].area_no + '\'>' + jsonData.city_list[i].area_name + '</option>');
+                }
+                jQuery('#city').trigger('change')
+            }
+
+            function getDistrictList(data) {
+
+
+                var jsonData = eval('(' + data + ')');
+                console.log(jsonData)
+                if (jsonData.flag == 00) {
+                    jQuery('#showDistrict').hide();
+                    return false;
+                } else {
+                    jQuery('#showDistrict').show();
+                }
+                var count = jsonData.district_list.length;
+                jQuery('#district').empty();
+                for (var i = 0; i < count; i++) {
+                    jQuery('#district').append('<option value=\'' + jsonData.district_list[i].area_no + '\'>' + jsonData.district_list[i].area_name + '</option>');
+                }
+            }
+
+            function getError(data) {
+                alert(data);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -79,7 +79,7 @@ export default {
       goodsPrivatePropertyValues: {
         // 商品品牌
         commodityBrand: '',
-        commodityBrandList : [],
+        commodityBrandList: [],
         // 商品分类
         commodityClassification: '',
         commodityClassificationList: [],
@@ -119,7 +119,7 @@ export default {
           console.log(msg)
 
           const data = msg.data
-          if (data.flag === '1000') {
+          if (data.flag >> 0 === 1000) {
             for (var i = data.parent_argument_list.length - 1; i >= 0; i--) {
               if (data.parent_argument_list[i].argument_value === '尺寸') {
                 _this.parent_id = data.parent_argument_list[i].id
@@ -131,7 +131,7 @@ export default {
             _this.consoleError(`服务器发生未知错误!`)
           }
         })
-        .catch(response => {
+        .catch(error => {
           _this.consoleError(`服务器${error.response}`)
         })
       }
@@ -150,7 +150,7 @@ export default {
               'argument': this.goodsPrivatePropertyValues.dynamicTags
             })
             .then((msg) => {
-              if (msg.data.flag === '1000') {
+              if (msg.data.flag >> 0 === 1000) {
                 console.log(msg.data)
                 this.consoleSuccess(`${msg.data.return_code}`)
                 setTimeout(() => {
@@ -209,7 +209,7 @@ export default {
     },
 
     handleInputConfirm () {
-      let inputValue = this.goodsPrivatePropertyValues.inputValue
+      const inputValue = this.goodsPrivatePropertyValues.inputValue
       if (inputValue) {
         this.goodsPrivatePropertyValues.dynamicTags.push(inputValue)
       }

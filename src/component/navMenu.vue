@@ -7,8 +7,8 @@
       </el-submenu> -->
       <el-submenu index="商品管理">
         <template slot="title">商品管理</template>
-        <el-menu-item index="/commodityBrand">商品品牌</el-menu-item>
-        <el-menu-item index="/commodityClassification">商品分类</el-menu-item>
+        <!-- <el-menu-item index="/commodityBrand">商品品牌</el-menu-item> -->
+        <!-- <el-menu-item index="/commodityClassification">商品分类</el-menu-item> -->
         <el-submenu index="商品属性">
           <template slot="title">私有属性</template>
           <el-menu-item index="/goodsPrivateColor">商品私有颜色</el-menu-item>
