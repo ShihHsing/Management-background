@@ -120,6 +120,33 @@ const routes = [
     ]
   },
   {
+    path: '/official_website', // 官网后台
+    component: resolve => require(['../../component/official_website/official_website.vue'],
+          resolve),
+    children: [
+      {
+        path: '/addNews', // 添加新闻
+        component: resolve => require(['../../component/official_website/addNews.vue'],
+          resolve)
+      },
+      {
+        path: '/newsList', // 新闻列表
+        component: resolve => require(['../../component/official_website/newsList.vue'],
+          resolve)
+      },
+      {
+        path: '/addEmploy', // 添加招聘
+        component: resolve => require(['../../component/official_website/addEmploy.vue'],
+          resolve)
+      },
+      {
+        path: '/employList', // 招聘列表
+        component: resolve => require(['../../component/official_website/employList.vue'],
+          resolve)
+      }
+    ]
+  },
+  {
     path: '*',
     redirect: '/login'
   }
