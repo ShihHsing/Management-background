@@ -63,7 +63,11 @@ export default {
               var data = null
               switch (msg.data.emp.level >> 0) {
                 case 1:
-                  data = '店员!欢迎你的登录!'
+                  if (msg.data.website_administrator >> 0 === 1) {
+                    data = '可爱的官网管理员!这个只有你能看到哦!'
+                  } else {
+                    data = '店员!欢迎你的登录!'
+                  }
                   break
                 case 2:
                   data = '店长!欢迎你的登录!'
@@ -83,7 +87,11 @@ export default {
               var userData = msg.data
               this.USER_SIGNIN({ userData })
               setTimeout(() => {
-                this.$router.push({ path: 'home' })
+                if (msg.data.website_administrator) {
+                  this.$router.push({ path: 'addNews' })
+                } else {
+                  this.$router.push({ path: 'home' })
+                }
               }, 1000)
             } else {
               this.consoleError(msg.data.return_code)

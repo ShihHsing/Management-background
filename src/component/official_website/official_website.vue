@@ -109,7 +109,7 @@
       font-size: 18px;
       position: fixed;
       top: 0;
-      z-index: 999999;
+      z-index: 99;
       .quit,.right{
         line-height: 65px;
         .cursor{
