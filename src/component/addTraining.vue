@@ -2,7 +2,7 @@
   <div id="addTraining">
     <el-row type="flex" class="steps" justify="center">
       <el-col :span="16">
-         <el-card class="box-card">
+        <el-card class="box-card">
           <div slot="header" class="clearfix">
             <h2 style="float: left">新增培训</h2>
           </div>

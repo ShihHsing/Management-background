@@ -51,7 +51,7 @@ export default {
         // statement
         if (this.password !== '') {
           // statement
-          let data = {
+          const data = {
             'phone_number': this.phone_number,
             'password': this.password
           }
@@ -88,9 +88,10 @@ export default {
             } else {
               this.consoleError(msg.data.return_code)
             }
-          }, response => {
+          })
+          .catch(error => {
             this.consoleWarning('服务发生意外情况,请稍后重试!')
-            console.log(response)
+            console.log(error)
           })
         } else {
           this.consoleError('请完善密码!')

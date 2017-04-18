@@ -18,6 +18,7 @@
         </el-submenu>
         <el-menu-item index="/addMerchandise">添加商品</el-menu-item>
         <el-menu-item index="/listOfGoods">商品列表</el-menu-item>
+        <el-menu-item index="/addExcel">会员导入</el-menu-item>
         <el-menu-item index="/addCarouselDrawing">新增轮播图</el-menu-item>
       </el-submenu>
       <el-submenu index="内部服务">

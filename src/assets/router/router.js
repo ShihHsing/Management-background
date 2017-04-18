@@ -111,6 +111,11 @@ const routes = [
         path: '/trainingList', // 培训列表
         component: resolve => require(['../../component/trainingList.vue'],
           resolve)
+      },
+      {
+        path: '/addExcel', // 老会员导入
+        component: resolve => require(['../../component/addExcel.vue'],
+          resolve)
       }
     ]
   },
