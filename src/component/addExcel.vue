@@ -18,7 +18,7 @@
               :multiple="false"
               name="file_excel">
               <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">上传文件后缀名必须为.xls或.xlsx</div>
+              <div slot="tip" class="el-upload__tip">上传文件后缀名必须为.xlsx</div>
             </el-upload>
           </el-form>
         </el-card>
@@ -40,10 +40,12 @@
     methods: {
       handleSuccess (response) {
         console.log(response)
-        if (response) {
-          // this.consoleSuccess(`文件导入成功!`)
-          // const uploadFiles = this.$refs.upload.uploadFiles
-          // uploadFiles.shift()
+        if (response.flag >> 0 === 1000) {
+          this.consoleSuccess(`文件导入成功!`)
+          const uploadFiles = this.$refs.upload.uploadFiles
+          uploadFiles.shift()
+        } else {
+          this.consoleWarning(response.return_code)
         }
       },
       handleBefore (file) {
@@ -51,7 +53,7 @@
         const fileType = Boolean(file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel')
         console.log(fileType)
         if (!fileType) {
-          this.consoleWarning(`您上传文件为${file.type}类型,但上传文件后缀名必须为.xls或.xlsx!`)
+          this.consoleWarning(`您上传文件为${file.type}类型,但上传文件后缀名必须为或.xlsx!`)
           return false
         }
       },
