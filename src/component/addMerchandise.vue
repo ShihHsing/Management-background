@@ -107,7 +107,7 @@
                 <el-form-item label="商品列表图"></br>
                   <el-upload
                     class="upload-demo"
-                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess1"
                     :on-remove="handleRemove1"
@@ -124,7 +124,7 @@
                   <el-upload
                     list-type="picture"
                     class="upload-demo"
-                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
                     :on-success="handleSuccess2"
                     :on-remove="handleRemove2"
                     :on-error="uploadError"
@@ -140,7 +140,7 @@
                   <el-upload
                     list-type="picture"
                     class="upload-demo"
-                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
                     :on-remove="handleRemove3"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
@@ -188,7 +188,7 @@
                   <!-- action冒号问题 -->
                     <el-upload
                       class="upload-demo"
-                      action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                      action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"

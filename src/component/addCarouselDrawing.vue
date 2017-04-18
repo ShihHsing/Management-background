@@ -22,7 +22,7 @@
               <el-form-item label="上传轮播图:">
                 <el-upload
                   class="avatar-uploader"
-                  action="https://a001.aybc.so/Shop/addCarouselDrawing"
+                  action="http://a001.aybc.so/Shop/addCarouselDrawing"
                   name="image_url"
                   :on-success="addCarouselDrawingImg"
                   :on-error="uploadError"

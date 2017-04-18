@@ -30,7 +30,7 @@
           <el-form-item label="IOS unity模型:">
             <el-upload
               class="upload-demo"
-              action="https://a001.aybc.so/Shop/handle3DModel"
+              action="http://a001.aybc.so/Shop/handle3DModel"
               name="ios_unity_file"
               :on-success="addIosUnity"
               :on-error="uploadError">
@@ -41,7 +41,7 @@
           <el-form-item label="Android unity模型:">
             <el-upload
               class="upload-demo"
-              action="https://a001.aybc.so/Shop/handle3DModel"
+              action="http://a001.aybc.so/Shop/handle3DModel"
               name="android_unity_file"
               :on-success="addAndroidUnity"
               :on-error="uploadError">
@@ -52,7 +52,7 @@
           <el-form-item label="添加3D缩略图:">
             <div v-for="(city,index) in colorImg">
               <el-upload
-                action="https://a001.aybc.so/Shop/handle3DModel"
+                action="http://a001.aybc.so/Shop/handle3DModel"
                 :multiple="false"
                 :on-success="colorAndImgSuccess"
                 :on-error="uploadError"
