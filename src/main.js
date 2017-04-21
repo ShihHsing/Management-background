@@ -12,6 +12,8 @@ import Qs from 'qs'
 Vue.use(ElementUI)
 Vue.use(VueResource)
 
+Vue.config.devtools = true
+
 // 将axios挂载到prototype上，在组件中可以直接使用this.axios访问
 Vue.prototype.$axios = axios
 
