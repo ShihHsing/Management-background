@@ -60,28 +60,34 @@ export default {
     // 提交数据
     postData () {
       console.log(this.newData, '富文本数据')
-      if (this.newData) {
-        // statement
-        this.$axios.post(API.recordTheInstructions, {
-          'instructions': this.newData
-        })
-        .then((msg) => {
-          console.log(msg.data, '服务器')
-          if (msg.data.flag === '01') {
-            // statement
-            this.consoleSuccess(msg.data.return_code)
-            setTimeout(() => {
-              this.initDate()
-            }, 800)
-          } else {
-            // statement
-            this.consoleError(msg.data.return_code)
-          }
-        }, (response) => {
-          this.consoleError(response.return_code)
-        })
+      if (this.initData) {
+        if (this.newData) {
+          // statement
+          this.$axios.post(API.recordTheInstructions, {
+            'instructions': this.newData
+          })
+          .then((msg) => {
+            console.log(msg.data, '服务器')
+            if (msg.data.flag === '01') {
+              // statement
+              this.consoleSuccess(msg.data.return_code)
+              setTimeout(() => {
+                this.initDate()
+              }, 800)
+            } else {
+              // statement
+              this.consoleError(msg.data.return_code)
+            }
+          }, (response) => {
+            this.consoleError(response.return_code)
+          })
+        } else {
+          this.consoleWarning('内容无修改!')
+        }
       } else {
-        this.consoleError('请完善数据!')
+        if (!this.newData) {
+          this.consoleWarning('请完善内容!')
+        }
       }
     },
 
