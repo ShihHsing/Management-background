@@ -14,7 +14,7 @@
     </el-col> -->
     <el-col :offset="10" :span="2" class="user">
       <div @click="dialogVisible = true">
-        <img :src="userImgUrl" :alt="userName">
+        <img src="../assets/img/e032a74b8985691686afe44af7391b91a477ab7e.jpg_320x200.jpg" height="200" width="320" :alt="userName">
       </div>
     </el-col>
     <el-dialog title="提示" v-model="dialogVisible" size="tiny">
@@ -62,7 +62,7 @@ export default {
       // 用户名字
       userName: '哎哟不错',
       // 用户头像
-      userImgUrl: '../assets/img/e032a74b8985691686afe44af7391b91a477ab7e.jpg_320x200.jpg',
+      userImgUrl: '',
       userPhone: store.state.user.userData.phone_number
       // session_id: store.state.user.userData.session_id
     }
