@@ -70,7 +70,9 @@ export default {
           if (msg.data.flag === '01') {
             // statement
             this.consoleSuccess(msg.data.return_code)
-            window.location.reload()
+            setTimeout(() => {
+              this.initDate()
+            }, 800)
           } else {
             // statement
             this.consoleError(msg.data.return_code)
