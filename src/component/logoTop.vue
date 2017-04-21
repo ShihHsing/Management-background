@@ -62,8 +62,8 @@ export default {
       // 用户名字
       userName: '哎哟不错',
       // 用户头像
-      userImgUrl: 'http://img.ivsky.com/img/tupian/pre/201701/04/shatan_shangde_gou.jpg',
-      userPhone: store.state.user.userData.phone_number,
+      userImgUrl: '../assets/img/e032a74b8985691686afe44af7391b91a477ab7e.jpg_320x200.jpg',
+      userPhone: store.state.user.userData.phone_number
       // session_id: store.state.user.userData.session_id
     }
   },
