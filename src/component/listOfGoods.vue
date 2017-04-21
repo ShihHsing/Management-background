@@ -35,7 +35,7 @@
     <el-row>
       <el-col :span="22" :offset="1">
 
-       	<el-table
+        <el-table
           :data="shopDateList"
           border
           stripe
@@ -88,7 +88,18 @@
               <template scope="scope" >
                 <template v-if="shop_id == scope.row.shop_id">
                   <router-link size="small" class="el-button el-button--warning el-button--small" type="warning" :to="{path: 'modificationMerchandise', query: {shopID: scope.row.id}}">编辑</router-link>
+                  <!-- <el-button @click="dialogVisible[scope.$index].model = true" size="small" type="danger">删除</el-button>
 
+                  <el-dialog title="提示" v-model="dialogVisible[scope.$index].model" size="tiny">
+                    <span>您确定要删除这件商品吗?</span>
+                    <span slot="footer" class="dialog-footer">
+                      <el-button @click="dialogVisible[scope.$index].model = false">取 消</el-button>
+                      <el-button type="primary" @click="deleteNewerGoodsInfo(scope.row.id,scope.$index)">确 定</el-button>
+                    </span>
+                  </el-dialog> -->
+                </template>
+
+                <!-- <template v-else>
                   <el-button @click="dialogVisible[scope.$index].model = true" size="small" type="danger">删除</el-button>
 
                   <el-dialog title="提示" v-model="dialogVisible[scope.$index].model" size="tiny">
@@ -98,13 +109,7 @@
                       <el-button type="primary" @click="deleteNewerGoodsInfo(scope.row.id,scope.$index)">确 定</el-button>
                     </span>
                   </el-dialog>
-                </template>
-
-                <template v-else>
-                  <el-row type="flex" justify="center">
-                    <span>此商品为公共商品,您没有操作的权利</span>
-                  </el-row>
-                </template>
+                </template> -->
               </template>
             </el-table-column>
             <el-table-column
