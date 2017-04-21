@@ -84,7 +84,7 @@
             <el-table-column
               fixed="right"
               label="信息修改"
-              width="180">
+              width="80">
               <template scope="scope" >
                 <template v-if="shop_id == scope.row.shop_id">
                   <router-link size="small" class="el-button el-button--warning el-button--small" type="warning" :to="{path: 'modificationMerchandise', query: {shopID: scope.row.id}}">编辑</router-link>
@@ -144,7 +144,7 @@
             <el-table-column
               fixed="right"
               label="添加3D模型"
-              width="120">
+              width="100">
               <template scope="scope">
                 <template v-if="shop_id == 1">
                   <router-link :to="{path: 'add3DModel', query: {code: scope.row.code, id: scope.row.id, shop_id: scope.row.shop_id, color: scope.row.image_url}}" replace>

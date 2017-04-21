@@ -791,20 +791,18 @@ export default {
             var arr2 = []
             var arr3 = []
 
-            for (var i = 0, length1 = msg.data.category_color_list.length; i < length1; i++) {
+            for (let i = 0, length1 = msg.data.category_color_list.length; i < length1; i++) {
               arr1.push(msg.data.category_color_list[i].argument_value)
             }
 
-            for (var i = 0, length1 = this.goods_detail.image_url.length; i < length1; i++) {
+            for (let i = 0, length1 = this.goods_detail.image_url.length; i < length1; i++) {
               arr2.push(this.goods_detail.image_url[i].color_name)
             }
 
             arr3 = (arr1.concat(arr2)).distinct()
+            // console.log(arr1, arr2, arr1.concat(arr2), arr3, '检查数组')
 
-            // arr3 = arr1.concat(arr2);
-
-            // this.four.cities = arr3;
-            console.log(arr3)
+            // this.four.cities = arr3
 
             this.four.colorList = msg.data.category_color_list
           } else if (request_flag === 'size_list') {
