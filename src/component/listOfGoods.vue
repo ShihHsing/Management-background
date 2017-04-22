@@ -287,7 +287,7 @@ export default {
       if (this.searchShopList.commodityBrand !== '' || this.searchShopList.commodityClassification !== '' || this.searchShopList.model !== '') {
         // statement
         console.log(this.searchShopList)
-        this.searchShopData(this.current_page)
+        this.searchShopData()
       } else {
         this.consoleError('请完善搜索信息!至少需要一个搜索条件!')
         return false
@@ -496,7 +496,7 @@ export default {
         if (msg.data.flag >> 0 === 1000) {
           // statement
           this.consoleSuccess(`${msg.data.return_code}`)
-          this.searchShopData()
+          // this.searchShopData()
         } else {
           this.consoleError(`${msg.data.return_code}`)
         }
