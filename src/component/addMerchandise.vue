@@ -110,7 +110,6 @@
                     action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess1"
-                    :on-remove="handleRemove1"
                     :on-error="uploadError"
                     :multiple="false"
                     name="thumb_image"
@@ -126,7 +125,6 @@
                     class="upload-demo"
                     action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
                     :on-success="handleSuccess2"
-                    :on-remove="handleRemove2"
                     :on-error="uploadError"
                     :multiple="false"
                     name="audio"
@@ -141,7 +139,6 @@
                     list-type="picture"
                     class="upload-demo"
                     action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
-                    :on-remove="handleRemove3"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
                     :multiple="false"
@@ -192,7 +189,6 @@
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"
-                      :on-remove="colorAndImgRemove"
                       :on-error="uploadError"
                       name="normal_image"
                       :data="{'imgColor': four.checkedCities[index]}"
@@ -246,16 +242,13 @@ export default {
       // 唯一接口
       onlyUrl: 'Shop/addNewerGoodsInfo',
 
-      // 删除接口
-      removeUploadedFile: 'Shop/removeUploadedFile',
-
       // 获取颜色、尺寸接口
       getColorClassificationUrl: 'Shop/addNewerGoodsInfo',
       one: {
 
         // 商品品牌
         commodityBrand: '',
-        commodityBrandList : [],
+        commodityBrandList: [],
 
         // 商品分类
         commodityClassification: '',
@@ -502,17 +495,6 @@ export default {
       }
     },
 
-    // 移除商品列表图
-    handleRemove1 () {
-      this.three.thumb_image = true
-      this.$axios.post(this.removeUploadedFile, {
-        'file_url': this.three.thumb_image_url
-      })
-      .then((msg) => {
-        console.log(msg.data)
-      })
-    },
-
     // 商品音频
     handleSuccess2 (response, file, fileList) {
       console.log(response)
@@ -530,17 +512,6 @@ export default {
       }
     },
 
-    // 移除商品音频
-    handleRemove2 () {
-      this.three.audio = true
-      this.$axios.post(this.removeUploadedFile, {
-        'file_url': this.three.audio_url
-      })
-      .then((msg) => {
-        console.log(msg.data)
-      })
-    },
-
     // 商品视频
     handleSuccess3 (response, file, fileList) {
       console.log(response)
@@ -556,17 +527,6 @@ export default {
         this.$refs.video.clearFiles()
         this.consoleError(response.return_code)
       }
-    },
-
-    // 移除商品视频
-    handleRemove3 () {
-      this.three.video = true
-      this.$axios.post(this.removeUploadedFile, {
-        'file_url': this.three.video_url
-      })
-      .then((msg) => {
-        console.log(msg.data)
-      })
     },
 
     // 获取商品品牌和商品分类
@@ -818,16 +778,6 @@ export default {
       } else {
         this.consoleError(response.return_code)
       }
-    },
-
-    // 移除商品颜色图片
-    colorAndImgRemove () {
-      this.$axios.post(this.removeUploadedFile, {
-        'file_url': this.three.thumb_image_url
-      })
-      .then((msg) => {
-        console.log(msg.data)
-      })
     },
 
     // 文件上传失败
