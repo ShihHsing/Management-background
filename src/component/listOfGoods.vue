@@ -260,9 +260,7 @@ export default {
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification () {
       var _this = this
-      this.$axios.post(API.addNewerGoodsInfo, {
-        'request_flag': 'product_list'
-      })
+      this.$axios.post(API.getNewerProductList)
       .then((msg) => {
         console.log(msg.data, '获取商品品牌和商品分类')
         if (msg.data.flag >> 0 === 1000) {
@@ -410,78 +408,78 @@ export default {
     },
 
     // 商品设置置顶&取消
-    toGoTop (scope) {
-      var popular = scope.row.popular === 1 ? 0 : 1
-      // scope.row
-      // 当前点击数据的所有值
-      this.$axios.post(API.popularHandleUrl, {
-        'goods_id': scope.row.id,
-        'popular': popular
-      })
-      .then((msg) => {
-        console.log(msg.data)
-        if (msg.data.flag >> 0 === 1000) {
-          // statement
-          this.consoleSuccess(`${msg.data.return_code}`)
-          this.getShopData()
-        } else {
-          this.consoleError(`${msg.data.return_code}`)
-        }
-      })
-      .catch(error => {
-        this.consoleError(`服务器${error.response}`)
-      })
-    },
+    // toGoTop (scope) {
+    //   var popular = scope.row.popular === 1 ? 0 : 1
+    //   // scope.row
+    //   // 当前点击数据的所有值
+    //   this.$axios.post(API.popularHandleUrl, {
+    //     'goods_id': scope.row.id,
+    //     'popular': popular
+    //   })
+    //   .then((msg) => {
+    //     console.log(msg.data)
+    //     if (msg.data.flag >> 0 === 1000) {
+    //       // statement
+    //       this.consoleSuccess(`${msg.data.return_code}`)
+    //       this.getShopData()
+    //     } else {
+    //       this.consoleError(`${msg.data.return_code}`)
+    //     }
+    //   })
+    //   .catch(error => {
+    //     this.consoleError(`服务器${error.response}`)
+    //   })
+    // },
 
-    // 商品设置推荐&取消
-    toGoRecommend (scope) {
-      var special_power = scope.row.special_power === 1 ? 0 : 1
-      // scope.row
-      // 当前点击数据的所有值
-      this.$axios.post(API.specialPowerHandleUrl, {
-        'goods_id': scope.row.id,
-        'special_power': special_power
-      })
-      .then((msg) => {
-        console.log(msg.data)
-        if (msg.data.flag >> 0 === 1000) {
-          // statement
-          this.consoleSuccess(`${msg.data.return_code}`)
-          this.getShopData()
-        } else {
-          this.consoleError(`${msg.data.return_code}`)
-        }
-      })
-      .catch(error => {
-        this.consoleError(`服务器${error.response}`)
-      })
-    },
+    // // 商品设置推荐&取消
+    // toGoRecommend (scope) {
+    //   var special_power = scope.row.special_power === 1 ? 0 : 1
+    //   // scope.row
+    //   // 当前点击数据的所有值
+    //   this.$axios.post(API.specialPowerHandleUrl, {
+    //     'goods_id': scope.row.id,
+    //     'special_power': special_power
+    //   })
+    //   .then((msg) => {
+    //     console.log(msg.data)
+    //     if (msg.data.flag >> 0 === 1000) {
+    //       // statement
+    //       this.consoleSuccess(`${msg.data.return_code}`)
+    //       this.getShopData()
+    //     } else {
+    //       this.consoleError(`${msg.data.return_code}`)
+    //     }
+    //   })
+    //   .catch(error => {
+    //     this.consoleError(`服务器${error.response}`)
+    //   })
+    // },
 
-    deleteRow (index, rows) {
-      rows.splice(index, 1)
-    },
+    // deleteRow (index, rows) {
+    //   rows.splice(index, 1)
+    // },
 
-    // 删除
-    deleteNewerGoodsInfo (id, index) {
-      console.log(index)
-      this.$axios.post(API.deleteNewerGoodsInfoUrl, {
-        'goods_id': id
-      })
-      .then((msg) => {
-        console.log(msg.data)
-        if (msg.data.flag >> 0 === 1000) {
-          // statement
-          this.dialogVisible[index].model = false
-          this.consoleSuccess(`${msg.data.return_code}`)
-          this.getShopData()
-        } else {
-          this.consoleError(`${msg.data.return_code}`)
-        }
-      })
-      .catch(error => {
-        this.consoleError(`服务器${error.response}`)
-      })
-    },
+    // // 删除
+    // deleteNewerGoodsInfo (id, index) {
+    //   console.log(index)
+    //   this.$axios.post(API.deleteNewerGoodsInfoUrl, {
+    //     'goods_id': id
+    //   })
+    //   .then((msg) => {
+    //     console.log(msg.data)
+    //     if (msg.data.flag >> 0 === 1000) {
+    //       // statement
+    //       this.dialogVisible[index].model = false
+    //       this.consoleSuccess(`${msg.data.return_code}`)
+    //       this.getShopData()
+    //     } else {
+    //       this.consoleError(`${msg.data.return_code}`)
+    //     }
+    //   })
+    //   .catch(error => {
+    //     this.consoleError(`服务器${error.response}`)
+    //   })
+    // },
 
     // 商品设置开关
     goodsSetSwitch (goods_id, switch_id, switch_value) {

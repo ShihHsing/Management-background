@@ -6,7 +6,7 @@
           <div slot="header" class="clearfix">
             <h2 style="float: left">会员导入</h2>
             <el-button type="text" style="float: right;">
-              <a :href="addExcelTemplateUrl" download="会员模板">模板下载</a>
+              <a :href="addExcelTemplateUrl" download="会员模板.xlsx">模板下载</a>
             </el-button>
           </div>
 
