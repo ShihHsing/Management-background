@@ -42,18 +42,18 @@
           style="width: 100%"
           v-loading="loading"
           element-loading-text="加载中...">
-         <!--  <el-table-column
+          <el-table-column
             prop="model"
             label="商品款号"
             width="180"
             fixed="left">
-          </el-table-column> -->
-          <el-table-column
+          </el-table-column>
+          <!-- <el-table-column
             prop="id"
             label="ID"
             width="180"
             fixed="left">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             label="商品缩略图">
             <template scope="scope">
