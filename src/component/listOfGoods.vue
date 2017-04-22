@@ -56,7 +56,7 @@
           </el-table-column>
           <el-table-column
             label="商品缩略图"
-            width="300">
+            width="150">
             <template scope="scope">
               <img width="100%" height="auto" :src="scope.row.thumb_image" alt="商品缩略图">
             </template>
