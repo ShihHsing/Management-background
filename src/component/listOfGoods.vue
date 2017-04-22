@@ -287,7 +287,7 @@ export default {
       if (this.searchShopList.commodityBrand !== '' || this.searchShopList.commodityClassification !== '' || this.searchShopList.model !== '') {
         // statement
         console.log(this.searchShopList)
-        this.searchShopData()
+        this.searchShopData(this.current_page)
       } else {
         this.consoleError('请完善搜索信息!至少需要一个搜索条件!')
         return false
