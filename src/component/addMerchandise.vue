@@ -15,7 +15,7 @@
       <el-col :span="11">
         <el-carousel 
           indicator-position="none"
-          arrow="never"
+          arrow="hover"
           :autoplay="false"
           ref="elCarousel">
           <!-- 第一页 -->

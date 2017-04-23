@@ -22,7 +22,7 @@
             </el-col>
             <el-col :lg="5" :md="6" :sm="24">
               <el-form-item label="商品款号:" prop="model">
-                <el-input v-model.number="searchShopList.model" style="float: right;" placeholder="请输入商品款号"></el-input>
+                <el-input v-model="searchShopList.model" style="float: right;" placeholder="请输入商品款号"></el-input>
               </el-form-item>
             </el-col>
             <el-col :lg="3" :md="6" :sm="24" >
@@ -186,20 +186,6 @@ import * as API from '../assets/axios/api.js'
 export default {
   name: 'listOfGoods',
   data () {
-    var checkmodel = (rule, value, callback) => {
-      if (value !== '') {
-        // statement
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'))
-          } else {
-            callback()
-          }
-        }, 300)
-      } else {
-        callback()
-      }
-    }
     return {
       // 加载数据蒙层
       loading: true,
@@ -236,10 +222,9 @@ export default {
           { message: '请选择商品分类', trigger: 'change' }
         ],
         model: [
-          { validator: checkmodel, trigger: 'change' }
+          { message: '请输入商品款号', trigger: 'change' }
         ]
       },
-
       // 服务端数据
       shopDateList: [],
       // shop_id 控制显示内容 1号为公有门店 其与为私有门店
