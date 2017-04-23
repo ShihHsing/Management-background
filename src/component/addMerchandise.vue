@@ -81,7 +81,7 @@
                   </el-input>
                 </el-form-item>
 
-                <div v-for="(item,index) in two.privateProperty" v-if="two.judgeAttribute">
+                <div v-for="(item,index) in privateProperty" v-if="privateProperty">
                   <el-form-item :label="item.argument_value">
                     <el-select placeholder="请选择" v-model="two.privatePropertyList[index].attributeValue" v-on:change="getPrivatePropertyList();">
                       <el-option v-for="childItem in item.child_list" :label="childItem.argument_value" :value="childItem.id"></el-option>
@@ -282,10 +282,6 @@ export default {
         // 易企秀
         shop_show: '',
 
-        // 判断是否有商品属性
-        // true则渲染页面 false反之
-        judgeAttribute: false,
-
         // 私有属性 服务器端获取数据
         privateProperty: [],
 
@@ -383,13 +379,35 @@ export default {
         price: [
           { required: true, message: '请输入商品价格', trigger: 'change' }
         ]
-        // shop_show: [
-        //   { required: true, message: '请输入易企秀链接', trigger: 'change' }
-        // ]
       },
       elCarousel: '',
       description: '',
       newDescription: ''
+    }
+  },
+
+  computed: {
+    privateProperty: function () {
+      // 检查商品属性是否有空属性存在 存在过滤
+      // 若过滤后属性列表为空 则抛出Error
+      var arrList = []
+      for (var i = this.two.privateProperty.length - 1; i >= 0; i--) {
+        if (this.two.privateProperty[i].hasOwnProperty('child_list')) {
+          arrList.push(this.two.privateProperty[i])
+          // ------- 定义新的数据模型绑定数据 -------
+          var newAttribute = {
+            attribute: this.two.privateProperty[i].argument_value,
+            attributeValue: ''
+          }
+          this.two.privatePropertyList.push(newAttribute)
+          // ----------------------------------------
+        }
+      }
+      if (arrList.length >> 0 === 0) {
+        return ''
+      } else {
+        return arrList
+      }
     }
   },
 
@@ -564,7 +582,6 @@ export default {
 
     // 根据商品品牌和商品分类获取属性
     getShopStyle () {
-      // console.log(this.one.commodityBrand,this.one.commodityClassification)
       var _this = this
       this.$axios.post(this.onlyUrl, {
         'request_flag': 'arguments_list',
@@ -575,23 +592,10 @@ export default {
         if (msg.data.flag >> 0 === 1000) {
           this.active ++
           this.$refs.elCarousel.next()
-          // statement
-          // 有商品属性 渲染页面
-          this.two.judgeAttribute = true
 
           // 获取数据信息 渲染页面
           _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list
-
-          for (var i = 0; i < this.two.privateProperty.length; i++) {
-            // 接收服务器信息 向原有数据模型动态添加新模型
-            var newAttribute = {
-              attribute: this.two.privateProperty[i].argument_value,
-              attributeValue: ''
-            }
-            this.two.privatePropertyList.push(newAttribute)
-          }
         } else {
-          this.two.judgeAttribute = false
           this.consoleError(`商品属性${msg.data.return_code}`)
         }
       }, (response) => {
