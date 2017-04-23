@@ -1,0 +1,62 @@
+ /* 公共样式表 */
+
+/* ---------------自定义滚动条样式 -------------- */
+// basis基础样式必须引用
+// style表现形式
+.sx_basis_scroll {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+.sx_scroll_style::-webkit-scrollbar {
+  width: 8px;
+}
+.sx_scroll_style::-webkit-scrollbar-track {
+  background-color:#fff;
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius:2em;
+  border:1px solid #ccc;
+}
+.sx_scroll_style::-webkit-scrollbar-thumb {
+  background-color: #F90;
+  background-image: -webkit-linear-gradient(45deg,  rgba(255, 255, 255, .4) 25%,  transparent 25%,  transparent 50%,  rgba(255, 255, 255, .4) 50%,  rgba(255, 255, 255, .4) 75%,  transparent 75%,  transparent);
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius:2em;
+}
+/* ----------------------------------------------- */
+
+/* --- 富文本框图片显示问题 --- */
+.content{
+  img{
+    width: 40%!important;
+    margin: 15px;
+  }
+}
+/* --------------------------- */
+
+/* --- 用户头像补充UI --- */
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #20a0ff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+/* ------------------------ */

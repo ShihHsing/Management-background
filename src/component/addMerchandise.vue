@@ -229,14 +229,6 @@
   </div>
 </template>
 
-<style lang="less">
-  .content{
-    img{
-      width: 40%!important;
-      margin: 15px;
-    }
-  }
-</style>
 <script>
 // 样式文件
 import '../assets/style/addMerchandise.less'
