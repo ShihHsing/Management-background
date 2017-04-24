@@ -22,7 +22,7 @@
             </el-col>
             <el-col :lg="5" :md="6" :sm="24">
               <el-form-item label="商品款号:" prop="model">
-                <el-input v-model.number="searchShopList.model" style="float: right;" placeholder="请输入商品款号"></el-input>
+                <el-input v-model="searchShopList.model" style="float: right;" placeholder="请输入商品款号"></el-input>
               </el-form-item>
             </el-col>
             <el-col :lg="3" :md="6" :sm="24" >
@@ -35,28 +35,27 @@
     <el-row>
       <el-col :span="22" :offset="1">
 
-       	<el-table
+        <el-table
           :data="shopDateList"
           border
           stripe
           style="width: 100%"
           v-loading="loading"
           element-loading-text="加载中...">
-         <!--  <el-table-column
+          <el-table-column
             prop="model"
             label="商品款号"
             width="180"
             fixed="left">
-          </el-table-column> -->
-          <el-table-column
+          </el-table-column>
+          <!-- <el-table-column
             prop="id"
             label="ID"
             width="180"
             fixed="left">
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
-            label="商品缩略图"
-            width="300">
+            label="商品缩略图">
             <template scope="scope">
               <img width="100%" height="auto" :src="scope.row.thumb_image" alt="商品缩略图">
             </template>
@@ -84,7 +83,7 @@
             <el-table-column
               fixed="right"
               label="信息修改"
-              width="180">
+              width="80">
               <template scope="scope" >
                 <template v-if="shop_id == scope.row.shop_id">
                   <router-link size="small" class="el-button el-button--warning el-button--small" type="warning" :to="{path: 'modificationMerchandise', query: {shopID: scope.row.id}}">编辑</router-link>
@@ -97,19 +96,7 @@
                       <el-button type="primary" @click="deleteNewerGoodsInfo(scope.row.id,scope.$index)">确 定</el-button>
                     </span>
                   </el-dialog>
-                </template>
-
-                <template v-else>
-                  <el-button @click="dialogVisible[scope.$index].model = true" size="small" type="danger">删除</el-button>
-
-                  <el-dialog title="提示" v-model="dialogVisible[scope.$index].model" size="tiny">
-                    <span>您确定要删除这件商品吗?</span>
-                    <span slot="footer" class="dialog-footer">
-                      <el-button @click="dialogVisible[scope.$index].model = false">取 消</el-button>
-                      <el-button type="primary" @click="deleteNewerGoodsInfo(scope.row.id,scope.$index)">确 定</el-button>
-                    </span>
-                  </el-dialog>
-                </template>
+                </template> -->
               </template>
             </el-table-column>
             <el-table-column
@@ -144,7 +131,7 @@
             <el-table-column
               fixed="right"
               label="添加3D模型"
-              width="120">
+              width="100">
               <template scope="scope">
                 <template v-if="shop_id == 1">
                   <router-link :to="{path: 'add3DModel', query: {code: scope.row.code, id: scope.row.id, shop_id: scope.row.shop_id, color: scope.row.image_url}}" replace>
@@ -187,20 +174,6 @@ import * as API from '../assets/axios/api.js'
 export default {
   name: 'listOfGoods',
   data () {
-    var checkmodel = (rule, value, callback) => {
-      if (value !== '') {
-        // statement
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'))
-          } else {
-            callback()
-          }
-        }, 300)
-      } else {
-        callback()
-      }
-    }
     return {
       // 加载数据蒙层
       loading: true,
@@ -237,10 +210,9 @@ export default {
           { message: '请选择商品分类', trigger: 'change' }
         ],
         model: [
-          { validator: checkmodel, trigger: 'change' }
+          { message: '请输入商品款号', trigger: 'change' }
         ]
       },
-
       // 服务端数据
       shopDateList: [],
       // shop_id 控制显示内容 1号为公有门店 其与为私有门店
@@ -260,9 +232,7 @@ export default {
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification () {
       var _this = this
-      this.$axios.post(API.addNewerGoodsInfo, {
-        'request_flag': 'product_list'
-      })
+      this.$axios.post(API.getNewerProductList)
       .then((msg) => {
         console.log(msg.data, '获取商品品牌和商品分类')
         if (msg.data.flag >> 0 === 1000) {
@@ -410,78 +380,78 @@ export default {
     },
 
     // 商品设置置顶&取消
-    toGoTop (scope) {
-      var popular = scope.row.popular === 1 ? 0 : 1
-      // scope.row
-      // 当前点击数据的所有值
-      this.$axios.post(API.popularHandleUrl, {
-        'goods_id': scope.row.id,
-        'popular': popular
-      })
-      .then((msg) => {
-        console.log(msg.data)
-        if (msg.data.flag >> 0 === 1000) {
-          // statement
-          this.consoleSuccess(`${msg.data.return_code}`)
-          this.getShopData()
-        } else {
-          this.consoleError(`${msg.data.return_code}`)
-        }
-      })
-      .catch(error => {
-        this.consoleError(`服务器${error.response}`)
-      })
-    },
+    // toGoTop (scope) {
+    //   var popular = scope.row.popular === 1 ? 0 : 1
+    //   // scope.row
+    //   // 当前点击数据的所有值
+    //   this.$axios.post(API.popularHandleUrl, {
+    //     'goods_id': scope.row.id,
+    //     'popular': popular
+    //   })
+    //   .then((msg) => {
+    //     console.log(msg.data)
+    //     if (msg.data.flag >> 0 === 1000) {
+    //       // statement
+    //       this.consoleSuccess(`${msg.data.return_code}`)
+    //       this.getShopData()
+    //     } else {
+    //       this.consoleError(`${msg.data.return_code}`)
+    //     }
+    //   })
+    //   .catch(error => {
+    //     this.consoleError(`服务器${error.response}`)
+    //   })
+    // },
 
-    // 商品设置推荐&取消
-    toGoRecommend (scope) {
-      var special_power = scope.row.special_power === 1 ? 0 : 1
-      // scope.row
-      // 当前点击数据的所有值
-      this.$axios.post(API.specialPowerHandleUrl, {
-        'goods_id': scope.row.id,
-        'special_power': special_power
-      })
-      .then((msg) => {
-        console.log(msg.data)
-        if (msg.data.flag >> 0 === 1000) {
-          // statement
-          this.consoleSuccess(`${msg.data.return_code}`)
-          this.getShopData()
-        } else {
-          this.consoleError(`${msg.data.return_code}`)
-        }
-      })
-      .catch(error => {
-        this.consoleError(`服务器${error.response}`)
-      })
-    },
+    // // 商品设置推荐&取消
+    // toGoRecommend (scope) {
+    //   var special_power = scope.row.special_power === 1 ? 0 : 1
+    //   // scope.row
+    //   // 当前点击数据的所有值
+    //   this.$axios.post(API.specialPowerHandleUrl, {
+    //     'goods_id': scope.row.id,
+    //     'special_power': special_power
+    //   })
+    //   .then((msg) => {
+    //     console.log(msg.data)
+    //     if (msg.data.flag >> 0 === 1000) {
+    //       // statement
+    //       this.consoleSuccess(`${msg.data.return_code}`)
+    //       this.getShopData()
+    //     } else {
+    //       this.consoleError(`${msg.data.return_code}`)
+    //     }
+    //   })
+    //   .catch(error => {
+    //     this.consoleError(`服务器${error.response}`)
+    //   })
+    // },
 
-    deleteRow (index, rows) {
-      rows.splice(index, 1)
-    },
+    // deleteRow (index, rows) {
+    //   rows.splice(index, 1)
+    // },
 
-    // 删除
-    deleteNewerGoodsInfo (id, index) {
-      console.log(index)
-      this.$axios.post(API.deleteNewerGoodsInfoUrl, {
-        'goods_id': id
-      })
-      .then((msg) => {
-        console.log(msg.data)
-        if (msg.data.flag >> 0 === 1000) {
-          // statement
-          this.dialogVisible[index].model = false
-          this.consoleSuccess(`${msg.data.return_code}`)
-          this.getShopData()
-        } else {
-          this.consoleError(`${msg.data.return_code}`)
-        }
-      })
-      .catch(error => {
-        this.consoleError(`服务器${error.response}`)
-      })
-    },
+    // // 删除
+    // deleteNewerGoodsInfo (id, index) {
+    //   console.log(index)
+    //   this.$axios.post(API.deleteNewerGoodsInfoUrl, {
+    //     'goods_id': id
+    //   })
+    //   .then((msg) => {
+    //     console.log(msg.data)
+    //     if (msg.data.flag >> 0 === 1000) {
+    //       // statement
+    //       this.dialogVisible[index].model = false
+    //       this.consoleSuccess(`${msg.data.return_code}`)
+    //       this.getShopData()
+    //     } else {
+    //       this.consoleError(`${msg.data.return_code}`)
+    //     }
+    //   })
+    //   .catch(error => {
+    //     this.consoleError(`服务器${error.response}`)
+    //   })
+    // },
 
     // 商品设置开关
     goodsSetSwitch (goods_id, switch_id, switch_value) {
@@ -496,7 +466,7 @@ export default {
         if (msg.data.flag >> 0 === 1000) {
           // statement
           this.consoleSuccess(`${msg.data.return_code}`)
-          this.searchShopData()
+          // this.searchShopData()
         } else {
           this.consoleError(`${msg.data.return_code}`)
         }

@@ -22,7 +22,7 @@
               <el-form-item label="上传轮播图:">
                 <el-upload
                   class="avatar-uploader"
-                  action="https://a001.aybc.so/Shop/addCarouselDrawing"
+                  :action="uploadAddCarouselDrawing"
                   name="image_url"
                   :on-success="addCarouselDrawingImg"
                   :on-error="uploadError"
@@ -255,7 +255,7 @@
         <el-form-item label="上传轮播图:">
           <el-upload
             class="avatar-uploader"
-            action="https://a001.aybc.so/Shop/modifyCarouselDrawing"
+            :action="uploadAddCarouselDrawing"
             name="image_url"
             :on-success="modificationAddCarouselDrawingImg"
             :on-error="uploadError"
@@ -380,7 +380,6 @@
     name: 'addCarouselDrawing',
 
     created: function () {
-
       // 后台获取轮播图位置
       this.getLocationTypeList()
 
@@ -515,6 +514,9 @@
 
           // 视频地址
           carousel_drawing_video_url: '',
+
+          // 文件上传
+          uploadAddCarouselDrawing: API.uploadAddCarouselDrawing
         }
       }
     },

@@ -181,7 +181,7 @@
             <div slot="content">图片大小不能超过1MB</br>图片比例4:3为最佳尺寸</div>
             <el-upload
               class="avatar-uploader"
-              action="https://a001.aybc.so/Shop/addTrainingInfo"
+              action="http://a001.aybc.so/Shop/addTrainingInfo"
               name="image_url"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"

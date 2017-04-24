@@ -15,7 +15,7 @@
       <el-col :span="11">
         <el-carousel 
           indicator-position="none"
-          arrow="never"
+          arrow="hover"
           :autoplay="false"
           ref="elCarousel">
           <!-- 第一页 -->
@@ -81,7 +81,7 @@
                   </el-input>
                 </el-form-item>
 
-                <div v-for="(item,index) in two.privateProperty" v-if="two.judgeAttribute">
+                <div v-for="(item,index) in privateProperty" v-if="privateProperty">
                   <el-form-item :label="item.argument_value">
                     <el-select placeholder="请选择" v-model="two.privatePropertyList[index].attributeValue" v-on:change="getPrivatePropertyList();">
                       <el-option v-for="childItem in item.child_list" :label="childItem.argument_value" :value="childItem.id"></el-option>
@@ -107,10 +107,9 @@
                 <el-form-item label="商品列表图"></br>
                   <el-upload
                     class="upload-demo"
-                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess1"
-                    :on-remove="handleRemove1"
                     :on-error="uploadError"
                     :multiple="false"
                     name="thumb_image"
@@ -124,9 +123,8 @@
                   <el-upload
                     list-type="picture"
                     class="upload-demo"
-                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     :on-success="handleSuccess2"
-                    :on-remove="handleRemove2"
                     :on-error="uploadError"
                     :multiple="false"
                     name="audio"
@@ -140,8 +138,7 @@
                   <el-upload
                     list-type="picture"
                     class="upload-demo"
-                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
-                    :on-remove="handleRemove3"
+                    :action="uploadAddNewerGoodsInfo"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
                     :multiple="false"
@@ -188,11 +185,10 @@
                   <!-- action冒号问题 -->
                     <el-upload
                       class="upload-demo"
-                      action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                      :action="uploadAddNewerGoodsInfo"
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"
-                      :on-remove="colorAndImgRemove"
                       :on-error="uploadError"
                       name="normal_image"
                       :data="{'imgColor': four.checkedCities[index]}"
@@ -234,6 +230,7 @@
 </template>
 
 <script>
+import * as API from '../assets/axios/api.js'
 // 样式文件
 import '../assets/style/addMerchandise.less'
 // 脚本文件
@@ -242,20 +239,12 @@ export default {
   data () {
     return {
       active: 0,
-
-      // 唯一接口
-      onlyUrl: 'Shop/addNewerGoodsInfo',
-
-      // 删除接口
-      removeUploadedFile: 'Shop/removeUploadedFile',
-
-      // 获取颜色、尺寸接口
-      getColorClassificationUrl: 'Shop/addNewerGoodsInfo',
+      // 文件上传
+      uploadAddNewerGoodsInfo: API.uploadAddNewerGoodsInfo,
       one: {
-
         // 商品品牌
         commodityBrand: '',
-        commodityBrandList : [],
+        commodityBrandList: [],
 
         // 商品分类
         commodityClassification: '',
@@ -280,10 +269,6 @@ export default {
 
         // 易企秀
         shop_show: '',
-
-        // 判断是否有商品属性
-        // true则渲染页面 false反之
-        judgeAttribute: false,
 
         // 私有属性 服务器端获取数据
         privateProperty: [],
@@ -382,13 +367,35 @@ export default {
         price: [
           { required: true, message: '请输入商品价格', trigger: 'change' }
         ]
-        // shop_show: [
-        //   { required: true, message: '请输入易企秀链接', trigger: 'change' }
-        // ]
       },
       elCarousel: '',
       description: '',
       newDescription: ''
+    }
+  },
+
+  computed: {
+    privateProperty: function () {
+      // 检查商品属性是否有空属性存在 存在过滤
+      // 若过滤后属性列表为空 则抛出Error
+      var arrList = []
+      for (var i = this.two.privateProperty.length - 1; i >= 0; i--) {
+        if (this.two.privateProperty[i].hasOwnProperty('child_list')) {
+          arrList.push(this.two.privateProperty[i])
+          // ------- 定义新的数据模型绑定数据 -------
+          var newAttribute = {
+            attribute: this.two.privateProperty[i].argument_value,
+            attributeValue: ''
+          }
+          this.two.privatePropertyList.push(newAttribute)
+          // ----------------------------------------
+        }
+      }
+      if (arrList.length >> 0 === 0) {
+        return ''
+      } else {
+        return arrList
+      }
     }
   },
 
@@ -502,17 +509,6 @@ export default {
       }
     },
 
-    // 移除商品列表图
-    handleRemove1 () {
-      this.three.thumb_image = true
-      this.$axios.post(this.removeUploadedFile, {
-        'file_url': this.three.thumb_image_url
-      })
-      .then((msg) => {
-        console.log(msg.data)
-      })
-    },
-
     // 商品音频
     handleSuccess2 (response, file, fileList) {
       console.log(response)
@@ -528,17 +524,6 @@ export default {
         this.$refs.audio.clearFiles()
         this.consoleError(response.return_code)
       }
-    },
-
-    // 移除商品音频
-    handleRemove2 () {
-      this.three.audio = true
-      this.$axios.post(this.removeUploadedFile, {
-        'file_url': this.three.audio_url
-      })
-      .then((msg) => {
-        console.log(msg.data)
-      })
     },
 
     // 商品视频
@@ -558,21 +543,10 @@ export default {
       }
     },
 
-    // 移除商品视频
-    handleRemove3 () {
-      this.three.video = true
-      this.$axios.post(this.removeUploadedFile, {
-        'file_url': this.three.video_url
-      })
-      .then((msg) => {
-        console.log(msg.data)
-      })
-    },
-
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification () {
       var _this = this
-      this.$axios.post(this.onlyUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         'request_flag': 'product_list'
       })
       .then(msg => {
@@ -596,9 +570,8 @@ export default {
 
     // 根据商品品牌和商品分类获取属性
     getShopStyle () {
-      // console.log(this.one.commodityBrand,this.one.commodityClassification)
       var _this = this
-      this.$axios.post(this.onlyUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         'request_flag': 'arguments_list',
         'product_id': this.one.commodityBrand,
         'category_id': this.one.commodityClassification
@@ -607,23 +580,10 @@ export default {
         if (msg.data.flag >> 0 === 1000) {
           this.active ++
           this.$refs.elCarousel.next()
-          // statement
-          // 有商品属性 渲染页面
-          this.two.judgeAttribute = true
 
           // 获取数据信息 渲染页面
           _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list
-
-          for (var i = 0; i < this.two.privateProperty.length; i++) {
-            // 接收服务器信息 向原有数据模型动态添加新模型
-            var newAttribute = {
-              attribute: this.two.privateProperty[i].argument_value,
-              attributeValue: ''
-            }
-            this.two.privatePropertyList.push(newAttribute)
-          }
         } else {
-          this.two.judgeAttribute = false
           this.consoleError(`商品属性${msg.data.return_code}`)
         }
       }, (response) => {
@@ -684,7 +644,7 @@ export default {
 
     // 服务器获取颜色分类
     getColorClassification (request_flag) {
-      this.$axios.post(this.getColorClassificationUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         // 方便测试开发 默认品牌ID为1 分类ID为4
         'product_id': this.one.commodityBrand,
         'category_id': this.one.commodityClassification,
@@ -820,16 +780,6 @@ export default {
       }
     },
 
-    // 移除商品颜色图片
-    colorAndImgRemove () {
-      this.$axios.post(this.removeUploadedFile, {
-        'file_url': this.three.thumb_image_url
-      })
-      .then((msg) => {
-        console.log(msg.data)
-      })
-    },
-
     // 文件上传失败
     uploadError () {
       this.consoleError('上传文件有误!请重新上传!')
@@ -905,7 +855,7 @@ export default {
 
     // 提交数据
     postAddShopData () {
-      this.$axios.post(this.onlyUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         arguments: this.buildAddShopData()
       })
       .then((msg) => {

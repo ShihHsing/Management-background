@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import * as API from '../assets/axios/api.js';
+import * as API from '../assets/axios/api.js'
 import '../assets/style/goodsPrivatePropertyValues.less'
 export default {
   name: 'goodsPrivatePropertyValues',
@@ -85,7 +85,7 @@ export default {
       goodsPrivatePropertyValues: {
         // 商品品牌
         commodityBrand: '',
-        commodityBrandList : [],
+        commodityBrandList: [],
         // 商品分类
         commodityClassification: '',
         commodityClassificationList: [],

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueHtml5Editor from 'vue-html5-editor'
+import * as API from '../axios/api.js'
 
 Vue.use(VueHtml5Editor, {
   // 全局组件名称，使用new VueHtml5Editor(options)时该选项无效
@@ -31,7 +32,7 @@ Vue.use(VueHtml5Editor, {
   image: {
     // 后端图片上传的地址，如果为空，默认转图片为base64
     // Url of the server-side,default null and convert image to base64
-    server: 'https://a001.aybc.so/shop/fullTextUpload',
+    server: API.editorServer,
     // 请求时表单参数名
     // the name for file field in multipart request
     fieldName: 'image',

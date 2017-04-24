@@ -42,11 +42,11 @@
 </template>
 
 <script>
+import { listTVMFansInfo } from '../assets/axios/api.js'
 export default {
   name: 'tvmFansList',
   data () {
     return {
-      listTVMFansInfoUrl: 'Shop/listTVMFansInfo',
       // 服务器端获取数据
       listTVMFans: [],
       // 当前页
@@ -63,7 +63,7 @@ export default {
 
   methods: {
     getTvmData (current_page) {
-      this.$axios.post(this.listTVMFansInfoUrl, {
+      this.$axios.post(listTVMFansInfo, {
         current_page: current_page
       })
       .then((msg) => {

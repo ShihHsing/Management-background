@@ -80,7 +80,7 @@
                 <el-form-item label="商品列表图"></br>
                   <el-upload
                     class="upload-demo"
-                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess1"
                     :on-error="uploadError"
@@ -96,7 +96,7 @@
                 <el-form-item label="商品音频"></br>
                   <el-upload
                     class="upload-demo"
-                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess2"
                     :on-error="uploadError"
@@ -112,7 +112,7 @@
                 <el-form-item label="商品视频"></br>
                   <el-upload
                     class="upload-demo"
-                    action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
@@ -161,7 +161,7 @@
                   <!-- action冒号问题 -->
                    <el-upload
                       class="upload-demo"
-                      action="https://a001.aybc.so/Shop/addNewerGoodsInfo"
+                      :action="uploadAddNewerGoodsInfo"
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"
@@ -238,6 +238,7 @@
 </template>
 
 <script>
+import * as API from '../assets/axios/api.js'
 // 样式文件
 import '../assets/style/modificationMerchandise.less'
 // 脚本文件
@@ -246,18 +247,9 @@ export default {
   data () {
     return {
       active: 0,
-      // 唯一接口
-      onlyUrl: 'Shop/addNewerGoodsInfo',
-      // 删除接口
-      removeUploadedFile: 'Shop/removeUploadedFile',
-      // 获取颜色、尺寸接口
-      getColorClassificationUrl: 'Shop/addNewerGoodsInfo',
-      // ////
-      //  //
-      // ////
+      uploadAddNewerGoodsInfo: API.uploadAddNewerGoodsInfo,
       // 初始化获取商品ID
       shopID: '',
-      modifyNewerGoodsInfoUrl: 'Shop/modifyNewerGoodsInfo',
       // 服务器获取商品详情
       goods_detail: [],
       // ////
@@ -398,7 +390,7 @@ export default {
     getGoodsDetail () {
       if (this.shopID !== '') {
         // statement
-        this.$axios.post(this.modifyNewerGoodsInfoUrl, {
+        this.$axios.post(API.modifyNewerGoodsInfo, {
           'goods_id': this.$route.query.shopID,
           'request_flag': 'goods_detail'
         })
@@ -472,7 +464,7 @@ export default {
           }
         })
         .catch(error => {
-          this.consoleError(`服务器${error.response}`)
+          this.consoleError(`服务器1${error.response}`)
         })
       } else {
         this.consoleError('获取商品详细信息失败!请稍后重试!')
@@ -482,17 +474,17 @@ export default {
     // 删除颜色图片
     removerColor (color, index) {
       console.log(color, index)
-      Array.prototype.remove = function (dx) {
-        if (isNaN(dx) || dx > this.length) {
-          return false
-        }
-        for (var i = 0, n = 0; i < this.length; i++) {
-          if (this[i] !== this[dx]) {
-            this[n++] = this[i]
-          }
-        }
-        this.length -= 1
-      }
+      // Array.prototype.remove = function (dx) {
+      //   if (isNaN(dx) || dx > this.length) {
+      //     return false
+      //   }
+      //   for (var i = 0, n = 0; i < this.length; i++) {
+      //     if (this[i] !== this[dx]) {
+      //       this[n++] = this[i]
+      //     }
+      //   }
+      //   this.length -= 1
+      // }
       this.four.cities.push(color)
       this.goods_detail.image_url.splice(index, 1)
     },
@@ -555,7 +547,7 @@ export default {
           //   return false;
           // }
         }
-        this.active ++ 
+        this.active ++
         this.$refs.elCarousel.next()
       }
         //   else {
@@ -629,7 +621,7 @@ export default {
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification () {
       var _this = this
-      this.$axios.post(this.onlyUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         request_flag: 'product_list'
       })
       .then((msg) => {
@@ -647,14 +639,14 @@ export default {
         this.getSizeColor()
       })
       .catch(error => {
-        this.consoleError(`服务器${error.response}`)
+        this.consoleError(`服务器2${error.response}`)
       })
     },
 
     // 根据商品品牌和商品分类获取属性
     getShopStyle () {
       var _this = this
-      this.$axios.post(this.onlyUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         request_flag: 'arguments_list',
         product_id: this.one.commodityBrand,
         category_id: this.one.commodityClassification
@@ -666,7 +658,7 @@ export default {
           // 获取数据信息 渲染页面
           _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list
 
-          for (var i = 0; i < this.two.privateProperty.length; i++) {
+          for (let i = 0; i < this.two.privateProperty.length; i++) {
             // 接收服务器信息 向原有数据模型动态添加新模型
             var newAttribute = {
               attribute: this.two.privateProperty[i].argument_value,
@@ -677,8 +669,8 @@ export default {
           console.log(this.two)
 
           // 分类属性选择
-          for (var i = 0; i < this.goods_detail.sub_args.length; i++) {
-            for (var ii = 0; ii < this.two.privatePropertyList.length; ii++) {
+          for (let i = 0; i < this.goods_detail.sub_args.length; i++) {
+            for (let ii = 0; ii < this.two.privatePropertyList.length; ii++) {
               if (this.goods_detail.sub_args[i].argument_name === this.two.privatePropertyList[ii].attribute) {
                 // statement
                 this.two.privatePropertyList[ii].attributeValue = this.goods_detail.sub_args[i].argument_id
@@ -690,7 +682,7 @@ export default {
         }
       })
       .catch(error => {
-        this.consoleError(`服务器${error.response}`)
+        this.consoleError(`服务器3${error.response}`)
       })
     },
     // 填充商品分类属性
@@ -698,7 +690,7 @@ export default {
     twoReg () {
       // 计数检查数据模型是否有空值存在
       var countReg = true
-      for (var i = 0, length1 = this.two.privatePropertyList.length; i < length1; i++) {
+      for (let i = 0, length1 = this.two.privatePropertyList.length; i < length1; i++) {
         if (this.two.privatePropertyList[i].attributeValue === '') {
           countReg = false
         }
@@ -720,8 +712,9 @@ export default {
     // 颜色选择 单选
     handleCheckedCitiesChange (value) {
       var checkedCount = value.length
-      this.four.checkAll = checkedCount === this.four.cities.length
-      this.four.isIndeterminate = checkedCount > 0 && checkedCount < this.four.cities.length
+      console.log(value, checkedCount, '颜色单选')
+      // this.four.checkAll = checkedCount === this.four.cities.length
+      // this.four.isIndeterminate = checkedCount > 0 && checkedCount < this.four.cities.length
       console.log(value, this.four.cities)
       // 记录用户每次颜色选择的操作
       this.userColorModelHistoricalRecord()
@@ -744,7 +737,7 @@ export default {
 
     // 服务器获取颜色分类
     getColorClassification (request_flag) {
-      this.$axios.post(this.getColorClassificationUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         // 方便测试开发 默认品牌ID为1 分类ID为4
         product_id: this.one.commodityBrand,
         category_id: this.one.commodityClassification,
@@ -773,39 +766,27 @@ export default {
             //   }
             // }
 
-            Array.prototype.distinct = function () {
-              var self = this
-              var _a = this.concat().sort()
-              _a.sort(function (a, b) {
-                if (a === b) {
-                  var n = self.indexOf(a)
-                  var x = self.indexOf(b)
-                  self.splice(n, 1)
-                  self.splice(x, 1)
-                }
-              })
-              return self
-            }
-
             var arr1 = []
             var arr2 = []
-            var arr3 = []
 
-            for (var i = 0, length1 = msg.data.category_color_list.length; i < length1; i++) {
+            for (let i = 0, length1 = msg.data.category_color_list.length; i < length1; i++) {
               arr1.push(msg.data.category_color_list[i].argument_value)
             }
 
-            for (var i = 0, length1 = this.goods_detail.image_url.length; i < length1; i++) {
+            for (let i = 0, length1 = this.goods_detail.image_url.length; i < length1; i++) {
               arr2.push(this.goods_detail.image_url[i].color_name)
             }
 
-            arr3 = (arr1.concat(arr2)).distinct()
-
-            // arr3 = arr1.concat(arr2);
-
-            // this.four.cities = arr3;
-            console.log(arr3)
-
+            // -------- arr1中去除arr2中所包含的元素 --------
+            for (let i = arr1.length - 1; i >= 0; i--) {
+              for (let ii = arr2.length - 1; ii >= 0; ii--) {
+                if (arr2[ii] === arr1[i]) {
+                  arr1.splice(i, 1)
+                }
+              }
+            }
+            // -----------------------------------------
+            this.four.cities = arr1
             this.four.colorList = msg.data.category_color_list
           } else if (request_flag === 'size_list') {
             // statement
@@ -820,7 +801,7 @@ export default {
         }
       })
       .catch(error => {
-        this.consoleError(`服务器${error.response}`)
+        this.consoleError(`服务器4${error.response}`)
       })
     },
 
@@ -862,7 +843,7 @@ export default {
         if (this.goods_detail.sub_args[i].argument_name === '颜色') {
           console.log(this.goods_detail.sub_args[i].argument_value, count)
           this.four.checkedCities.push(this.goods_detail.sub_args[i].argument_value)
-          count ++
+          count++
           // 记录用户每次颜色选择的操作
           this.userColorModelHistoricalRecord()
           // 根据用户选择颜色 动态生成颜色、图片对应关系
@@ -871,7 +852,7 @@ export default {
       }
 
       // 生成列表图
-      for (var i = 0; i < this.goods_detail.image_url.length; i++) {
+      for (let i = 0; i < this.goods_detail.image_url.length; i++) {
         this.four.PHPColorAndUrl.push([{
           name: this.goods_detail.image_url[i].color_name + '.jpg',
           url: this.goods_detail.image_url[i].image_url
@@ -881,10 +862,10 @@ export default {
     // 动态生成颜色图片对应关系数据模型
     createColorAndImg () {
       // 初始化数据模型 可能要做DeBug处理 若用户上传图片又改动选择颜色 图片对应关系也会被初始化
-      if (this.four.colorAndImg.length === '0') {
+      if (this.four.colorAndImg.length >> 0 === 0) {
         // statement
         for (var j = 0; j < this.four.checkedCities.length; j++) {
-          let colorImg = {
+          const colorImg = {
             color: this.four.checkedCities[j],
             imgUrl: ''
           }
@@ -893,27 +874,27 @@ export default {
       } else {
         // 判断用户是添加还是删除
         // 0代表删除 1代表添加
-        var userOperation = (this.userColorHistoricalRecord[1].length) > (this.userColorHistoricalRecord[0].length)?1:0;
+        var userOperation = (this.userColorHistoricalRecord[1].length) > (this.userColorHistoricalRecord[0].length) ? 1 : 0
         var userOperationColor = this.removeDuplicate()
-        if (userOperation === '1') {
+        if (userOperation >> 0 === 1) {
           // statement
           console.log('执行添加')
-          let colorImg = {
+          const colorImg = {
             color: userOperationColor[0],
             imgUrl: ''
           }
           this.four.colorAndImg.push(colorImg)
-        } else if (userOperation === '0') {
+        } else if (userOperation >> 0 === 0) {
           // statement
           console.log('执行删除')
-          for (var i = 0; i < this.four.colorAndImg.length; i++) {
+          for (let i = 0; i < this.four.colorAndImg.length; i++) {
             console.log(this.four.colorAndImg[i].color, userOperationColor[0], '寻找删除数组下标')
             if (this.four.colorAndImg[i].color === userOperationColor[0]) {
               this.four.colorAndImg.splice(i, 1)
             }
           }
         }
-        console.log(userOperationColor[0], '去重结果', this.userColorHistoricalRecord[0].length, '前一步用户选择', this.userColorHistoricalRecord[1].length, '当前用户选择', userOperation === 1 ? '添加' : '删除', '用户操作')
+        console.log(userOperationColor[0], '去重结果', this.userColorHistoricalRecord[0].length, '前一步用户选择', this.userColorHistoricalRecord[1].length, '当前用户选择', userOperation >> 0 === 1 ? '添加' : '删除', '用户操作')
       }
 
       console.log(this.four.colorAndImg, '数据模型')
@@ -964,7 +945,7 @@ export default {
 
     // 商品颜色图片
     colorAndImgSuccess (response, file, fileList) {
-      if (response.flag === '1000') {
+      if (response.flag >> 0 === 1000) {
         console.log(response, file)
         // statement
         var imgColor = response.imgColor
@@ -977,19 +958,6 @@ export default {
       } else {
         this.consoleError(response.return_code)
       }
-    },
-
-    // 移除商品颜色图片
-    colorAndImgRemove () {
-      this.$axios.post(this.removeUploadedFile, {
-        file_url: this.three.thumb_image_url
-      })
-      .then((msg) => {
-        console.log(msg.data)
-      })
-      .catch(error => {
-        this.consoleError(`服务器${error.response}`)
-      })
     },
 
     // 文件上传失败
@@ -1029,7 +997,7 @@ export default {
       }
       if (this.four.colorAndImg.length !== 0) {
         // statement
-        for (var i = 0; i < this.four.colorAndImg.length; i++) {
+        for (let i = 0; i < this.four.colorAndImg.length; i++) {
           imgsUrl.push(this.four.colorAndImg[i].imgUrl)
         }
       }
@@ -1038,7 +1006,7 @@ export default {
       // this.goods_detail.image_url
 
       var colorAndImg = this.four.colorAndImg.concat()
-      for (var i = 0; i < this.goods_detail.image_url.length; i++) {
+      for (let i = 0; i < this.goods_detail.image_url.length; i++) {
         colorAndImg.push({
           color: this.goods_detail.image_url[i].color_arg_id,
           imgUrl: this.goods_detail.image_url[i].image_url
@@ -1046,8 +1014,8 @@ export default {
       }
       if (colorAndImg.length !== 0) {
         // statement
-        for (var i = 0; i < colorAndImg.length; i++) {
-          for (var ii = 0; ii < this.four.colorList.length; ii++) {
+        for (let i = 0; i < colorAndImg.length; i++) {
+          for (let ii = 0; ii < this.four.colorList.length; ii++) {
             if (this.four.colorList[ii].argument_value === colorAndImg[i].color) {
               // statement
               colorAndImg[i].color = this.four.colorList[ii].id
@@ -1055,37 +1023,37 @@ export default {
           }
         }
       }
-      argument.push({ imgAndColor:colorAndImg })
+      argument.push({ imgAndColor: colorAndImg })
 
       // 属性数组
       var sub_args = []
 
-      for (var i = 0, length1 = colorAndImg.length; i < length1; i++) {
+      for (let i = 0, length1 = colorAndImg.length; i < length1; i++) {
         sub_args.push(colorAndImg[i].color)
       }
-      for (var i = 0; i < this.four.checkedCities.length; i++) {
-        for (var ii = 0; ii < this.four.colorList.length; ii++) {
+      for (let i = 0; i < this.four.checkedCities.length; i++) {
+        for (let ii = 0; ii < this.four.colorList.length; ii++) {
           if (this.four.colorList[ii].argument_value === this.four.checkedCities[i]) {
             sub_args.push(this.four.colorList[ii].id)
           }
         }
       }
-      for (var i = 0; i < this.four.checkedSize.length; i++) {
-        for (var ii = 0; ii < this.four.sizeList.length; ii++) {
+      for (let i = 0; i < this.four.checkedSize.length; i++) {
+        for (let ii = 0; ii < this.four.sizeList.length; ii++) {
           if (this.four.sizeList[ii].argument_value === this.four.checkedSize[i]) {
             // statement
             sub_args.push(this.four.sizeList[ii].id)
           }
         }
       }
-      for (var i = 0; i < this.two.privatePropertyList.length; i++) {
+      for (let i = 0; i < this.two.privatePropertyList.length; i++) {
         sub_args.push(this.two.privatePropertyList[i].attributeValue)
       }
 
       // 数组去重
-      var sub_args = this.unique(sub_args)
+      sub_args = this.unique(sub_args)
 
-      argument.push({ 'sub-args':sub_args })
+      argument.push({ 'sub-args': sub_args })
 
       console.log(argument)
       return argument
@@ -1093,7 +1061,8 @@ export default {
 
     // 数组去重
     unique (arr) {
-      var result = [], hash = {}
+      var result = []
+      var hash = {}
       for (var i = 0, elem; (elem = arr[i]) != null; i++) {
         if (!hash[elem]) {
           result.push(elem)
@@ -1105,7 +1074,7 @@ export default {
     // 提交数据
     postAddShopData () {
       // this.buildAddShopData()
-      this.$axios.post(this.modifyNewerGoodsInfoUrl, {
+      this.$axios.post(API.modifyNewerGoodsInfo, {
         arguments: this.buildAddShopData(),
         request_flag: 'modify',
         goods_id: this.goods_detail.id
@@ -1124,7 +1093,7 @@ export default {
         }
       })
       .catch(error => {
-        this.consoleError(`服务器${error.response}`)
+        this.consoleError(`服务器6${error.response}`)
       })
     },
 

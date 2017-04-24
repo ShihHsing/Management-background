@@ -3,9 +3,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-// 子页面
-import children from '../../component/children.vue'
-
 const routes = [
   {
     path: '/login', // 登录
@@ -15,7 +12,8 @@ const routes = [
   },
   {
     path: '/children', // 子页面
-    component: children,
+    component: resolve => require(['../../component/children.vue'],
+      resolve),
     children: [
       {
         path: '/home', // 首页
@@ -110,6 +108,38 @@ const routes = [
       {
         path: '/trainingList', // 培训列表
         component: resolve => require(['../../component/trainingList.vue'],
+          resolve)
+      },
+      {
+        path: '/addExcel', // 老会员导入
+        component: resolve => require(['../../component/addExcel.vue'],
+          resolve)
+      }
+    ]
+  },
+  {
+    path: '/official_website', // 官网后台
+    component: resolve => require(['../../component/official_website/official_website.vue'],
+          resolve),
+    children: [
+      {
+        path: '/addNews', // 添加新闻
+        component: resolve => require(['../../component/official_website/addNews.vue'],
+          resolve)
+      },
+      {
+        path: '/newsList', // 新闻列表
+        component: resolve => require(['../../component/official_website/newsList.vue'],
+          resolve)
+      },
+      {
+        path: '/addEmploy', // 添加招聘
+        component: resolve => require(['../../component/official_website/addEmploy.vue'],
+          resolve)
+      },
+      {
+        path: '/employList', // 招聘列表
+        component: resolve => require(['../../component/official_website/employList.vue'],
           resolve)
       }
     ]
