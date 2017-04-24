@@ -513,11 +513,10 @@
           model_img: '',
 
           // 视频地址
-          carousel_drawing_video_url: '',
-
-          // 文件上传
-          uploadAddCarouselDrawing: API.uploadAddCarouselDrawing
-        }
+          carousel_drawing_video_url: ''
+        },
+        // 文件上传
+        uploadAddCarouselDrawing: API.uploadAddCarouselDrawing
       }
     },
 
