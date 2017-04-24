@@ -3,9 +3,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-// 子页面
-import children from '../../component/children.vue'
-
 const routes = [
   {
     path: '/login', // 登录
@@ -15,7 +12,8 @@ const routes = [
   },
   {
     path: '/children', // 子页面
-    component: children,
+    component: resolve => require(['../../component/children.vue'],
+      resolve),
     children: [
       {
         path: '/home', // 首页
