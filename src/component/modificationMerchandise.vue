@@ -80,7 +80,7 @@
                 <el-form-item label="商品列表图"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess1"
                     :on-error="uploadError"
@@ -96,7 +96,7 @@
                 <el-form-item label="商品音频"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess2"
                     :on-error="uploadError"
@@ -112,7 +112,7 @@
                 <el-form-item label="商品视频"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
@@ -161,7 +161,7 @@
                   <!-- action冒号问题 -->
                    <el-upload
                       class="upload-demo"
-                      action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                      :action="uploadAddNewerGoodsInfo"
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"
@@ -238,6 +238,7 @@
 </template>
 
 <script>
+import * as API from '../assets/axios/api.js'
 // 样式文件
 import '../assets/style/modificationMerchandise.less'
 // 脚本文件
@@ -246,18 +247,9 @@ export default {
   data () {
     return {
       active: 0,
-      // 唯一接口
-      onlyUrl: 'Shop/addNewerGoodsInfo',
-      // 删除接口
-      removeUploadedFile: 'Shop/removeUploadedFile',
-      // 获取颜色、尺寸接口
-      getColorClassificationUrl: 'Shop/addNewerGoodsInfo',
-      // ////
-      //  //
-      // ////
+      uploadAddNewerGoodsInfo: API.uploadAddNewerGoodsInfo,
       // 初始化获取商品ID
       shopID: '',
-      modifyNewerGoodsInfoUrl: 'Shop/modifyNewerGoodsInfo',
       // 服务器获取商品详情
       goods_detail: [],
       // ////
@@ -398,7 +390,7 @@ export default {
     getGoodsDetail () {
       if (this.shopID !== '') {
         // statement
-        this.$axios.post(this.modifyNewerGoodsInfoUrl, {
+        this.$axios.post(API.modifyNewerGoodsInfo, {
           'goods_id': this.$route.query.shopID,
           'request_flag': 'goods_detail'
         })
@@ -629,7 +621,7 @@ export default {
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification () {
       var _this = this
-      this.$axios.post(this.onlyUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         request_flag: 'product_list'
       })
       .then((msg) => {
@@ -654,7 +646,7 @@ export default {
     // 根据商品品牌和商品分类获取属性
     getShopStyle () {
       var _this = this
-      this.$axios.post(this.onlyUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         request_flag: 'arguments_list',
         product_id: this.one.commodityBrand,
         category_id: this.one.commodityClassification
@@ -745,7 +737,7 @@ export default {
 
     // 服务器获取颜色分类
     getColorClassification (request_flag) {
-      this.$axios.post(this.getColorClassificationUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         // 方便测试开发 默认品牌ID为1 分类ID为4
         product_id: this.one.commodityBrand,
         category_id: this.one.commodityClassification,
@@ -968,19 +960,6 @@ export default {
       }
     },
 
-    // 移除商品颜色图片
-    colorAndImgRemove () {
-      this.$axios.post(this.removeUploadedFile, {
-        file_url: this.three.thumb_image_url
-      })
-      .then((msg) => {
-        console.log(msg.data)
-      })
-      .catch(error => {
-        this.consoleError(`服务器5${error.response}`)
-      })
-    },
-
     // 文件上传失败
     uploadError () {
       this.consoleError('上传文件有误!请重新上传!')
@@ -1095,7 +1074,7 @@ export default {
     // 提交数据
     postAddShopData () {
       // this.buildAddShopData()
-      this.$axios.post(this.modifyNewerGoodsInfoUrl, {
+      this.$axios.post(API.modifyNewerGoodsInfo, {
         arguments: this.buildAddShopData(),
         request_flag: 'modify',
         goods_id: this.goods_detail.id

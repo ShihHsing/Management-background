@@ -32,7 +32,6 @@ import store from '../assets/store'
 import { mapActions } from 'vuex'
 import { USER_SIGNOUT } from '../assets/store/user'
 import '../assets/style/logoTop.less'
-// import axios from 'axios'
 import * as API from '../assets/axios/api.js'
 
 export default {

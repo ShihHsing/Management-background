@@ -34,7 +34,7 @@
                 <div slot="content">图片大小不能超过1MB</br>图片比例4:3为最佳尺寸</div>
                 <el-upload
                   class="avatar-uploader"
-                  action="http://a001.aybc.so/Shop/addTrainingInfo"
+                  :action="uploadAddTrainingInfo"
                   name="image_url"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
@@ -103,8 +103,10 @@
           newDescription: '',
 
           // 视频地址
-          video_url: ''
+          video_url: '',
 
+          // 文件上传
+          uploadAddTrainingInfo: API.uploadAddTrainingInfo
         },
         // 验证
         rules: {

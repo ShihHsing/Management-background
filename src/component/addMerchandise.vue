@@ -107,7 +107,7 @@
                 <el-form-item label="商品列表图"></br>
                   <el-upload
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     list-type="picture"
                     :on-success="handleSuccess1"
                     :on-error="uploadError"
@@ -123,7 +123,7 @@
                   <el-upload
                     list-type="picture"
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     :on-success="handleSuccess2"
                     :on-error="uploadError"
                     :multiple="false"
@@ -138,7 +138,7 @@
                   <el-upload
                     list-type="picture"
                     class="upload-demo"
-                    action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                    :action="uploadAddNewerGoodsInfo"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
                     :multiple="false"
@@ -185,7 +185,7 @@
                   <!-- action冒号问题 -->
                     <el-upload
                       class="upload-demo"
-                      action="http://a001.aybc.so/Shop/addNewerGoodsInfo"
+                      :action="uploadAddNewerGoodsInfo"
                       :thumbnail-mode="true"
                       :multiple="false"
                       :on-success="colorAndImgSuccess"
@@ -230,6 +230,7 @@
 </template>
 
 <script>
+import * as API from '../assets/axios/api.js'
 // 样式文件
 import '../assets/style/addMerchandise.less'
 // 脚本文件
@@ -238,14 +239,9 @@ export default {
   data () {
     return {
       active: 0,
-
-      // 唯一接口
-      onlyUrl: 'Shop/addNewerGoodsInfo',
-
-      // 获取颜色、尺寸接口
-      getColorClassificationUrl: 'Shop/addNewerGoodsInfo',
+      // 文件上传
+      uploadAddNewerGoodsInfo: API.uploadAddNewerGoodsInfo,
       one: {
-
         // 商品品牌
         commodityBrand: '',
         commodityBrandList: [],
@@ -550,7 +546,7 @@ export default {
     // 获取商品品牌和商品分类
     getCommodityBrandAndCommodityClassification () {
       var _this = this
-      this.$axios.post(this.onlyUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         'request_flag': 'product_list'
       })
       .then(msg => {
@@ -575,7 +571,7 @@ export default {
     // 根据商品品牌和商品分类获取属性
     getShopStyle () {
       var _this = this
-      this.$axios.post(this.onlyUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         'request_flag': 'arguments_list',
         'product_id': this.one.commodityBrand,
         'category_id': this.one.commodityClassification
@@ -648,7 +644,7 @@ export default {
 
     // 服务器获取颜色分类
     getColorClassification (request_flag) {
-      this.$axios.post(this.getColorClassificationUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         // 方便测试开发 默认品牌ID为1 分类ID为4
         'product_id': this.one.commodityBrand,
         'category_id': this.one.commodityClassification,
@@ -859,7 +855,7 @@ export default {
 
     // 提交数据
     postAddShopData () {
-      this.$axios.post(this.onlyUrl, {
+      this.$axios.post(API.addNewerGoodsInfo, {
         arguments: this.buildAddShopData()
       })
       .then((msg) => {
