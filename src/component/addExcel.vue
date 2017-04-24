@@ -15,7 +15,7 @@
             <el-upload
               ref="upload"
               class="upload-demo"
-              action="http://a001.aybc.so//Shop/addExcel"
+              :action="uploadAddExcel"
               :on-success="handleSuccess"
               :before-upload="handleBefore"
               :multiple="false"
@@ -47,17 +47,17 @@
 </template>
 
 <script>
-  import { addExcelTemplateUrl } from '../assets/axios/api.js'
+  import { addExcelTemplateUrl, uploadAddExcel } from '../assets/axios/api.js'
   export default{
     name: 'addExcel',
-    computed: {},
-    watch: {},
     data () {
       return {
         addExcelTemplateUrl,
         // 错误文件下载链接
         errorDataListUrl: null,
-        error: false
+        error: false,
+        // 文件上传
+        uploadAddExcel
       }
     },
     created: function () {},
