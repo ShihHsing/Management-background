@@ -184,7 +184,9 @@
               ref="four"
               label-width="47%">
               <el-card class="box-card">
-                <vue-html5-editor :content="description" :height="500" @change="updateData"></vue-html5-editor>
+                <div class="sx_basis_scroll sx_scroll_style_lucency">
+                  <vue-html5-editor :content="description" @change="updateData"></vue-html5-editor>
+                </div>
                 <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
                 <el-form-item>
                   <el-button type="primary" @click="submitForm('End')">下一步</el-button>
@@ -486,18 +488,18 @@ export default {
           }
           break
         case 'four':
-          var count = 0
-          for (let i = 0; i < this.four.colorAndImg.length; i++) {
-            if (this.four.colorAndImg[i].imgUrl !== '') {
-              count++
-            }
-          }
-          if (this.four.checkedCities.length > 0 && this.four.checkedSize.length > 0 && count === this.four.colorAndImg.length) {
-            this.active ++
-            this.$refs.elCarousel.next()
-          } else {
-            this.consoleError('请完善商品颜色图片与尺寸信息')
-          }
+          // var count = 0
+          // for (let i = 0; i < this.four.colorAndImg.length; i++) {
+          //   if (this.four.colorAndImg[i].imgUrl !== '') {
+          //     count++
+          //   }
+          // }
+          // if (this.four.checkedCities.length > 0 && this.four.checkedSize.length > 0 && count === this.four.colorAndImg.length) {
+          this.active ++
+          this.$refs.elCarousel.next()
+          // } else {
+          //   this.consoleError('请完善商品颜色图片与尺寸信息')
+          // }
           break
         default:
           if (this.newDescription !== '') {
