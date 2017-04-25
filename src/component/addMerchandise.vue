@@ -15,7 +15,7 @@
       <el-col :span="11">
         <el-carousel 
           indicator-position="none"
-          arrow="hover"
+          arrow="never"
           :autoplay="false"
           ref="elCarousel">
           <!-- 第一页 -->
@@ -467,52 +467,6 @@ export default {
           }
           break
       }
-
-      // if (formName === 'three') {
-      //   if (this.three.thumb_image_url !== '') {
-      //     this.active ++
-      //     this.$refs.elCarousel.next()
-      //   } else {
-      //     this.consoleError('请上传商品缩略图')
-      //   }
-      // } else if (formName === 'four') {
-      //   var count = 0
-      //   for (let i = 0; i < this.four.colorAndImg.length; i++) {
-      //     if (this.four.colorAndImg[i].imgUrl !== '') {
-      //       count++
-      //     }
-      //   }
-      //   if (this.four.checkedCities.length > 0 && this.four.checkedSize.length > 0 && count === this.four.colorAndImg.length) {
-      //     this.active ++
-      //     this.$refs.elCarousel.next()
-      //   } else {
-      //     this.consoleError('请完善商品颜色图片与尺寸信息')
-      //   }
-      // } else if (formName === 'End') {
-      //   if (this.newDescription !== '') {
-      //     this.postAddShopData()
-      //   } else {
-      //     this.consoleError('请完善必填信息')
-      //   }
-      // } else {
-      //   this.$refs[formName].validate((valid) => {
-      //     if (valid) {
-      //       if (formName === 'one') {
-      //         // 根据商品品牌和商品分类获取属性
-      //         this.getShopStyle()
-      //       } else if (formName === 'two') {
-      //         if (this.twoReg()) {
-      //           this.active ++
-      //           this.$refs.elCarousel.next()
-      //         } else {
-      //           this.consoleError('请完善商品属性')
-      //         }
-      //       }
-      //     } else {
-      //       this.consoleError('请完善必填信息')
-      //     }
-      //   })
-      // }
     },
 
     // 商品列表图
