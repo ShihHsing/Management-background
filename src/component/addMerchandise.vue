@@ -214,7 +214,9 @@
               ref="four"
               label-width="47%">
               <el-card class="box-card">
-                <vue-html5-editor :content="description" :height="500" @change="updateData"></vue-html5-editor>
+                <div class="sx_basis_scroll sx_scroll_style_lucency">
+                  <vue-html5-editor :content="description" :height="500" @change="updateData"></vue-html5-editor>
+                </div>
                 <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">
                 商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
                 <el-form-item>
