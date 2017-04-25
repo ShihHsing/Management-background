@@ -131,7 +131,6 @@
 
           <!-- 第四页 -->
           <el-carousel-item>
-            <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
             <el-form 
               :model="four"
               ref="four"
@@ -180,7 +179,6 @@
           </el-carousel-item>
           <!-- 第四页 End -->
           <el-carousel-item>
-            <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
             <el-form 
               :model="four"
               ref="four"
@@ -226,7 +224,6 @@
         </el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <!-- <el-button @click="four.dialogVisible = false">取 消</el-button> -->
         <el-button type="primary" @click="four.dialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
@@ -248,9 +245,6 @@ export default {
       shopID: '',
       // 服务器获取商品详情
       goods_detail: [],
-      // ////
-      //  //
-      // ////
       one: {
         // 商品品牌
         commodityBrand: '',
@@ -359,9 +353,6 @@ export default {
         price: [
           { required: true, message: '请输入商品价格', trigger: 'change' }
         ]
-        // shop_show: [
-        //   { required: true, message: '请输入易企秀链接', trigger: 'change' }
-        // ]
       },
       elCarousel: ''
     }
@@ -440,17 +431,21 @@ export default {
               }
 
               // 尺码
-              for (var i = 0; i < goods_detail.sub_args.length; i++) {
-                if (goods_detail.sub_args[i].argument_name === '尺寸') {
-                  this.four.checkedSize.push(goods_detail.sub_args[i].argument_value)
+              if (goods_detail.sub_args.length !== 0) {
+                for (var i = 0; i < goods_detail.sub_args.length; i++) {
+                  if (goods_detail.sub_args[i].argument_name === '尺寸') {
+                    this.four.checkedSize.push(goods_detail.sub_args[i].argument_value)
+                  }
                 }
+              } else {
+                console.log(`获取尺码字段与预期不符!`)
               }
-
               // 图文详情数据
               this.description = goods_detail.description
               this.newDescription = this.description
-              // 初始化获取商品品牌和商品分类
+              /* ======== 初始化获取商品品牌和商品分类 ======== */
               this.getCommodityBrandAndCommodityClassification()
+              /* ============================================== */
             } else {
               this.consoleNews('服务器发生未知错误,请刷新后重试!')
             }
@@ -476,70 +471,96 @@ export default {
 
     // 下一步&提交数据
     submitForm (formName) {
-      if (formName === 'three') {
-        // if(!this.media()){
-        //   this.consoleError('请完善必填信息');
-        //   return false;
-        // } else {
-        this.active ++
-        this.$refs.elCarousel.next()
-        this.four.dialogVisible = true
-        // }
-      } else if (formName === 'four') {
-        // var count = 0;
-        // for (var i = 0; i < this.four.colorAndImg.length; i++) {
-        //   if(this.four.colorAndImg[i].imgUrl !=''){
-        //     count ++;
-        //   }
-        // }
-        // if (this.four.checkedCities.length >= 0 && this.four.checkedSize.length > 0 && count == this.four.colorAndImg.length) {
-          // statement
-        this.active ++
-        this.$refs.elCarousel.next()
-        // } else {
-        //   this.consoleError('请完善必填信息');
-        //   return false;
-        // }
-      } else if (formName === 'End') {
-        // statement
-        // if (this.newDescription != '') {
-          // statement
-          // /////////////
-          // 最终提交 //
-          // ////////////
-        this.postAddShopData()
-        // } else {
-        //   this.consoleError('请完善必填信息');
-        //   return false;
-        // }
-      } else {
-        // this.$refs[formName].validate((valid) => {
-        //   console.log(2)
-        //   if (valid) {
-        if (formName === 'one') {
-          // statement
-          // 根据商品品牌和商品分类获取属性
-          this.getShopStyle()
-          // 获取颜色和尺寸
-          this.getSizeColor()
-        } else if (formName === 'two') {
-          // /////////////
-          // statement //
-          // ////////////
-          // console.log(this.twoReg())
-          // if(!this.twoReg()){
-          //   this.consoleError('请完善必填信息');
-          //   return false;
-          // }
-        }
-        this.active ++
-        this.$refs.elCarousel.next()
+      switch (formName) {
+        case 'two':
+          // 获取商品尺寸
+          this.getColorClassification('color_list')
+          break
+        case 'three':
+          if (this.three.thumb_image_url !== '') {
+            this.active ++
+            this.$refs.elCarousel.next()
+            this.four.dialogVisible = true
+          } else {
+            this.consoleWarning(`请完善商品缩略图`)
+          }
+          break
+        case 'four':
+          var count = 0
+          for (let i = 0; i < this.four.colorAndImg.length; i++) {
+            if (this.four.colorAndImg[i].imgUrl !== '') {
+              count++
+            }
+          }
+          if (this.four.checkedCities.length > 0 && this.four.checkedSize.length > 0 && count === this.four.colorAndImg.length) {
+            this.active ++
+            this.$refs.elCarousel.next()
+          } else {
+            this.consoleError('请完善商品颜色图片与尺寸信息')
+          }
+          break
+        default:
+          if (this.newDescription !== '') {
+            this.postAddShopData()
+          } else {
+            this.consoleError('请完善商品详情')
+          }
+          break
       }
-        //   else {
-        //     this.consoleError('请完善必填信息');
-        //   }
-        // });
+
+      // if (formName === 'three') {
+      //   // if(!this.media()){
+      //   //   this.consoleError('请完善必填信息');
+      //   //   return false;
+      //   // } else {
+      //   this.active ++
+      //   this.$refs.elCarousel.next()
+      //   this.four.dialogVisible = true
+      //   // }
+      // } else if (formName === 'four') {
+      //   // var count = 0;
+      //   // for (var i = 0; i < this.four.colorAndImg.length; i++) {
+      //   //   if(this.four.colorAndImg[i].imgUrl !=''){
+      //   //     count ++;
+      //   //   }
+      //   // }
+      //   // if (this.four.checkedCities.length >= 0 && this.four.checkedSize.length > 0 && count == this.four.colorAndImg.length) {
+      //     // statement
+      //   this.active ++
+      //   this.$refs.elCarousel.next()
+      //   // } else {
+      //   //   this.consoleError('请完善必填信息');
+      //   //   return false;
+      //   // }
+      // } else if (formName === 'End') {
+      //   // statement
+      //   // if (this.newDescription != '') {
+      //     // statement
+      //     // /////////////
+      //     // 最终提交 //
+      //     // ////////////
+      //   this.postAddShopData()
+      //   // } else {
+      //   //   this.consoleError('请完善必填信息');
+      //   //   return false;
+      //   // }
+      // } else {
+      //   // this.$refs[formName].validate((valid) => {
+      //   //   console.log(2)
+      //   //   if (valid) {
+      //   if (formName === 'one') {
+      //     // 获取颜色和尺寸
+      //     // this.getSizeColor()
+      //   } else if (formName === 'two') {
+      //     // 获取颜色和尺寸
+      //     this.getSizeColor()
+      //   }
       // }
+      //   //   else {
+      //   //     this.consoleError('请完善必填信息');
+      //   //   }
+      //   // });
+      // // }
     },
 
     resetForm (formName) {
@@ -610,18 +631,15 @@ export default {
         request_flag: 'product_list'
       })
       .then((msg) => {
-        console.log(msg.data, '获取商品品牌和商品分类')
         // 商品品牌列表
         var product_list = msg.data.product_list
         _this.one.commodityBrandList = product_list
         // 商品分类列表
         var category_list = msg.data.category_list
         _this.one.commodityClassificationList = category_list
-
-        // 根据商品品牌和商品分类获取属性
+        /* 根据商品品牌和商品分类获取属性 */
         this.getShopStyle()
-        // 获取颜色和尺寸
-        this.getSizeColor()
+        /* ============================= */
       })
       .catch(error => {
         this.consoleError(`服务器2${error.response}`)
@@ -639,29 +657,42 @@ export default {
       .then((msg) => {
         console.log(msg.data)
         if (msg.data.flag >> 0 === 1000) {
-          // statement
-          // 获取数据信息 渲染页面
-          _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list
-
-          for (let i = 0; i < this.two.privateProperty.length; i++) {
-            // 接收服务器信息 向原有数据模型动态添加新模型
-            var newAttribute = {
-              attribute: this.two.privateProperty[i].argument_value,
-              attributeValue: ''
-            }
-            this.two.privatePropertyList.push(newAttribute)
+          /* =================== 获取商品属性 ======================== */
+          if (msg.data.category_arguments_list.category_argument_list) {
+            _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list
+          } else {
+            console.log(`category_argument_list字段不存在`)
           }
-          console.log(this.two)
+          /* ======================================================== */
 
-          // 分类属性选择
-          for (let i = 0; i < this.goods_detail.sub_args.length; i++) {
-            for (let ii = 0; ii < this.two.privatePropertyList.length; ii++) {
-              if (this.goods_detail.sub_args[i].argument_name === this.two.privatePropertyList[ii].attribute) {
-                // statement
-                this.two.privatePropertyList[ii].attributeValue = this.goods_detail.sub_args[i].argument_id
+          /* ====== 接收服务器信息 向原有数据模型动态添加新模型 ===== */
+          if (this.two.privateProperty !== 0) {
+            for (let i = 0; i < this.two.privateProperty.length; i++) {
+              // 接收服务器信息 向原有数据模型动态添加新模型
+              var newAttribute = {
+                attribute: this.two.privateProperty[i].argument_value,
+                attributeValue: ''
+              }
+              this.two.privatePropertyList.push(newAttribute)
+            }
+          } else {
+            console.log(`privateProperty字段为空,请检查!`)
+          }
+          /* ======================================================= */
+
+          /* ==================== 分类属性选择 ===================== */
+          if (this.goods_detail.sub_args.length !== 0 && this.two.privatePropertyList.length !== 0) {
+            for (let i = 0; i < this.goods_detail.sub_args.length; i++) {
+              for (let ii = 0; ii < this.two.privatePropertyList.length; ii++) {
+                if (this.goods_detail.sub_args[i].argument_name === this.two.privatePropertyList[ii].attribute) {
+                  this.two.privatePropertyList[ii].attributeValue = this.goods_detail.sub_args[i].argument_id
+                }
               }
             }
+          } else {
+            console.log(`goods_detail.sub_args字段与this.privatePropertyList字段与预期不符!`)
           }
+          /* ======================================================= */
         } else {
           console.log(msg.data.return_code)
         }
@@ -683,23 +714,10 @@ export default {
       return countReg
     },
 
-    // 媒体检验规则 第三步
-    media () {
-      console.log(this.three.thumb_image_url, this.three.audio_url, this.three.video_url)
-      if (this.three.thumb_image_url !== '' && this.three.audio_url !== '' && this.three.video_url !== '') {
-        // statement
-        return true
-      } else {
-        return false
-      }
-    },
-
     // 颜色选择 单选
     handleCheckedCitiesChange (value) {
       var checkedCount = value.length
       console.log(value, checkedCount, '颜色单选')
-      // this.four.checkAll = checkedCount === this.four.cities.length
-      // this.four.isIndeterminate = checkedCount > 0 && checkedCount < this.four.cities.length
       console.log(value, this.four.cities)
       // 记录用户每次颜色选择的操作
       this.userColorModelHistoricalRecord()
@@ -729,24 +747,31 @@ export default {
       })
       .then((msg) => {
         if (msg.data.flag >> 0 === 1000) {
-          // statement
           if (request_flag === 'color_list') {
-            // statement
-            console.log(msg.data, '颜色分类')
-
             const arr1 = []
             const arr2 = []
-            // 颜色列表
+            /* ================== 颜色列表 ======================*/
             const categoryColorList = msg.data.category_color_list
-            for (let i = 0, length1 = categoryColorList.length; i < length1; i++) {
-              arr1.push(categoryColorList[i].argument_value)
+            if (categoryColorList.length !== 0) {
+              for (let i = 0, length1 = categoryColorList.length; i < length1; i++) {
+                arr1.push(categoryColorList[i].argument_value)
+              }
+            } else {
+              console.log(`category_color_list字段与预期不符!`)
             }
+            /* ================================================ */
 
-            for (let i = 0, length1 = this.goods_detail.image_url.length; i < length1; i++) {
-              arr2.push(this.goods_detail.image_url[i].color_name)
+            /* =============== 商品颜色对应图片关系绑定 =============== */
+            if (this.goods_detail.image_url.length !== 0) {
+              for (let i = 0, length1 = this.goods_detail.image_url.length; i < length1; i++) {
+                arr2.push(this.goods_detail.image_url[i].color_name)
+              }
+            } else {
+              console.log(`this.goods_detail.image_url与预期不符`)
             }
+            /* ======================================================== */
 
-            // -------- arr1中去除arr2中所包含的元素 --------
+            /* -------- arr1中去除arr2中所包含的元素 -------- */
             for (let i = arr1.length - 1; i >= 0; i--) {
               for (let ii = arr2.length - 1; ii >= 0; ii--) {
                 if (arr2[ii] === arr1[i]) {
@@ -754,16 +779,26 @@ export default {
                 }
               }
             }
-            // -----------------------------------------
+            /* ---------------------------------------------- */
             this.four.cities = arr1
             this.four.colorList = msg.data.category_color_list
+
+            /* ============== 获取尺寸 ============== */
+            this.getColorClassification('size_list')
+            /* ====================================== */
           } else if (request_flag === 'size_list') {
-            // statement
-            console.log(msg.data, '尺码分类')
-            for (var i = 0; i < msg.data.category_size_list.length; i++) {
-              this.four.size_list.push(msg.data.category_size_list[i].argument_value)
+            if (msg.data.category_size_list.length !== 0) {
+              for (var i = 0; i < msg.data.category_size_list.length; i++) {
+                this.four.size_list.push(msg.data.category_size_list[i].argument_value)
+              }
+              this.four.sizeList = msg.data.category_size_list
+              /* ===== 进入下一步骤 ===== */
+              this.active ++
+              this.$refs.elCarousel.next()
+              /* ======================= */
+            } else {
+              console.log(`category_size_list字段与预期不符!`)
             }
-            this.four.sizeList = msg.data.category_size_list
           }
         } else {
           this.consoleWarning(msg.data.return_code)
@@ -771,7 +806,6 @@ export default {
       })
       .catch(error => {
         this.consoleError(`服务器4${error.response}`)
-        console.debug(request_flag)
       })
     },
 
@@ -841,9 +875,7 @@ export default {
 
     // 两数组比较去重
     removeDuplicate () {
-      // /////////////////////////////
-      // 克隆数据模型中数据 在操作 //
-      // /////////////////////////////
+      // 克隆数据模型中数据 在操作
       var arr1 = this.userColorHistoricalRecord[0].concat()
       var arr2 = this.userColorHistoricalRecord[1].concat()
       var arr3 = ''
@@ -902,12 +934,6 @@ export default {
     // 文件上传失败
     uploadError () {
       this.consoleError('上传文件有误!请重新上传!')
-    },
-
-    // 获取颜色和尺寸
-    getSizeColor () {
-      this.getColorClassification('color_list')
-      this.getColorClassification('size_list')
     },
 
     getPrivatePropertyList () {
