@@ -26,7 +26,6 @@
 </template>
 <style lang="less">
   .content{
-    height: 680px!important;
     img{
       width: 80%!important;
     }

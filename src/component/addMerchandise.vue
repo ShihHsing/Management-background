@@ -121,7 +121,6 @@
 
                 <el-form-item label="商品音频"></br>
                   <el-upload
-                    list-type="picture"
                     class="upload-demo"
                     :action="uploadAddNewerGoodsInfo"
                     :on-success="handleSuccess2"
@@ -136,7 +135,6 @@
 
                 <el-form-item label="商品视频"></br>
                   <el-upload
-                    list-type="picture"
                     class="upload-demo"
                     :action="uploadAddNewerGoodsInfo"
                     :on-success="handleSuccess3"
@@ -479,11 +477,19 @@ export default {
         this.three.thumb_image = false
         this.three.thumb_imageList = response
         this.three.thumb_image_url = response.file_url
+        const uploadFiles = this.$refs.thumb_image.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
         this.consoleSuccess(response.return_code)
       } else {
         this.three.thumb_image = true
         this.$refs.thumb_image.clearFiles()
         this.consoleError(response.return_code)
+        const uploadFiles = this.$refs.thumb_image.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
       }
     },
 
@@ -491,16 +497,23 @@ export default {
     handleSuccess2 (response, file, fileList) {
       console.log(response)
       if (response.flag >> 0 === 1000) {
-        // statement
         // false数据不存在 true数据上传成功
         this.three.audio = false
         this.three.audioList = response
         this.three.audio_url = response.file_url
+        const uploadFiles = this.$refs.audio.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
         this.consoleSuccess(response.return_code)
       } else {
         this.three.audio = true
         this.$refs.audio.clearFiles()
         this.consoleError(response.return_code)
+        const uploadFiles = this.$refs.audio.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
       }
     },
 
@@ -508,16 +521,23 @@ export default {
     handleSuccess3 (response, file, fileList) {
       console.log(response)
       if (response.flag >> 0 === 1000) {
-        // statement
         // false数据不存在 true数据上传成功
         this.three.video = false
         this.three.videoList = response
         this.three.video_url = response.file_url
+        const uploadFiles = this.$refs.video.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
         this.consoleSuccess(response.return_code)
       } else {
         this.three.video = true
         this.$refs.video.clearFiles()
         this.consoleError(response.return_code)
+        const uploadFiles = this.$refs.video.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
       }
     },
 

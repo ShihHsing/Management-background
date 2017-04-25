@@ -93,7 +93,6 @@
                   <el-upload
                     class="upload-demo"
                     :action="uploadAddNewerGoodsInfo"
-                    list-type="picture"
                     :on-success="handleSuccess2"
                     :on-error="uploadError"
                     :multiple="false"
@@ -109,7 +108,6 @@
                   <el-upload
                     class="upload-demo"
                     :action="uploadAddNewerGoodsInfo"
-                    list-type="picture"
                     :on-success="handleSuccess3"
                     :on-error="uploadError"
                     :multiple="false"
@@ -577,17 +575,24 @@ export default {
 
     // 商品列表图
     handleSuccess1 (response, file, fileList) {
-      console.log(response)
       if (response.flag >> 0 === 1000) {
         // statement
         // false数据不存在 true数据上传成功
         this.three.thumb_image = false
         this.three.thumb_imageList = response
         this.three.thumb_image_url = response.file_url
+        const uploadFiles = this.$refs.thumb_image.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
         this.consoleSuccess(response.return_code)
       } else {
         this.three.thumb_image = true
         this.$refs.thumb_image.clearFiles()
+        const uploadFiles = this.$refs.thumb_image.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
         this.consoleError(response.return_code)
       }
     },
@@ -601,10 +606,18 @@ export default {
         this.three.audio = false
         this.three.audioList = response
         this.three.audio_url = response.file_url
+        const uploadFiles = this.$refs.audio.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
         this.consoleSuccess(response.return_code)
       } else {
         this.three.audio = true
         this.$refs.audio.clearFiles()
+        const uploadFiles = this.$refs.audio.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
         this.consoleError(response.return_code)
       }
     },
@@ -618,10 +631,18 @@ export default {
         this.three.video = false
         this.three.videoList = response
         this.three.video_url = response.file_url
+        const uploadFiles = this.$refs.video.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
         this.consoleSuccess(response.return_code)
       } else {
         this.three.video = true
         this.$refs.video.clearFiles()
+        const uploadFiles = this.$refs.video.uploadFiles
+        if (uploadFiles.lenght !== 0) {
+          uploadFiles.shift()
+        }
         this.consoleError(response.return_code)
       }
     },

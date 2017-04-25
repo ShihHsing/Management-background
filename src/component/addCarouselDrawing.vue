@@ -55,7 +55,9 @@
 
               <template v-if="carousel_drawing_type == 1">
                 <el-form-item label="图文详情:">
-                  <vue-html5-editor :content="initData" auto-height @change="updateData"></vue-html5-editor>
+                  <div class="sx_basis_scroll sx_scroll_style_lucency">
+                    <vue-html5-editor :content="initData" auto-height @change="updateData"></vue-html5-editor>
+                  </div>
                 </el-form-item>
               </template>
 
