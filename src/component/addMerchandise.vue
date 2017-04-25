@@ -46,7 +46,7 @@
           <!-- 第一页 End -->
 
           <!-- 第二页 -->
-          <el-carousel-item id="none-align-items">
+          <el-carousel-item id="none-align-items" class="sx_basis_scroll sx_scroll_style_lucency">
           <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
             <el-form 
               :model="two" 
@@ -98,7 +98,7 @@
           <!-- 第二页 End -->
 
           <!-- 第三页 -->
-          <el-carousel-item>
+          <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
             <el-form 
               :model="three"
               ref="three"
@@ -158,7 +158,7 @@
           <!-- 第三页 End -->
 
           <!-- 第四页 -->
-          <el-carousel-item>
+          <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
             <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
             <el-form 
               :model="four"
@@ -207,7 +207,7 @@
             </el-form>
           </el-carousel-item>
           <!-- 第四页 End -->
-          <el-carousel-item>
+          <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
             <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
             <el-form 
               :model="four"

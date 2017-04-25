@@ -8,7 +8,7 @@
         <navMenu></navMenu>
       </el-col>
     </el-col>
-    <el-col :lg="21" :md="19" :sm="19" :xs="18" class="bodyWrap">
+    <el-col :lg="21" :md="19" :sm="19" :xs="18" class="bodyWrap sx_basis_scroll sx_scroll_style_lucency">
       <el-col :span="24" class="body">
       <!-- 面包屑 -->
         <el-col :span="24" class="breadcrumb">
