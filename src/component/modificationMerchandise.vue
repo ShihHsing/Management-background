@@ -17,12 +17,8 @@
           arrow="never"
           :autoplay="false"
           ref="elCarousel">
-          <!-- 第一页 -->
-          <!-- 第一页 End -->
-
           <!-- 第二页 -->
           <el-carousel-item id="none-align-items">
-          <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
             <el-form 
               :model="two" 
               :rules="twoRules" 
@@ -474,17 +470,6 @@ export default {
     // 删除颜色图片
     removerColor (color, index) {
       console.log(color, index)
-      // Array.prototype.remove = function (dx) {
-      //   if (isNaN(dx) || dx > this.length) {
-      //     return false
-      //   }
-      //   for (var i = 0, n = 0; i < this.length; i++) {
-      //     if (this[i] !== this[dx]) {
-      //       this[n++] = this[i]
-      //     }
-      //   }
-      //   this.length -= 1
-      // }
       this.four.cities.push(color)
       this.goods_detail.image_url.splice(index, 1)
     },
@@ -748,28 +733,13 @@ export default {
           if (request_flag === 'color_list') {
             // statement
             console.log(msg.data, '颜色分类')
-            // for (var i = 0; i < msg.data.category_color_list.length; i++) {
-            //   for(var ii = 0, length1 = this.goods_detail.image_url.length; ii < length1; ii++){
-            //     if(this.goods_detail.image_url[ii].color_name != msg.data.category_color_list[i].argument_value){
-            //         this.four.cities.push(msg.data.category_color_list[i].argument_value);
-            //     }
-            //   }
-            // }
-            // for(var i = 0, length1 = msg.data.category_color_list.length; i < length1; i++){
-            //   // msg.data.category_color_list[i].argument_value
-            //   for(var ii = 0, length2 = this.goods_detail.image_url.length; ii < length2; ii++){
-            //     // this.goods_detail.image_url[ii].color_name
-            //     if (this.goods_detail.image_url[ii].color_name != msg.data.category_color_list[i].argument_value) {
-            //       this.four.cities.push(msg.data.category_color_list[i].argument_value);
-            //     }
-            //   }
-            // }
 
-            var arr1 = []
-            var arr2 = []
-
-            for (let i = 0, length1 = msg.data.category_color_list.length; i < length1; i++) {
-              arr1.push(msg.data.category_color_list[i].argument_value)
+            const arr1 = []
+            const arr2 = []
+            // 颜色列表
+            const categoryColorList = msg.data.category_color_list
+            for (let i = 0, length1 = categoryColorList.length; i < length1; i++) {
+              arr1.push(categoryColorList[i].argument_value)
             }
 
             for (let i = 0, length1 = this.goods_detail.image_url.length; i < length1; i++) {
@@ -807,37 +777,6 @@ export default {
 
     // 服务器获取颜色分类 渲染至页面 [修改]
     postGoodsDetailColorUrl () {
-      // 添加服务端获取的颜色和图片
-      // for (var i = 0; i < this.goods_detail.sub_args.length; i++) {
-      //   if (this.goods_detail.sub_args[i].argument_name == "颜色") {
-      //     console.log(this.goods_detail.sub_args[i].argument_name)
-      //     if (this.four.checkedCities.length > 0) {
-      //       // statement
-      //       console.log(1)
-      //       for (var ii = 0; ii < this.four.checkedCities.length; ii++) {
-      //         if (this.four.checkedCities[ii] != this.goods_detail.sub_args[i].argument_value) {
-      //           // statement
-      //           this.four.checkedCities.push(this.goods_detail.sub_args[i].argument_value);
-      //           setTimeout( () => {
-      //             // 记录用户每次颜色选择的操作
-      //             this.userColorModelHistoricalRecord();
-      //             // 根据用户选择颜色 动态生成颜色、图片对应关系
-      //             this.createColorAndImg();
-      //           },2000)
-      //           // for (var iii = 0; iii < this.goods_detail.image_url.length; iii++) {
-      //           //   if (this.goods_detail.image_url[iii].color_name == this.goods_detail.sub_args[i].argument_value) {
-      //           //       this.four.PHPColorAndUrl.push([{
-      //           //         color: this.goods_detail.sub_args[i].argument_value,
-      //           //         url: this.goods_detail.image_url[iii].image_url
-      //           //       }])
-      //           //   }
-      //           // }
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
-
       var count = 0
       for (var i = 0; i < this.goods_detail.sub_args.length; i++) {
         if (this.goods_detail.sub_args[i].argument_name === '颜色') {

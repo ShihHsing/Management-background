@@ -455,32 +455,23 @@ export default {
         //   return false;
         // }
       } else {
-        // this.$refs[formName].validate((valid) => {
-        //   console.log(2)
-        //   if (valid) {
-        if (formName === 'one') {
-          // statement
-          // 根据商品品牌和商品分类获取属性
-          // this.getShopStyle();
-          this.getShopStyle()
-          // 获取颜色和尺寸
-          this.getSizeColor()
-        } else if (formName === 'two') {
-          // /////////////
-          // statement //
-          // /////////////
-          // console.log(this.twoReg())
-          // if(!this.twoReg()){
-          //   this.consoleError('请完善必填信息');
-          // } else {
-          this.active ++
-          this.$refs.elCarousel.next()
-          // }
-        }
-        //   } else {
-        //     this.consoleError('请完善必填信息');
-        //   }
-        // });
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if (formName === 'one') {
+              // 根据商品品牌和商品分类获取属性
+              this.getShopStyle()
+            } else if (formName === 'two') {
+              if (this.twoReg()) {
+                this.active ++
+                this.$refs.elCarousel.next()
+              } else {
+                this.consoleError('请完善商品属性')
+              }
+            }
+          } else {
+            this.consoleError('请完善必填信息')
+          }
+        })
       }
     },
 
@@ -550,21 +541,27 @@ export default {
         'request_flag': 'product_list'
       })
       .then(msg => {
-        console.log(msg.data, '获取商品品牌和商品分类')
         if (msg.data.flag >> 0 === 1000) {
-          // statement
-          // 商品品牌列表
-          var product_list = msg.data.product_list
-          _this.one.commodityBrandList = product_list
+          /* ========= 商品品牌列表 ============= */
+          if (msg.data.product_list) {
+            _this.one.commodityBrandList = msg.data.product_list
+          } else {
+            console.log(`product_list字段不存在`)
+          }
+          /* ==================================== */
 
-          // 商品分类列表
-          var category_list = msg.data.category_list
-          _this.one.commodityClassificationList = category_list
+          /* ============= 商品分类列表 ============ */
+          if (msg.data.category_list) {
+            _this.one.commodityClassificationList = msg.data.category_list
+          } else {
+            console.log(`category_list字段不存在`)
+          }
+          /* ======================================= */
         } else {
           this.consoleError(msg.data.return_code)
         }
       }, response => {
-        this.consoleError('服务器发生未知错误,请刷新后重试!')
+        this.consoleError('获取商品品牌和商品分类失败,请刷新后重试!')
       })
     },
 
@@ -578,17 +575,22 @@ export default {
       })
       .then((msg) => {
         if (msg.data.flag >> 0 === 1000) {
-          this.active ++
-          this.$refs.elCarousel.next()
+          /* =================== 获取商品属性 ======================== */
+          if (msg.data.category_arguments_list.category_argument_list) {
+            _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list
+          } else {
+            console.log(`category_argument_list字段不存在`)
+          }
+          /* ======================================================== */
 
-          // 获取数据信息 渲染页面
-          _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list
+          /* ======== 获取商品颜色 ======== */
+          this.getColorClassification('color_list')
+          /* ================================ */
         } else {
           this.consoleError(`商品属性${msg.data.return_code}`)
         }
       }, (response) => {
-        console.log('Error')
-        this.consoleError('服务器发生未知错误,请刷新后重试!')
+        this.consoleError('获取商品属性失败,请刷新后重试!')
       })
     },
 
@@ -596,12 +598,17 @@ export default {
     twoReg () {
       // 计数检查数据模型是否有空值存在
       var countReg = true
-      for (var i = 0, length1 = this.two.privatePropertyList.length; i < length1; i++) {
-        if (this.two.privatePropertyList[i].attributeValue === '') {
-          countReg = false
+      if (this.two.privatePropertyList.length !== 0) {
+        for (var i = 0, length1 = this.two.privatePropertyList.length; i < length1; i++) {
+          if (this.two.privatePropertyList[i].attributeValue === '') {
+            countReg = false
+          }
         }
+        return countReg
+      } else {
+        console.log(`two.privatePropertyList数据模型为空,与预期不符!`)
+        return false
       }
-      return countReg
     },
 
     // 媒体检验规则 第三步
@@ -645,31 +652,40 @@ export default {
     // 服务器获取颜色分类
     getColorClassification (request_flag) {
       this.$axios.post(API.addNewerGoodsInfo, {
-        // 方便测试开发 默认品牌ID为1 分类ID为4
         'product_id': this.one.commodityBrand,
         'category_id': this.one.commodityClassification,
         'request_flag': request_flag
       })
       .then((msg) => {
         if (msg.data.flag >> 0 === 1000) {
-          // statement
           if (request_flag === 'color_list') {
-            // statement
-            console.log(msg.data, '颜色分类')
-            for (let i = 0; i < msg.data.category_color_list.length; i++) {
-              this.four.cities.push(msg.data.category_color_list[i].argument_value)
+            if (msg.data.category_color_list.length !== 0) {
+              for (let i = 0; i < msg.data.category_color_list.length; i++) {
+                this.four.cities.push(msg.data.category_color_list[i].argument_value)
+              }
+              this.four.colorList = msg.data.category_color_list
+              /* ============== 获取尺寸 =============== */
+              this.getColorClassification('size_list')
+              /* ======================================= */
+            } else {
+              console.log(`颜色字段为空,与预期不符!`)
             }
-            this.four.colorList = msg.data.category_color_list
           } else if (request_flag === 'size_list') {
-            console.log(msg.data, '尺码分类')
-            for (let i = 0; i < msg.data.category_size_list.length; i++) {
-              this.four.size_list.push(msg.data.category_size_list[i].argument_value)
+            if (msg.data.category_size_list.length !== 0) {
+              for (let i = 0; i < msg.data.category_size_list.length; i++) {
+                this.four.size_list.push(msg.data.category_size_list[i].argument_value)
+              }
+              this.four.sizeList = msg.data.category_size_list
+              /* ============下一步 ============== */
+              this.active ++
+              this.$refs.elCarousel.next()
+              /* ================================ */
+            } else {
+              console.log(`尺寸字段为空,与预期不符!`)
             }
-            this.four.sizeList = msg.data.category_size_list
           }
         } else {
           if (request_flag === 'color_list') {
-            // statement
             this.consoleWarning(`颜色分类${msg.data.return_code}`)
           } else {
             this.consoleWarning(`尺码分类${msg.data.return_code}`)
@@ -783,12 +799,6 @@ export default {
     // 文件上传失败
     uploadError () {
       this.consoleError('上传文件有误!请重新上传!')
-    },
-
-    // 获取颜色和尺寸
-    getSizeColor () {
-      this.getColorClassification('color_list')
-      this.getColorClassification('size_list')
     },
 
     getPrivatePropertyList () {

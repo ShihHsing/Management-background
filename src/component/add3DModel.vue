@@ -19,14 +19,6 @@
               :disabled="true">
             </el-input>
           </el-form-item>
-          
-          <!-- <el-form-item label="模型名称">
-            <el-input
-              placeholder="请输入内容"
-              v-model="name">
-            </el-input>
-          </el-form-item> -->
-          
           <el-form-item label="IOS unity模型:">
             <el-upload
               class="upload-demo"
@@ -61,7 +53,6 @@
                 :data="{'imgColor': colorImg[index]}"
                 list-type="picture">
                 <el-button size="small" type="primary">请上传{{ colorImg[index] }}商品的3D缩略图</el-button>
-                <!-- <div class="el-upload__text">请上传<em>{{ colorImg[index] }}</em>商品的3D缩略图</div> -->
                 <div slot="tip" class="el-upload__tip" style="color:#555;">请上传<b style="color:#20A0FF;">{{ colorImg[index] }}</b>商品的商品图片,并只能上传jpg/png文件，且不超过500kb 200*200</div>
               </el-upload>
             </div>
@@ -99,14 +90,10 @@
         uploadHandle3DModel: API.uploadHandle3DModel
       }
     },
+    created: function () {
+      this.initData()
+    },
     methods: {
-      handleRemove (file, fileList) {
-        console.log(file, fileList)
-      },
-      handlePreview (file) {
-        console.log(file)
-      },
-
       initData () {
         // 商品款号
         this.code = this.$route.query.code
@@ -115,28 +102,21 @@
         // 门店id
         this.shop_id = this.$route.query.shop_id
         // 商品颜色
-        for (var i = 0, length1 = this.$route.query.color.length; i < length1; i++) {
-          this.color += this.$route.query.color[i].color_name + ' '
-          this.colorImg.push(this.$route.query.color[i].color_name)
-          var colorImg = {
-            color: this.$route.query.color[i].color_name,
-            imgUrl: '',
-            id: this.$route.query.color[i].color_arg_id
+        if (this.$route.query.color.length !== 0) {
+          for (var i = 0, length1 = this.$route.query.color.length; i < length1; i++) {
+            this.color += this.$route.query.color[i].color_name + ' '
+            this.colorImg.push(this.$route.query.color[i].color_name)
+            var colorImg = {
+              color: this.$route.query.color[i].color_name,
+              imgUrl: '',
+              id: this.$route.query.color[i].color_arg_id
+            }
+            this.colorAndImg.push(colorImg)
           }
-          this.colorAndImg.push(colorImg)
+        } else {
+          console.log(`获取this.$route.query.color预期是有值Array 但传入值为空`)
         }
       },
-
-      // uploadBefore (file) {
-      //   if (file.size > 1024 * 1024) {
-      //     // statement
-      //     this.consoleError('上传文件过大!请重新上传!')
-      //     setTimeout(() => {
-      //       jQuery('.is-ready').hide()
-      //     }, 800)
-      //     return false
-      //   }
-      // },
 
       // 商品颜色图片
       colorAndImgSuccess (response, file, fileList) {
@@ -271,10 +251,6 @@
           message: error
         })
       }
-    },
-
-    created: function () {
-      this.initData()
     }
   }
 </script>
