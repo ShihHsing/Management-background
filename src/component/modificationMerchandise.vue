@@ -738,7 +738,6 @@ export default {
     // 服务器获取颜色分类
     getColorClassification (request_flag) {
       this.$axios.post(API.addNewerGoodsInfo, {
-        // 方便测试开发 默认品牌ID为1 分类ID为4
         product_id: this.one.commodityBrand,
         category_id: this.one.commodityClassification,
         request_flag: request_flag
@@ -802,6 +801,7 @@ export default {
       })
       .catch(error => {
         this.consoleError(`服务器4${error.response}`)
+        console.debug(request_flag)
       })
     },
 
