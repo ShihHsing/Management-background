@@ -471,7 +471,6 @@ export default {
 
     // 商品列表图
     handleSuccess1 (response, file, fileList) {
-      console.log(response)
       if (response.flag >> 0 === 1000) {
         // false数据不存在 true数据上传成功
         this.three.thumb_image = false
@@ -777,7 +776,6 @@ export default {
     colorAndImgSuccess (response, file, fileList) {
       if (response.flag >> 0 === 1000) {
         console.log(response, file)
-        // statement
         var imgColor = response.imgColor
         for (var i = 0; i < this.four.colorAndImg.length; i++) {
           if (this.four.colorAndImg[i].color === imgColor) {

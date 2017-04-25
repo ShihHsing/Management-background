@@ -151,7 +151,6 @@
 
                 <el-form-item label="商品图片">
                   <div v-for="(city,index) in four.checkedCities">
-                  <!-- action冒号问题 -->
                    <el-upload
                       class="upload-demo"
                       :action="uploadAddNewerGoodsInfo"
