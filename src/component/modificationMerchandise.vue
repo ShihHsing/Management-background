@@ -18,7 +18,7 @@
           :autoplay="false"
           ref="elCarousel">
           <!-- 第二页 -->
-          <el-carousel-item id="none-align-items">
+          <el-carousel-item id="none-align-items" class="sx_basis_scroll sx_scroll_style_lucency">
             <el-form 
               :model="two" 
               :rules="twoRules" 
@@ -68,7 +68,7 @@
           <!-- 第二页 End -->
 
           <!-- 第三页 -->
-          <el-carousel-item>
+          <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
             <el-form 
               :model="three"
               ref="three">
@@ -130,7 +130,7 @@
           <!-- 第三页 End -->
 
           <!-- 第四页 -->
-          <el-carousel-item>
+          <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
             <el-form 
               :model="four"
               ref="four"
@@ -178,7 +178,7 @@
             </el-form>
           </el-carousel-item>
           <!-- 第四页 End -->
-          <el-carousel-item>
+          <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
             <el-form 
               :model="four"
               ref="four"

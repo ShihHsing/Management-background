@@ -1,8 +1,8 @@
 <template>
   <div id="addRobotInstructions">
     <el-row>
-    	<el-col :span="22" :offset="1">
-        <vue-html5-editor :content="initData" :height="500" @change="updateData"></vue-html5-editor>
+    	<el-col :span="22" :offset="1" class="sx_basis_scroll sx_scroll_style_lucency">
+        <vue-html5-editor :content="initData" @change="updateData"></vue-html5-editor>
     	</el-col>
     </el-row></br></br></br>
     <el-row>
