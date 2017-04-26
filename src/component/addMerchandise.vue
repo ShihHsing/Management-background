@@ -38,7 +38,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click.once="submitForm('one')">下一步</el-button>
+                  <el-button type="primary" @click="flag1 && submitForm('one')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -90,7 +90,7 @@
                 </div >
       
                 <el-form-item>
-                  <el-button type="primary" @click.once="submitForm('two')">下一步</el-button>
+                  <el-button type="primary" @click="flag2 && submitForm('two')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -148,7 +148,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                  <el-button type="primary" @click.once="submitForm('three')">下一步</el-button>
+                  <el-button type="primary" @click="flag3 && submitForm('three')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -199,7 +199,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                  <el-button type="primary" @click.once="submitForm('four')">下一步</el-button>
+                  <el-button type="primary" @click="flag4 && submitForm('four')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -218,7 +218,7 @@
                 <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">
                 商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
                 <el-form-item>
-                  <el-button type="primary" @click.once="submitForm('End')">下一步</el-button>
+                  <el-button type="primary" @click="flag5 && submitForm('End')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -238,6 +238,11 @@ export default {
   name: 'addMerchandise',
   data () {
     return {
+      flag1: true, // 控制点击事件防止多次触发
+      flag2: true,
+      flag3: true,
+      flag4: true,
+      flag5: true,
       active: 0,
       // 文件上传
       uploadAddNewerGoodsInfo: API.uploadAddNewerGoodsInfo,
@@ -419,6 +424,9 @@ export default {
         case 'one':
           this.$refs[formName].validate(valid => {
             if (valid) {
+              /* === 移除绑定事件 多次连续点击产生Bug === */
+              this.flag1 = false
+              /* ======================================== */
               /* === 根据商品品牌和商品分类获取属性 === */
               this.getShopStyle()
               /* ====================================== */
@@ -429,6 +437,9 @@ export default {
           this.$refs[formName].validate(valid => {
             if (valid) {
               if (this.twoReg()) {
+                /* === 移除绑定事件 多次连续点击产生Bug === */
+                this.flag2 = false
+                /* ======================================== */
                 this.active ++
                 this.$refs.elCarousel.next()
               } else {
@@ -439,6 +450,9 @@ export default {
           break
         case 'three':
           if (this.three.thumb_image_url !== '') {
+            /* === 移除绑定事件 多次连续点击产生Bug === */
+            this.flag3 = false
+            /* ======================================== */
             this.active ++
             this.$refs.elCarousel.next()
           } else {
@@ -453,6 +467,9 @@ export default {
             }
           }
           if (this.four.checkedCities.length > 0 && this.four.checkedSize.length > 0 && count === this.four.colorAndImg.length) {
+            /* === 移除绑定事件 多次连续点击产生Bug === */
+            this.flag4 = false
+            /* ======================================== */
             this.active ++
             this.$refs.elCarousel.next()
           } else {
@@ -461,6 +478,9 @@ export default {
           break
         default:
           if (this.newDescription !== '') {
+            /* === 移除绑定事件 多次连续点击产生Bug === */
+            this.flag5 = false
+            /* ======================================== */
             this.postAddShopData()
           } else {
             this.consoleError('请完善商品详情')

@@ -60,7 +60,7 @@
                 </div >
       
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('two')">下一步</el-button>
+                  <el-button type="primary" @click="flag1 && submitForm('two')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -120,7 +120,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('three')">下一步</el-button>
+                  <el-button type="primary" @click="flag2 && submitForm('three')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -169,7 +169,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('four')">下一步</el-button>
+                  <el-button type="primary" @click="flag3 && submitForm('four')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -186,7 +186,7 @@
                 </div>
                 <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('End')">下一步</el-button>
+                  <el-button type="primary" @click="flag4 && submitForm('End')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -238,6 +238,10 @@ export default {
   name: 'modificationMerchandise',
   data () {
     return {
+      flag1: true, // 控制点击事件防止多次触发
+      flag2: true,
+      flag3: true,
+      flag4: true,
       active: 0,
       uploadAddNewerGoodsInfo: API.uploadAddNewerGoodsInfo,
       // 初始化获取商品ID
@@ -472,11 +476,17 @@ export default {
     submitForm (formName) {
       switch (formName) {
         case 'two':
+          /* === 移除绑定事件 多次连续点击产生Bug === */
+          this.flag1 = false
+          /* ======================================== */
           // 获取商品尺寸
           this.getColorClassification('color_list')
           break
         case 'three':
           if (this.three.thumb_image_url !== '') {
+            /* === 移除绑定事件 多次连续点击产生Bug === */
+            this.flag2 = false
+            /* ======================================== */
             this.active ++
             this.$refs.elCarousel.next()
             this.four.dialogVisible = true
@@ -492,6 +502,9 @@ export default {
           //   }
           // }
           // if (this.four.checkedCities.length > 0 && this.four.checkedSize.length > 0 && count === this.four.colorAndImg.length) {
+          /* === 移除绑定事件 多次连续点击产生Bug === */
+          this.flag3 = false
+          /* ======================================== */
           this.active ++
           this.$refs.elCarousel.next()
           // } else {
@@ -500,6 +513,9 @@ export default {
           break
         default:
           if (this.newDescription !== '') {
+            /* === 移除绑定事件 多次连续点击产生Bug === */
+            this.flag4 = false
+            /* ======================================== */
             this.postAddShopData()
           } else {
             this.consoleError('请完善商品详情')
