@@ -69,14 +69,14 @@
             case 1000:
               this.consoleSuccess(`文件导入成功!`)
               const uploadFiles = this.$refs.upload.uploadFiles
-              if (uploadFiles.lenght !== 0) {
+              if (uploadFiles.length !== 0) {
                 uploadFiles.shift()
               }
               break
             case 9002:
               if (response.error_data) {
                 const uploadFiles = this.$refs.upload.uploadFiles
-                if (uploadFiles.lenght !== 0) {
+                if (uploadFiles.length !== 0) {
                   uploadFiles.shift()
                 }
                 this.consoleError(`导入数据失败!文件生成中!请下载文件后查看错误并修改!`)

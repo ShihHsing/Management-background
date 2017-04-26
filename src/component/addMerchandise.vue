@@ -477,7 +477,9 @@ export default {
         this.three.thumb_imageList = response
         this.three.thumb_image_url = response.file_url
         const uploadFiles = this.$refs.thumb_image.uploadFiles
-        if (uploadFiles.lenght !== 0) {
+        console.log(uploadFiles, uploadFiles.length, '上传文件列表')
+        if (uploadFiles.length === 2) {
+          console.log('进入')
           uploadFiles.shift()
         }
         this.consoleSuccess(response.return_code)
@@ -486,7 +488,7 @@ export default {
         this.$refs.thumb_image.clearFiles()
         this.consoleError(response.return_code)
         const uploadFiles = this.$refs.thumb_image.uploadFiles
-        if (uploadFiles.lenght !== 0) {
+        if (uploadFiles.length !== 0) {
           uploadFiles.shift()
         }
       }
@@ -501,7 +503,7 @@ export default {
         this.three.audioList = response
         this.three.audio_url = response.file_url
         const uploadFiles = this.$refs.audio.uploadFiles
-        if (uploadFiles.lenght !== 0) {
+        if (uploadFiles.length !== 0) {
           uploadFiles.shift()
         }
         this.consoleSuccess(response.return_code)
@@ -510,7 +512,7 @@ export default {
         this.$refs.audio.clearFiles()
         this.consoleError(response.return_code)
         const uploadFiles = this.$refs.audio.uploadFiles
-        if (uploadFiles.lenght !== 0) {
+        if (uploadFiles.length !== 0) {
           uploadFiles.shift()
         }
       }
@@ -525,7 +527,7 @@ export default {
         this.three.videoList = response
         this.three.video_url = response.file_url
         const uploadFiles = this.$refs.video.uploadFiles
-        if (uploadFiles.lenght !== 0) {
+        if (uploadFiles.length !== 0) {
           uploadFiles.shift()
         }
         this.consoleSuccess(response.return_code)
@@ -534,7 +536,7 @@ export default {
         this.$refs.video.clearFiles()
         this.consoleError(response.return_code)
         const uploadFiles = this.$refs.video.uploadFiles
-        if (uploadFiles.lenght !== 0) {
+        if (uploadFiles.length !== 0) {
           uploadFiles.shift()
         }
       }
