@@ -45,7 +45,7 @@
           <el-table-column
             prop="model"
             label="商品款号"
-            width="180">
+            width="100">
           </el-table-column>
           <!-- <el-table-column
             prop="id"
