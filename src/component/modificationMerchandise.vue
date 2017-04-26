@@ -581,7 +581,7 @@ export default {
         this.three.thumb_imageList = response
         this.three.thumb_image_url = response.file_url
         const uploadFiles = this.$refs.thumb_image.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
         this.consoleSuccess(response.return_code)
@@ -589,7 +589,7 @@ export default {
         this.three.thumb_image = true
         this.$refs.thumb_image.clearFiles()
         const uploadFiles = this.$refs.thumb_image.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
         this.consoleError(response.return_code)
@@ -606,7 +606,7 @@ export default {
         this.three.audioList = response
         this.three.audio_url = response.file_url
         const uploadFiles = this.$refs.audio.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
         this.consoleSuccess(response.return_code)
@@ -614,7 +614,7 @@ export default {
         this.three.audio = true
         this.$refs.audio.clearFiles()
         const uploadFiles = this.$refs.audio.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
         this.consoleError(response.return_code)
@@ -631,7 +631,7 @@ export default {
         this.three.videoList = response
         this.three.video_url = response.file_url
         const uploadFiles = this.$refs.video.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
         this.consoleSuccess(response.return_code)
@@ -639,7 +639,7 @@ export default {
         this.three.video = true
         this.$refs.video.clearFiles()
         const uploadFiles = this.$refs.video.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
         this.consoleError(response.return_code)

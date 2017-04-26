@@ -38,7 +38,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('one')">下一步</el-button>
+                  <el-button type="primary" @click.once="submitForm('one')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -90,7 +90,7 @@
                 </div >
       
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('two')">下一步</el-button>
+                  <el-button type="primary" @click.once="submitForm('two')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -148,7 +148,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('three')">下一步</el-button>
+                  <el-button type="primary" @click.once="submitForm('three')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -199,7 +199,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('four')">下一步</el-button>
+                  <el-button type="primary" @click.once="submitForm('four')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -218,7 +218,7 @@
                 <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">
                 商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm('End')">下一步</el-button>
+                  <el-button type="primary" @click.once="submitForm('End')">下一步</el-button>
                 </el-form-item>
               </el-card>
             </el-form>
@@ -488,7 +488,7 @@ export default {
         this.$refs.thumb_image.clearFiles()
         this.consoleError(response.return_code)
         const uploadFiles = this.$refs.thumb_image.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
       }
@@ -503,7 +503,7 @@ export default {
         this.three.audioList = response
         this.three.audio_url = response.file_url
         const uploadFiles = this.$refs.audio.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
         this.consoleSuccess(response.return_code)
@@ -512,7 +512,7 @@ export default {
         this.$refs.audio.clearFiles()
         this.consoleError(response.return_code)
         const uploadFiles = this.$refs.audio.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
       }
@@ -527,7 +527,7 @@ export default {
         this.three.videoList = response
         this.three.video_url = response.file_url
         const uploadFiles = this.$refs.video.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
         this.consoleSuccess(response.return_code)
@@ -536,7 +536,7 @@ export default {
         this.$refs.video.clearFiles()
         this.consoleError(response.return_code)
         const uploadFiles = this.$refs.video.uploadFiles
-        if (uploadFiles.length !== 0) {
+        if (uploadFiles.length === 2) {
           uploadFiles.shift()
         }
       }
