@@ -7,8 +7,8 @@
           
           <form class="form">
             <input type="text" v-model="phone_number" placeholder="账号/手机号">
-            <input type="password" v-model="password" placeholder="密码">
-            <div id="login-button" @click="login();">登录</div>
+            <input type="password" v-model="password" placeholder="密码" @keyup.enter="login">
+            <div id="login-button" @click="login">登录</div>
           </form>
         </div>
         
