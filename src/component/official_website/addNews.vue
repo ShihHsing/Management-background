@@ -48,7 +48,8 @@
                 :on-success="handleAvatarSuccess"
                 :on-error="handleError"
                 :before-upload="beforeAvatarUpload"
-                name="image">
+                name="image"
+                :data="{'session_id': session_id}">
                 <img v-if="imgUrl" :src="imgUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
@@ -70,12 +71,14 @@
 </template>
 
 <script>
+  import store from '../../assets/store'
   import { addCompanyDynamic, addIndustryNews } from '../../assets/axios/api.js'
   import * as SX from '../../assets/public/sx_func.js'
   export default{
     name: 'addNews',
     data () {
       return {
+        session_id: store.state.user.userData.session_id,
         // 图片上传接口
         addCompanyDynamic,
         newsSelect: '1', // 上传分类选择
