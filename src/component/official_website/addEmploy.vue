@@ -1,5 +1,5 @@
 <template>
-  <div id="addEmploy">
+  <div id="addEmploy" class="sx_basis_scroll sx_scroll_style">
     <el-row class="addEmploy_body" type="flex" justify="center">
       <el-col :span="16">
         <el-card class="box-card">
@@ -158,6 +158,9 @@
     .addEmploy_body{
       box-sizing: border-box;
       padding-top: 50px;
+      textarea{
+        height: 200px;
+      }
     }
   }
 </style>

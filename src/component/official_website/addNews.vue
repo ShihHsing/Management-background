@@ -22,7 +22,7 @@
             <el-form-item label="新闻名称" prop="title">
               <el-input v-model="ruleForm.title"></el-input>
             </el-form-item>
-            <el-form-item label="新闻关键字" prop="keywords">
+            <el-form-item label="新闻关键字" prop="keyword">
               <el-input v-model="ruleForm.keyword"></el-input>
             </el-form-item>
             <el-form-item label="新闻描述" prop="content">
@@ -31,7 +31,12 @@
             <el-form-item label="新闻日期" required>
               <el-col :span="11">
                 <el-form-item prop="add_time">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.add_time" style="width: 100%;"></el-date-picker>
+                  <el-date-picker 
+                    type="date" 
+                    placeholder="选择日期" 
+                    v-model="ruleForm.add_time"
+                    style="width: 100%;">
+                  </el-date-picker>
                 </el-form-item>
               </el-col>
             </el-form-item>
@@ -41,6 +46,7 @@
                 :action="addCompanyDynamic"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
+                :on-error="handleError"
                 :before-upload="beforeAvatarUpload"
                 name="image">
                 <img v-if="imgUrl" :src="imgUrl" class="avatar">
@@ -64,7 +70,8 @@
 </template>
 
 <script>
-  import { addCompanyDynamic } from '../../assets/axios/api.js'
+  import { addCompanyDynamic, addIndustryNews } from '../../assets/axios/api.js'
+  import * as SX from '../../assets/public/sx_func.js'
   export default{
     name: 'addNews',
     data () {
@@ -129,13 +136,14 @@
       },
       /* 判断新闻上传链接 */
       selectNews () {
-        return this.newsSelect === '1' ? addCompanyDynamic : '行业新闻'
+        return this.newsSelect === '1' ? addCompanyDynamic : addIndustryNews
       },
       /* 提交数据 */
       addNews () {
         const Data = JSON.parse(JSON.stringify(this.ruleForm))
         Data.details = Data.newsDescription
         Data.image_url = this.imgUrl
+        Data.add_time = SX.date(this.ruleForm.add_time)
         this.$axios.post(this.selectNews(), Data)
         .then((msg) => {
           const data = msg.data
@@ -198,6 +206,10 @@
           this.$message.error('上传图片大小不能超过 1MB!')
         }
         return isJPG && isLt2M
+      },
+      /* ------- 错误时处理 ------*/
+      handleError (err, file, fileList) {
+        this.consoleWarning(`文件上传失败! 原因: ${err}`)
       },
       /* ----------------------- */
       consoleSuccess (success) {

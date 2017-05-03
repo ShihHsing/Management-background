@@ -1,5 +1,5 @@
 <template>
-  <div id="employList">
+  <div id="employList" class="sx_basis_scroll sx_scroll_style">
     <el-row class="employList_body" type="flex" justify="center">
       <el-col :span="16">
         <el-card class="box-card">
@@ -44,7 +44,7 @@
             </el-table-column>
           </el-table>
 
-          <el-dialog title="收货地址" v-model="dialogUpdateWebsiteJoinUsInfo">
+          <el-dialog title="编辑招聘信息" v-model="dialogUpdateWebsiteJoinUsInfo">
             <el-form 
               :model="ruleForm" 
               :rules="rules" 
@@ -254,25 +254,36 @@
       },
       /* 删除招聘 */
       removeNews (id) {
-        this.$axios.post(deleteWebsiteJoinUsById, {
-          id
-        })
-        .then((msg) => {
-          const data = msg.data
-          switch (data.status) {
-            case 1000:
-              this.consoleSuccess(`招聘删除成功`)
-              /* ===== 获取招聘列表 ===== */
-              this.getWebsiteJoinUsInfo()
-              /* ======================== */
-              break
-            default:
-              this.consoleWarning(data.ret_msg)
-              break
-          }
-        })
-        .catch(error => {
-          this.consoleError(error)
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.post(deleteWebsiteJoinUsById, {
+            id
+          })
+          .then((msg) => {
+            const data = msg.data
+            switch (data.status) {
+              case 1000:
+                this.consoleSuccess(`招聘删除成功`)
+                /* ===== 获取招聘列表 ===== */
+                this.getWebsiteJoinUsInfo()
+                /* ======================== */
+                break
+              default:
+                this.consoleWarning(data.ret_msg)
+                break
+            }
+          })
+          .catch(error => {
+            this.consoleError(error)
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
         })
       },
       consoleSuccess (success) {
@@ -318,6 +329,9 @@
     .employList_body{
       box-sizing: border-box;
       padding-top: 50px;
+      textarea{
+        height: 230px;
+      }
     }
   }
 </style>
