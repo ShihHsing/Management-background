@@ -106,6 +106,7 @@
               :on-success="handleAvatarSuccess"
               :on-error="handleError"
               :before-upload="beforeAvatarUpload"
+              :data="{'session_id': session_id}"
               name="image">
               <img v-if="imgUrl" :src="imgUrl" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -127,11 +128,13 @@
 </template>
 
 <script>
+  import store from '../../assets/store'
   import { listCompanyDynamic, listIndustryNews, modifyCompanyDynamic, modifyIndustryNews, removeCompanyDynamic, removeIndustryNews } from '../../assets/axios/api.js'
   export default{
     name: 'newsList',
     data () {
       return {
+        session_id: store.state.user.userData.session_id,
         newsList: [], // 新闻列表 后台获取
         // 当前页
         current_page: 1,
@@ -149,7 +152,8 @@
           keyword: '', // 关键字
           content: '', // 描述
           newsDescription: '', // 新闻内容
-          id: ''
+          id: '',
+          session_id: store.state.user.userData.session_id,
         },
         rules: {
           title: [
@@ -199,7 +203,8 @@
       getNewsList (current_page) {
         const _this = this
         this.$axios.post(this.selectNews(), {
-          current_page: current_page
+          current_page: current_page,
+          session_id: this.session_id
         })
         .then((msg) => {
           const data = msg.data
@@ -263,7 +268,8 @@
       modificationNews (id) {
         this.dialog = true
         this.$axios.post(this.selectModifyNews(), {
-          id
+          id,
+          session_id: this.session_id
         })
         .then((msg) => {
           const data = msg.data
@@ -298,6 +304,7 @@
         const Data = JSON.parse(JSON.stringify(this.ruleForm))
         Data.details = Data.newsDescription
         Data.image_url = this.imgUrl
+        Data.session_id = this.session_id
         this.$axios.post(this.selectModifyNews(), Data)
         .then((msg) => {
           const data = msg.data
@@ -381,7 +388,8 @@
           type: 'warning'
         }).then(() => {
           this.$axios.post(this.selectDeleteNews(), {
-            id
+            id,
+            session_id: this.session_id
           })
           .then((msg) => {
             const data = msg.data

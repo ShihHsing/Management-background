@@ -93,11 +93,13 @@
 </template>
 
 <script>
+  import store from '../../assets/store'
   import { getWebsiteJoinUsInfo, updateWebsiteJoinUsInfo, deleteWebsiteJoinUsById } from '../../assets/axios/api.js'
   export default{
     name: 'newsList',
     data () {
       return {
+        session_id: store.state.user.userData.session_id,
         employList: [], // 招聘列表
         dialogUpdateWebsiteJoinUsInfo: false, // 修改招聘信息
         ruleForm: {
@@ -105,7 +107,8 @@
           department: '', // 招聘部门
           duty: '', // 岗位职责
           demand: '', // 任职要求
-          employ_count: 1
+          employ_count: 1,
+          session_id: store.state.user.userData.session_id
         },
         rules: {
           position: [
@@ -151,7 +154,9 @@
       },
       // 获取招聘
       getWebsiteJoinUsInfo () {
-        this.$axios.post(getWebsiteJoinUsInfo)
+        this.$axios.post(getWebsiteJoinUsInfo, {
+          session_id: this.session_id
+        })
         .then((msg) => {
           const data = msg.data
           switch (data.status) {
@@ -187,7 +192,8 @@
       getUpdateWebsiteJoinUsInfo (id) {
         this.$axios.get(updateWebsiteJoinUsInfo, {
           params: {
-            id
+            id,
+            session_id: this.session_id
           }
         })
         .then((msg) => {
@@ -260,7 +266,8 @@
           type: 'warning'
         }).then(() => {
           this.$axios.post(deleteWebsiteJoinUsById, {
-            id
+            id,
+            session_id: this.session_id
           })
           .then((msg) => {
             const data = msg.data

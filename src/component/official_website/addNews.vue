@@ -147,6 +147,7 @@
         Data.details = Data.newsDescription
         Data.image_url = this.imgUrl
         Data.add_time = SX.date(this.ruleForm.add_time)
+        Data.session_id = this.session_id
         this.$axios.post(this.selectNews(), Data)
         .then((msg) => {
           const data = msg.data
