@@ -153,7 +153,7 @@
           content: '', // 描述
           newsDescription: '', // 新闻内容
           id: '',
-          session_id: store.state.user.userData.session_id,
+          session_id: store.state.user.userData.session_id
         },
         rules: {
           title: [
