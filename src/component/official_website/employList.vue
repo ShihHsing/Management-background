@@ -229,6 +229,7 @@
         })
       },
       updateWebsiteJoinUsInfo () {
+        this.ruleForm.session_id = this.session_id
         this.$axios.post(updateWebsiteJoinUsInfo, this.ruleForm)
         .then((msg) => {
           const data = msg.data
