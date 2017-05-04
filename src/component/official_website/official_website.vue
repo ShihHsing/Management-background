@@ -2,9 +2,11 @@
   <div id="official_website">
     <el-row class="top" type="flex" justify="space-between">
       <el-col class="quit">
-        <span class="cursor">
-          <i class="el-icon-arrow-left"></i>&nbsp;Quit
-        </span>
+        <router-link to="login">
+          <span class="cursor">
+            <i class="el-icon-arrow-left"></i>&nbsp;Quit
+          </span>
+        </router-link>
       </el-col>
       <el-col class="title">
         官网管理后台
