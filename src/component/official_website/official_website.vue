@@ -2,7 +2,7 @@
   <div id="official_website">
     <el-row class="top" type="flex" justify="space-between">
       <el-col class="quit">
-        <span class="cursor">
+        <span class="cursor" @click="logOut">
           <i class="el-icon-arrow-left"></i>&nbsp;Quit
         </span>
       </el-col>
@@ -69,6 +69,57 @@
       // 动态绑定导航和路由对应关系
       getRouterUrl () {
         this.router_url = this.$route.path
+      },
+      /* ---- 退出 ---- */
+      logOut () {
+        this.$confirm('是否确认退出', '友情提示', {
+          confirmButtonText: '残忍退出',
+          cancelButtonText: '再玩一会',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '你上当了,呵呵呵...'
+          })
+          this.$confirm('在玩一会呗', '友情提示', {
+            confirmButtonText: '残忍退出',
+            cancelButtonText: '嘿嘿嘿',
+            type: 'warning'
+          }).then(() => {
+            this.$message({
+              type: 'success',
+              message: '想退出先夸夸我!'
+            })
+            this.$confirm('你最丑', '友情提示', {
+              confirmButtonText: '我最丑',
+              cancelButtonText: '我最美',
+              type: 'warning'
+            }).then(() => {
+              this.$message({
+                type: 'success',
+                message: '是的你最丑 Bay!'
+              })
+              setTimeout(() => {
+                this.$router.push('login')
+              }, 1000)
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '你最丑'
+              })
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '在玩一会吧'
+            })
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '在玩一会吧'
+          })
+        })
       }
     },
     components: {}

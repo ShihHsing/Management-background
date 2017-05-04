@@ -1,5 +1,5 @@
 <template>
-  <div id="addEmploy">
+  <div id="addEmploy" class="sx_basis_scroll sx_scroll_style">
     <el-row class="addEmploy_body" type="flex" justify="center">
       <el-col :span="16">
         <el-card class="box-card">
@@ -18,21 +18,14 @@
             <el-form-item label="招聘部门" prop="department">
               <el-input v-model="ruleForm.department"></el-input>
             </el-form-item>
-            <el-form-item label="招聘人数" prop="number">
-              <el-input v-model.number="ruleForm.number"></el-input>
+            <el-form-item label="招聘人数" required>
+              <el-input-number v-model="ruleForm.employ_count" :min="1" :max="10"></el-input-number>
             </el-form-item>
-            <el-form-item label="招聘日期" required>
-              <el-col :span="11">
-                <el-form-item prop="date">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%;"></el-date-picker>
-                </el-form-item>
-              </el-col>
+            <el-form-item label="岗位职责" prop="duty">
+              <el-input type="textarea" v-model="ruleForm.duty"></el-input>
             </el-form-item>
-            <el-form-item label="岗位职责" prop="responsibilities">
-              <el-input type="textarea" v-model="ruleForm.responsibilities"></el-input>
-            </el-form-item>
-            <el-form-item label="任职要求" prop="requirements">
-              <el-input type="textarea" v-model="ruleForm.requirements"></el-input>
+            <el-form-item label="任职要求" prop="demand">
+              <el-input type="textarea" v-model="ruleForm.demand"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -46,63 +39,50 @@
 </template>
 
 <script>
+  import { addWebsiteJoinUs } from '../../assets/axios/api.js'
+  import store from '../../assets/store'
   export default{
     name: 'newsList',
     data () {
-      var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'))
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'))
-          } else {
-            callback()
-          }
-        }, 800)
-      }
       return {
         ruleForm: {
           position: '', // 招聘职位
           department: '', // 招聘部门
-          date: '', // 招聘日期
-          responsibilities: '', // 岗位职责
-          requirements: '' // 任职要求
+          duty: '', // 岗位职责
+          demand: '', // 任职要求
+          employ_count: 1,
+          session_id: store.state.user.userData.session_id
         },
         rules: {
           position: [
             { required: true, message: '请输入招聘职位', trigger: 'blur' },
-            { min: 3, max: 10, message: '长度 3 到 10 个字符以内!', trigger: 'change' }
+            { min: 3, max: 10, message: '长度 3 到 10 个字符以内!', trigger: 'blur' }
           ],
           department: [
             { required: true, message: '请输入招聘部门', trigger: 'blur' },
-            { min: 3, max: 10, message: '长度 3 到 10 个字符以内!', trigger: 'change' }
+            { min: 3, max: 10, message: '长度 3 到 10 个字符以内!', trigger: 'blur' }
           ],
-          number: [
-            { required: true, validator: checkAge, trigger: 'blur' }
-          ],
-          date: [
-            { type: 'date', required: true, message: '请选择招聘日期', trigger: 'change' }
-          ],
-          responsibilities: [
+          duty: [
             { required: true, message: '请输入岗位职责', trigger: 'blur' },
-            { min: 10, max: 500, message: '长度 10 到 500 个字符以内!', trigger: 'change' }
+            { min: 10, max: 500, message: '长度 10 到 500 个字符以内!', trigger: 'blur' }
           ],
-          requirements: [
+          demand: [
             { required: true, message: '请输入任职要求', trigger: 'blur' },
-            { min: 10, max: 500, message: '长度 10 到 500 个字符以内!', trigger: 'change' }
+            { min: 10, max: 500, message: '长度 10 到 500 个字符以内!', trigger: 'blur' }
           ]
         }
       }
     },
-    created: function () {},
     methods: {
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.consoleSuccess(`添加成功`)
+            /* ==== 请求后台 ==== */
+            this.addWebsiteJoinUs()
+            /* ------------------ */
+
             /* --- 清空表单 --- */
-            this.resetForm()
+            this.resetForm('ruleForm', 500)
             /* ---------------- */
           } else {
             this.consoleWarning(`请完善信息后提交`)
@@ -110,9 +90,34 @@
           }
         })
       },
+      addWebsiteJoinUs () {
+        this.$axios.post(addWebsiteJoinUs, this.ruleForm)
+        .then((msg) => {
+          const data = msg.data
+          switch (data.status) {
+            case 1000:
+              this.consoleSuccess(`招聘信息添加成功!`)
+              setTimeout(() => {
+                /* 跳转 */
+                this.$router.push('employList')
+              }, 500)
+              break
+            default:
+              this.consoleWarning(data.ret_msg)
+              break
+          }
+        })
+        .catch(error => {
+          this.consoleError(error)
+        })
+      },
       /* 清空表单 */
-      resetForm (formName) {
-        this.$refs[formName].resetFields()
+      resetForm (formName, time) {
+        setTimeout(() => {
+          this.$refs[formName].resetFields()
+          /* 计数清空 */
+          this.ruleForm.employ_count = 1
+        }, time)
       },
       consoleSuccess (success) {
         this.$notify({
@@ -155,6 +160,9 @@
     .addEmploy_body{
       box-sizing: border-box;
       padding-top: 50px;
+      textarea{
+        height: 200px;
+      }
     }
   }
 </style>

@@ -9,37 +9,52 @@
           <el-form 
             :model="ruleForm" 
             :rules="rules" 
-            ref="ruleForm" 
+            ref="ruleForm"
+            label-position="left"
             label-width="100px" 
             class="demo-ruleForm">
-            <el-form-item label="新闻名称" prop="name">
-              <el-input v-model="ruleForm.name"></el-input>
+            <el-form-item label="分类选择" required>
+              <el-select v-model="newsSelect" placeholder="请选择">
+                <el-option label="公司新闻" value="1"></el-option>
+                <el-option label="行业新闻" value="2"></el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item label="新闻关键字" prop="keywords">
-              <el-input v-model="ruleForm.keywords"></el-input>
+            <el-form-item label="新闻名称" prop="title">
+              <el-input v-model="ruleForm.title"></el-input>
             </el-form-item>
-            <el-form-item label="新闻描述" prop="description">
-              <el-input v-model="ruleForm.description"></el-input>
+            <el-form-item label="新闻关键字" prop="keyword">
+              <el-input v-model="ruleForm.keyword"></el-input>
+            </el-form-item>
+            <el-form-item label="新闻描述" prop="content">
+              <el-input v-model="ruleForm.content"></el-input>
             </el-form-item>
             <el-form-item label="新闻日期" required>
               <el-col :span="11">
-                <el-form-item prop="date">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%;"></el-date-picker>
+                <el-form-item prop="add_time">
+                  <el-date-picker 
+                    type="date" 
+                    placeholder="选择日期" 
+                    v-model="ruleForm.add_time"
+                    style="width: 100%;">
+                  </el-date-picker>
                 </el-form-item>
               </el-col>
             </el-form-item>
-            <el-form-item label="新闻封面图">
+            <el-form-item label="新闻封面图" required>
               <el-upload
                 class="avatar-uploader"
-                action=""
+                :action="addCompanyDynamic"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                :on-error="handleError"
+                :before-upload="beforeAvatarUpload"
+                name="image"
+                :data="{'session_id': session_id}">
+                <img v-if="imgUrl" :src="imgUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
-            <el-form-item label="新闻内容">
+            <el-form-item label="新闻内容" required>
               <div class="sx_basis_scroll sx_scroll_style" style="height: 350px;">
                 <vue-html5-editor :content="description" @change="updateData"></vue-html5-editor>
               </div>
@@ -56,51 +71,65 @@
 </template>
 
 <script>
+  import store from '../../assets/store'
+  import { addCompanyDynamic, addIndustryNews } from '../../assets/axios/api.js'
+  import * as SX from '../../assets/public/sx_func.js'
   export default{
     name: 'addNews',
     data () {
       return {
+        session_id: store.state.user.userData.session_id,
+        // 图片上传接口
+        addCompanyDynamic,
+        newsSelect: '1', // 上传分类选择
         description: '', // 新闻描述
-        imageUrl: '', // 图片地址
+        imgUrl: '', // 图片地址
         ruleForm: {
-          name: '', // 新闻名称
-          keywords: '', // 关键字
-          description: '', // 描述
-          date: '', // 新闻时间
+          title: '', // 新闻名称
+          keyword: '', // 关键字
+          content: '', // 描述
+          add_time: '', // 新闻时间
           newsDescription: '' // 新闻内容
         },
         rules: {
-          name: [
+          title: [
             { required: true, message: '请输入新闻标题', trigger: 'blur' },
             { min: 3, max: 80, message: '长度 3 到 80 个字符以内!', trigger: 'change' }
           ],
-          keywords: [
+          keyword: [
             { required: true, message: '请输入新闻关键字', trigger: 'blur' },
             { min: 15, max: 100, message: '长度 15 到 100 个字符以内 并用逗号分隔!', trigger: 'change' }
           ],
-          description: [
+          content: [
             { required: true, message: '请输入新闻描述', trigger: 'blur' },
             { min: 20, max: 200, message: '长度 20 到 200 个字符以内!', trigger: 'change' }
           ],
-          date: [
+          add_time: [
             { type: 'date', required: true, message: '请选择新闻日期', trigger: 'change' }
           ]
         }
       }
     },
-    created: function () {},
     methods: {
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            const newsDescription = this.ruleForm.newsDescription
-            if (newsDescription) {
-              this.consoleSuccess(`添加成功`)
-              /* --- 清空表单 --- */
-              this.resetForm()
-              /* ---------------- */
+            const imgUrl = this.imgUrl
+            if (imgUrl) {
+              const newsDescription = this.ruleForm.newsDescription
+              if (newsDescription) {
+                /* --- 提交数据 --- */
+                this.addNews()
+                /* ---------------- */
+
+                /* --- 清空表单 --- */
+                this.resetForm('ruleForm', 500)
+                /* ---------------- */
+              } else {
+                this.consoleWarning(`请完善新闻内容`)
+              }
             } else {
-              this.consoleWarning(`请完善新闻内容`)
+              this.consoleWarning(`请上传新闻封面图`)
             }
           } else {
             this.consoleWarning(`请完善信息后提交`)
@@ -108,11 +137,46 @@
           }
         })
       },
+      /* 判断新闻上传链接 */
+      selectNews () {
+        return this.newsSelect === '1' ? addCompanyDynamic : addIndustryNews
+      },
+      /* 提交数据 */
+      addNews () {
+        const Data = JSON.parse(JSON.stringify(this.ruleForm))
+        Data.details = Data.newsDescription
+        Data.image_url = this.imgUrl
+        Data.add_time = SX.date(this.ruleForm.add_time)
+        Data.session_id = this.session_id
+        this.$axios.post(this.selectNews(), Data)
+        .then((msg) => {
+          const data = msg.data
+          switch (data.flag) {
+            case 1000:
+              this.consoleSuccess(`添加成功!`)
+              setTimeout(() => {
+                /* 跳转 */
+                this.$router.push('newsList')
+              }, 500)
+              break
+            default:
+              this.consoleWarning(data.return_code)
+              break
+          }
+        })
+        .catch(error => {
+          this.consoleError(error)
+        })
+      },
       /* 清空表单 */
-      resetForm (formName) {
-        this.$refs[formName].resetFields()
-        // 清空富文本
-        this.description = null
+      resetForm (formName, time) {
+        setTimeout(() => {
+          this.$refs[formName].resetFields()
+          // 清空富文本
+          this.description = null
+          // 清空封面图
+          this.imgUrl = null
+        }, time)
       },
       /* ---- 富文本 ---- */
       updateData (data) {
@@ -122,19 +186,34 @@
 
       /* ---- 图片上传 ---- */
       handleAvatarSuccess (res, file) {
-        this.imageUrl = document.URL.createObjectURL(file.raw)
+        console.log(res, file)
+        if (res) {
+          switch (res.flag >> 0) {
+            case 1000:
+              this.consoleSuccess(`新闻封面图上传成功`)
+              this.imgUrl = res.file_url
+              break
+            default:
+              this.consoleWarning(`${res.return_code}`)
+              break
+          }
+        }
       },
       beforeAvatarUpload (file) {
         const isJPG = file.type === 'image/jpeg'
-        const isLt2M = file.size / 1024 / 1024 < 2
+        const isLt2M = file.size / 1024 / 1024 < 1
 
         if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!')
+          this.$message.error('上传图片只能是 JPG 格式!')
         }
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
+          this.$message.error('上传图片大小不能超过 1MB!')
         }
         return isJPG && isLt2M
+      },
+      /* ------- 错误时处理 ------*/
+      handleError (err, file, fileList) {
+        this.consoleWarning(`文件上传失败! 原因: ${err}`)
       },
       /* ----------------------- */
       consoleSuccess (success) {
