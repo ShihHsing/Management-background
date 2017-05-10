@@ -7,9 +7,11 @@
           <quill-editor
             ref="myTextEditor"
             v-model="newDescription"
-            :options="editorOption">
+            :options="editorOption"
+            @showImageUI="imageHandler">
           </quill-editor>
         </div>
+        <input type="file" name="file" id="fileinput" @change="customimgupload($event)" style="display: none;">
     	</el-col>
     </el-row></br></br></br>
     <el-row>
@@ -58,7 +60,32 @@ export default {
   },
 
   methods: {
-
+    /* ------------------ 自定义富文本图片上传 ------------------- */
+    imageHandler() {
+      let fileinput = document.getElementById('fileinput')
+      fileinput.click()
+    },
+    customimgupload(){
+      // var that=this;
+      var formData = new FormData()
+      formData.append('image', fileinput.files[0])
+      if(fileinput.files[0]){
+        API.myAjax({
+          url: API.editorServer,
+          data: formData,
+          success: msg => {
+            var imageUrl = `${msg}`
+            var range = this.$refs.myTextEditor.quillEditor.getSelection()
+            var length = range.index
+            this.$refs.myTextEditor.quillEditor.insertEmbed(length, 'image', imageUrl)
+          },
+          fail: error => {
+            console.log(error)
+          }
+        })
+      }
+    },
+    /* --------------------------------------------------------- */
     // 提交数据
     postData () {
       if (this.newDescription) {
