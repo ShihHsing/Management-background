@@ -192,15 +192,16 @@
           </el-tooltip>
         </el-form-item>
         <el-form-item label="培训类型:">
-          <el-radio class="radio" v-model="modify_form.training_type" label="1" disabled>图文</el-radio>
-          <el-radio class="radio" v-model="modify_form.training_type" label="2" disabled>视频</el-radio>
+          <el-radio class="radio" v-model="training_type" label="1" disabled>图文</el-radio>
+          <el-radio class="radio" v-model="training_type" label="2" disabled>视频</el-radio>
         </el-form-item>
-        <template v-if="modify_form.training_type == '1'">
-          <el-form-item label="图文详情:">
+        <template v-if="training_type >> 0 === 1">
+          <el-form-item label="图文详情:" id="myQuill">
             <el-tooltip class="item" effect="dark" placement="left">
               <div slot="content">图文详情每张图片大小不能超过1MB</br>文字不许超过1000字</br>图片将以等宽不等高的方式展示在使用端</div>
               <!-- <vue-html5-editor :content="modify_form.content" :height="500" @change="updateData"></vue-html5-editor> -->
               <quill-editor
+                v-if="training_type  >> 0 === 1"
                 ref="myTextEditor"
                 v-model="modify_form.content"
                 :options="editorOption"
@@ -273,14 +274,31 @@
           // 培训缩略图:
           thumb_image_url: '',
 
-          // 培训类型
-          training_type: '1',
-
           // 富文本展示
           content: '',
 
           // 视频地址
           video_url: ''
+        },
+        // 培训类型
+        training_type: '1'
+      }
+    },
+    watch: {
+      training_type: function (val) {
+        if (val === '2') {
+          var aEle = document.getElementById('myQuill').getElementsByTagName('*')
+          for(let i = 0; i < aEle.length; i++){
+            /*当className相等时添加到数组中*/
+            if(aEle[i].className == 'ql-toolbar ql-snow'){
+              aEle[i]
+              var _parentElement = aEle[i].parentNode
+              if(_parentElement){
+                _parentElement.removeChild(aEle[i])
+              }
+            }
+          }
+          console.log(aEle)
         }
       }
     },
@@ -355,13 +373,13 @@
       modifyTrainingInfo () {
         if (this.modify_form.training_classify) {
           if (this.modify_form.thumb_image_url) {
-            switch (this.modify_form.training_type) {
+            switch (this.training_type) {
               case '1':
                 // statements_1
                 let Data = {
                   training_id: this.modify_form.training_id,
                   training_classify: this.modify_form.training_classify,
-                  training_type: this.modify_form.training_type,
+                  training_type: this.training_type,
                   thumb_image_url: this.modify_form.thumb_image_url,
                   training_value: this.modify_form.content,
                   request_flag: 'modify'
@@ -373,7 +391,7 @@
                 Data = {
                   training_id: this.modify_form.training_id,
                   training_classify: this.modify_form.training_classify,
-                  training_type: this.modify_form.training_type,
+                  training_type: this.training_type,
                   thumb_image_url: this.modify_form.thumb_image_url,
                   training_value: this.modify_form.video_url,
                   request_flag: 'modify'
@@ -442,6 +460,7 @@
 
       // 修改获取数据
       getModifyTrainingInfo (id) {
+        this.modify_form.content = ''
         const Data = {
           training_id: id
         }
@@ -461,11 +480,11 @@
                 training_classify: data.training_detail.classify_id >> 0,
 
                 // 培训缩略图:
-                thumb_image_url: data.training_detail.thumb_image,
-
-                // 培训类型
-                training_type: data.training_detail.type_id
+                thumb_image_url: data.training_detail.thumb_image
               }
+              // 培训类型
+              this.training_type = data.training_detail.type_id
+
               switch (data.training_detail.type_id) {
                 case '1':
                   this.modify_form.content = data.training_detail.training_value
