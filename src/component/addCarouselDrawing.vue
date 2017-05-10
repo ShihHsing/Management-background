@@ -6,7 +6,7 @@
 
           <el-tab-pane label="新增轮播图" name="addCarouselDrawing">
 
-            <el-form   
+            <el-form
               label-position="left" label-width="120px">
                 <el-form-item label="轮播图名称">
                   <el-tooltip class="item" effect="dark" content="请保证轮播图名称唯一" placement="right-start">
@@ -18,7 +18,7 @@
                     </el-input>
                   </el-tooltip>
                 </el-form-item>
-              
+
               <el-form-item label="上传轮播图:">
                 <el-upload
                   class="avatar-uploader"
@@ -101,14 +101,14 @@
                   </el-tooltip>
                 </el-form-item>
               </template>
-              
+
               <el-button type="primary" @click="phpPostData">创建轮播图</el-button>
             </el-form>
           </el-tab-pane>
 
           <el-tab-pane label="轮播图列表" name="carouselDrawingList">
             <el-row :gutter="10">
-              <el-form   
+              <el-form
                 label-position="right" label-width="90px">
 
                 <el-col :span="7">
@@ -144,7 +144,7 @@
                     </el-input>
                   </el-form-item>
                 </el-col>
-                
+
                 <el-col :span="3">
                   <el-row type="flex" justify="end">
                     <el-tooltip class="item" effect="dark" content="立即搜索" placement="top">
@@ -223,7 +223,7 @@
                 </template>
               </el-table-column>
             </el-table>
-            
+
             <el-row type="flex" justify="end">
               <el-pagination
                 small
@@ -242,7 +242,7 @@
     </el-row>
 
     <el-dialog title="修改轮播图" v-model="modification.dialogFormVisible">
-      <el-form   
+      <el-form
         label-position="left" label-width="120px">
         <el-form-item label="轮播图名称">
           <el-input
@@ -253,7 +253,7 @@
             style="width: 217px;">
           </el-input>
         </el-form-item>
-        
+
         <el-form-item label="上传轮播图:">
           <el-upload
             class="avatar-uploader"
@@ -330,7 +330,7 @@
             </el-tooltip>
           </el-form-item>
         </template>
-        
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="modification.dialogFormVisible = false">取 消</el-button>
@@ -366,7 +366,7 @@
     display: block;
   }
   .el-icon--right {
-    margin-left: 0px !important; 
+    margin-left: 0px !important;
   }
   .pageination{
     margin-top: 15px;
@@ -786,7 +786,7 @@
               // 若当前页--后小于零 则请求第一页
               const number_of_branches = rows.length
               console.log(number_of_branches)
-              if (number_of_branches === 1) {
+              if (number_of_branches >> 0 === 1) {
                 let current_page = this.current_page
                 if (--current_page <= 1) {
                   this.getCarouselDrawingListData()
@@ -840,14 +840,14 @@
             this.modification.carousel_drawing_type = this.modification.phpGetmodificationData.type
 
             this.modification.carousel_drawing_type_name = this.modification.phpGetmodificationData.type_name
-         
-            if (this.modification.carousel_drawing_type === 1) {
+
+            if (this.modification.carousel_drawing_type >> 0 === 1) {
               this.modification.newDetails = this.modification.phpGetmodificationData.value
               this.modification.initData = this.modification.phpGetmodificationData.value
-            } else if (this.modification.carousel_drawing_type === 2) {
+            } else if (this.modification.carousel_drawing_type >> 0 === 2) {
               this.modification.model = this.modification.phpGetmodificationData.value
               this.modificationGetShopIdThumbImg()
-            } else if (this.modification.carousel_drawing_type === 3) {
+            } else if (this.modification.carousel_drawing_type >> 0 === 3) {
               this.modification.carousel_drawing_video_url = this.modification.phpGetmodificationData.value
             }
           } else {
