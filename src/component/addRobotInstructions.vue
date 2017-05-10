@@ -3,7 +3,12 @@
     <el-row>
     	<el-col :span="22" :offset="1">
         <div class="sx_basis_scroll sx_scroll_style_lucency">
-          <vue-html5-editor :content="initData" @change="updateData"></vue-html5-editor>
+          <!-- <vue-html5-editor :content="newDescription" @change="updateData"></vue-html5-editor> -->
+          <quill-editor
+            ref="myTextEditor"
+            v-model="newDescription"
+            :options="editorOption">
+          </quill-editor>
         </div>
     	</el-col>
     </el-row></br></br></br>
@@ -39,12 +44,11 @@ export default {
 
   data () {
     return {
+      editorOption: {}, // 富文本对象
       // 消息提示控件
       dialogVisible: true,
-      // 初始化数据
-      initData: '',
-      // 修改后的数据
-      newData: ''
+      // 富文本数据
+      newDescription: ''
     }
   },
 
@@ -54,53 +58,40 @@ export default {
   },
 
   methods: {
-    updateData (data) {
-      this.newData = data
-    },
 
     // 提交数据
     postData () {
-      console.log(this.newData, '富文本数据')
-      if (this.initData) {
-        if (this.newData) {
-          // statement
-          this.$axios.post(API.recordTheInstructions, {
-            'instructions': this.newData
-          })
-          .then((msg) => {
-            console.log(msg.data, '服务器')
-            if (msg.data.flag === '01') {
-              // statement
-              this.consoleSuccess(msg.data.return_code)
-              setTimeout(() => {
-                this.initDate()
-              }, 800)
-            } else {
-              // statement
-              this.consoleError(msg.data.return_code)
-            }
-          }, (response) => {
-            this.consoleError(response.return_code)
-          })
-        } else {
-          this.consoleWarning('内容无修改!')
-        }
+      if (this.newDescription) {
+        // statement
+        this.$axios.post(API.recordTheInstructions, {
+          'instructions': this.newDescription
+        })
+        .then((msg) => {
+          console.log(msg.data, '服务器')
+          if (msg.data.flag === '01') {
+            // statement
+            this.consoleSuccess(msg.data.return_code)
+            setTimeout(() => {
+              this.initDate()
+            }, 800)
+          } else {
+            // statement
+            this.consoleError(msg.data.return_code)
+          }
+        }, (response) => {
+          this.consoleError(response.return_code)
+        })
       } else {
-        if (!this.newData) {
-          this.consoleWarning('请完善内容!')
-        }
+        this.consoleWarning('请完善内容!')
       }
     },
 
     initDate () {
       this.$axios.post(API.recordTheInstructions)
       .then((msg) => {
-        console.log(msg.data)
         if (msg.data.flag === '01') {
-          // statement
-          this.initData = msg.data.instructions
+          this.newDescription = msg.data.instructions
         } else {
-          // statement
           this.consoleError(msg.data.return_code)
         }
       }, (response) => {
