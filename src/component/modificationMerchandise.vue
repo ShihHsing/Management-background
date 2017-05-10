@@ -12,16 +12,16 @@
     </el-row>
     <el-row type="flex" class="steps" justify="center">
       <el-col :span="11">
-        <el-carousel 
+        <el-carousel
           indicator-position="none"
           arrow="never"
           :autoplay="false"
           ref="elCarousel">
           <!-- 第二页 -->
           <el-carousel-item id="none-align-items" class="sx_basis_scroll sx_scroll_style_lucency">
-            <el-form 
-              :model="two" 
-              :rules="twoRules" 
+            <el-form
+              :model="two"
+              :rules="twoRules"
               ref="two"
               label-width="100px">
               <el-card class="box-card">
@@ -32,11 +32,11 @@
                 <el-form-item label="商品简介" prop="commodityIntroduction">
                   <el-input type="textarea" v-model="two.commodityIntroduction" placeholder="请输入商品简介"></el-input>
                 </el-form-item>
-                
+
                 <el-form-item label="商品款号" prop="commodityNumber">
                   <el-input type="textarea" v-model="two.commodityNumber" placeholder="请输入商品款号"></el-input>
                 </el-form-item>
-        
+
                 <el-form-item label="商品条码" prop="commodityBarcode">
                   <el-input type="textarea" v-model="two.commodityBarcode" placeholder="请输入全球统一条形码"></el-input>
                 </el-form-item>
@@ -44,10 +44,10 @@
                 <el-form-item label="商品价格" prop="price">
                   <el-input v-model="two.price" placeholder="请输入商品价格"></el-input>
                 </el-form-item>
-                
+
                 <el-form-item label="易企秀" prop="shop_show">
                   <el-input placeholder="请输入易企秀链接" v-model="two.shop_show">
-                    
+
                   </el-input>
                 </el-form-item>
 
@@ -58,7 +58,7 @@
                     </el-select>
                   </el-form-item>
                 </div >
-      
+
                 <el-form-item>
                   <el-button type="primary" @click="flag1 && submitForm('two')">下一步</el-button>
                 </el-form-item>
@@ -69,7 +69,7 @@
 
           <!-- 第三页 -->
           <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
-            <el-form 
+            <el-form
               :model="three"
               ref="three">
               <el-card class="box-card">
@@ -129,7 +129,7 @@
 
           <!-- 第四页 -->
           <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
-            <el-form 
+            <el-form
               :model="four"
               ref="four"
               label-width="100px">
@@ -176,13 +176,19 @@
           </el-carousel-item>
           <!-- 第四页 End -->
           <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
-            <el-form 
+            <el-form
               :model="four"
               ref="four"
               label-width="47%">
               <el-card class="box-card">
                 <div class="sx_basis_scroll sx_scroll_style_lucency">
-                  <vue-html5-editor :content="description" @change="updateData"></vue-html5-editor>
+                  <!-- <vue-html5-editor :content="description" @change="updateData"></vue-html5-editor> -->
+                  <quill-editor
+                    ref="myTextEditor"
+                    v-model="description"
+                    @change="updateData"
+                    :options="editorOption">
+                  </quill-editor>
                 </div>
                 <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
                 <el-form-item>
@@ -238,6 +244,7 @@ export default {
   name: 'modificationMerchandise',
   data () {
     return {
+      editorOption: {}, // 富文本对象
       flag1: true, // 控制点击事件防止多次触发
       flag2: true,
       flag3: true,

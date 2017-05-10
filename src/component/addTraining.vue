@@ -55,11 +55,12 @@
                   <quill-editor
                     ref="myTextEditor"
                     v-model="form.newDescription"
-                    :options="editorOption">
+                    :options="editorOption"
+                    @showImageUI="imageHandler">
                   </quill-editor>
-                  <!-- <vue-html5-editor content="若只输入文字请选择字体大小" :height="500" @change="updateData"></vue-html5-editor> -->
                 </el-tooltip>
               </el-form-item>
+              <input type="file" name="file" id="fileinput" @change="customimgupload($event)" style="display: none;">
             </template>
             <template v-else>
               <el-form-item label="视频地址:">
@@ -130,6 +131,30 @@
     },
 
     methods: {
+      imageHandler() {
+        let fileinput = document.getElementById('fileinput')
+        fileinput.click()
+      },
+      customimgupload(){
+        // var that=this;
+        var formData = new FormData()
+        formData.append('image', fileinput.files[0])
+        if(fileinput.files[0]){
+          API.myAjax({
+            url: API.editorServer,
+            data: formData,
+            success: msg => {
+              var imageUrl = `${msg}`
+              var range = this.$refs.myTextEditor.quillEditor.getSelection()
+              var length = range.index
+              this.$refs.myTextEditor.quillEditor.insertEmbed(length, 'image', imageUrl)
+            },
+            fail: error => {
+              console.log(error)
+            }
+          })
+        }
+      },
 
       // 获取分类
       getTrainingClassifyList () {
