@@ -45,14 +45,15 @@
               </el-tooltip>
             </el-form-item>
             <el-form-item label="培训类型:">
-              <el-radio class="radio" v-model="form.training_type" label="1">图文</el-radio>
-              <el-radio class="radio" v-model="form.training_type" label="2">视频</el-radio>
+              <el-radio class="radio" v-model="training_type" label="1">图文</el-radio>
+              <el-radio class="radio" v-model="training_type" label="2">视频</el-radio>
             </el-form-item>
-            <template v-if="form.training_type == '1'">
-              <el-form-item label="图文详情:">
+            <template v-if="training_type  >> 0 === 1">
+              <el-form-item label="图文详情:" id="myQuill">
                 <el-tooltip class="item" effect="dark" placement="left">
                   <div slot="content">图文详情每张图片大小不能超过1MB</br>文字不许超过1000字</br>图片将以等宽不等高的方式展示在使用端</div>
                   <quill-editor
+                    v-if="training_type  >> 0 === 1"
                     ref="myTextEditor"
                     v-model="form.newDescription"
                     :options="editorOption"
@@ -91,6 +92,8 @@
       return {
         // 文件上传
         uploadAddTrainingInfo: API.uploadAddTrainingInfo,
+        // 培训类型
+        training_type: '1',
         form: {
           // 培训标题:
           training_title: '',
@@ -104,8 +107,6 @@
           // 培训缩略图:
           thumb_image_url: '',
 
-          // 培训类型
-          training_type: '1',
 
           // 图文详情
           newDescription: '若只输入文字请选择字体大小',
@@ -124,7 +125,24 @@
         }
       }
     },
-
+    watch: {
+      training_type: function (val) {
+        if (val === '2') {
+          var aEle = document.getElementById('myQuill').getElementsByTagName('*')
+          for(let i = 0; i < aEle.length; i++){
+            /*当className相等时添加到数组中*/
+            if(aEle[i].className == 'ql-toolbar ql-snow'){
+              aEle[i]
+              var _parentElement = aEle[i].parentNode
+              if(_parentElement){
+                _parentElement.removeChild(aEle[i])
+              }
+            }
+          }
+          console.log(aEle)
+        }
+      }
+    },
     created () {
       // 获取分类
       this.getTrainingClassifyList()
@@ -216,14 +234,14 @@
           if (valid) {
             if (this.form.training_classify) {
               if (this.form.thumb_image_url) {
-                switch (this.form.training_type) {
+                switch (this.training_type) {
                   case '1':
                     // statements_1
                     if (this.form.newDescription) {
                       const Data = {
                         'training_title': this.form.training_title,
                         'training_classify': this.form.training_classify,
-                        'training_type': this.form.training_type,
+                        'training_type': this.training_type,
                         'thumb_image_url': this.form.thumb_image_url,
                         'training_value': this.form.newDescription
                       }
@@ -238,7 +256,7 @@
                       const Data = {
                         'training_title': this.form.training_title,
                         'training_classify': this.form.training_classify,
-                        'training_type': this.form.training_type,
+                        'training_type': this.training_type,
                         'thumb_image_url': this.form.thumb_image_url,
                         'training_value': this.form.video_url
                       }
