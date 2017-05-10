@@ -13,17 +13,17 @@
     </el-row>
     <el-row type="flex" class="steps" justify="center">
       <el-col :span="11">
-        <el-carousel 
+        <el-carousel
           indicator-position="none"
           arrow="never"
           :autoplay="false"
           ref="elCarousel">
           <!-- 第一页 -->
           <el-carousel-item>
-            <el-form 
-              :model="one" 
-              :rules="oneRules" 
-              ref="one"  
+            <el-form
+              :model="one"
+              :rules="oneRules"
+              ref="one"
               label-position="top"
               style="width: 100%;">
               <el-card class="box-card">
@@ -48,9 +48,9 @@
           <!-- 第二页 -->
           <el-carousel-item id="none-align-items" class="sx_basis_scroll sx_scroll_style_lucency">
           <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
-            <el-form 
-              :model="two" 
-              :rules="twoRules" 
+            <el-form
+              :model="two"
+              :rules="twoRules"
               ref="two"
               label-width="100px"
               style="width: 100%;">
@@ -62,11 +62,11 @@
                 <el-form-item label="商品简介" prop="commodityIntroduction">
                   <el-input type="textarea" v-model="two.commodityIntroduction" placeholder="请输入商品简介"></el-input>
                 </el-form-item>
-                
+
                 <el-form-item label="商品款号" prop="commodityNumber">
                   <el-input type="textarea" v-model="two.commodityNumber" placeholder="请输入商品款号"></el-input>
                 </el-form-item>
-        
+
                 <el-form-item label="商品条码" prop="commodityBarcode">
                   <el-input type="textarea" v-model="two.commodityBarcode" placeholder="请输入全球统一条形码"></el-input>
                 </el-form-item>
@@ -74,10 +74,10 @@
                 <el-form-item label="商品价格" prop="price">
                   <el-input v-model="two.price" placeholder="请输入商品价格"></el-input>
                 </el-form-item>
-                
+
                 <el-form-item label="易企秀" prop="shop_show">
                   <el-input placeholder="请输入易企秀链接" v-model="two.shop_show">
-                    
+
                   </el-input>
                 </el-form-item>
 
@@ -88,7 +88,7 @@
                     </el-select>
                   </el-form-item>
                 </div >
-      
+
                 <el-form-item>
                   <el-button type="primary" @click="flag2 && submitForm('two')">下一步</el-button>
                 </el-form-item>
@@ -99,7 +99,7 @@
 
           <!-- 第三页 -->
           <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
-            <el-form 
+            <el-form
               :model="three"
               ref="three"
               style="width: 100%;">
@@ -158,7 +158,7 @@
           <!-- 第四页 -->
           <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
             <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
-            <el-form 
+            <el-form
               :model="four"
               ref="four"
               label-width="100px">
@@ -169,7 +169,7 @@
                   </el-checkbox-group>
                   <div style="color: #666">若您需要的颜色不在此分类请移步至<router-link to="/goodsPrivateColor">商品私有颜色</router-link>添加</div>
                 </el-form-item>
-                
+
                 <el-form-item label="尺码">
                   <el-checkbox :indeterminate="four.isIndeterminateSize" v-model="four.checkAllSize" @change="handleCheckAllChangeSize">全选</el-checkbox>
                   <el-checkbox-group v-model="four.checkedSize" @change="handleCheckedCitiesChangeSize">
@@ -207,14 +207,22 @@
           <!-- 第四页 End -->
           <el-carousel-item class="sx_basis_scroll sx_scroll_style_lucency">
             <!-- 由于 align-items: center; 影响无法展示全部内容 不再设置父元素高度-->
-            <el-form 
+            <el-form
               :model="four"
               ref="four"
               label-width="47%">
               <el-card class="box-card">
                 <div class="sx_basis_scroll sx_scroll_style_lucency">
-                  <vue-html5-editor :content="description" :height="500" @change="updateData"></vue-html5-editor>
+                  <!-- <vue-html5-editor :content="description" :height="500" @change="updateData"></vue-html5-editor> -->
+                  <quill-editor
+                    ref="myTextEditor"
+                    v-model="description"
+                    :options="editorOption"
+                    @change="updateData"
+                    @showImageUI="imageHandler">
+                  </quill-editor>
                 </div>
+                <input type="file" name="file" id="fileinput" @change="customimgupload($event)" style="display: none;">
                 <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">
                 商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
                 <el-form-item>
@@ -238,6 +246,7 @@ export default {
   name: 'addMerchandise',
   data () {
     return {
+      editorOption: {}, // 富文本对象
       flag1: true, // 控制点击事件防止多次触发
       flag2: true,
       flag3: true,
@@ -410,6 +419,33 @@ export default {
   },
 
   methods: {
+    /* ------------------ 自定义富文本图片上传 ------------------- */
+    imageHandler() {
+      const fileinput = document.getElementById('fileinput')
+      console.log(fileinput)
+      fileinput.click()
+    },
+    customimgupload(){
+      // var that=this;
+      var formData = new FormData()
+      formData.append('image', fileinput.files[0])
+      if(fileinput.files[0]){
+        API.myAjax({
+          url: API.editorServer,
+          data: formData,
+          success: msg => {
+            var imageUrl = `${msg}`
+            var range = this.$refs.myTextEditor.quillEditor.getSelection()
+            var length = range.index
+            this.$refs.myTextEditor.quillEditor.insertEmbed(length, 'image', imageUrl)
+          },
+          fail: error => {
+            console.log(error)
+          }
+        })
+      }
+    },
+    /* --------------------------------------------------------- */
 
     // 富文本数据更新
     // 如果用户操则会更新数据
@@ -883,7 +919,7 @@ export default {
         arguments: this.buildAddShopData()
       })
       .then((msg) => {
-        console.log(msg.data)
+        console.log(msg)
         if (msg.data.flag >> 0 === 1000) {
           this.consoleSuccess(msg.data.return_code)
           setTimeout(() => {

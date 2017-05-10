@@ -113,7 +113,7 @@
           // 视频地址
           video_url: ''
         },
-        // 富文本
+        // 富文本对象
         editorOption: {},
         // 验证
         rules: {
