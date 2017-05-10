@@ -53,15 +53,24 @@
                 </el-radio-group>
               </el-form-item>
 
-              <template v-if="carousel_drawing_type == 1">
-                <el-form-item label="图文详情:">
+              <template v-if="carousel_drawing_type >> 0 === 1">
+                <el-form-item label="图文详情:" id="myQuill">
                   <div class="sx_basis_scroll sx_scroll_style_lucency">
-                    <vue-html5-editor :content="initData" auto-height @change="updateData"></vue-html5-editor>
+                    <!-- <vue-html5-editor :content="initData" auto-height @change="updateData"></vue-html5-editor> -->
+                    <quill-editor
+                      v-if="carousel_drawing_type  >> 0 === 1"
+                      ref="myTextEditor"
+                      v-model="initData"
+                      :options="editorOption"
+                      @change="updateData"
+                      @showImageUI="imageHandler">
+                    </quill-editor>
                   </div>
                 </el-form-item>
+                <input type="file" name="file" id="fileinput" @change="customimgupload($event)" style="display: none;">
               </template>
 
-              <template v-else-if="carousel_drawing_type == 2">
+              <template v-else-if="carousel_drawing_type >> 0 === 2">
                 <el-form-item label="商品款号:">
                   <el-tooltip class="item" effect="dark" content="输入的商品款号将与此轮播图关联,下方会展示此款商品的缩略图,请核实!" placement="right-start">
                     <el-input
@@ -90,7 +99,7 @@
                 </el-form-item>
               </template>
 
-              <template v-if="carousel_drawing_type == 3">
+              <template v-if="carousel_drawing_type >> 0 === 3">
                 <el-form-item label="视频地址:">
                   <el-tooltip class="item" effect="dark" content="请输入培训视频地址!" placement="right-start">
                     <el-input
@@ -279,18 +288,26 @@
         </el-form-item>
 
         <el-form-item label="轮播图类型:">
-          <el-radio-group v-model="modification.carousel_drawing_type">
+          <el-radio-group v-model="modificationCarouselDrawingType">
             <el-button type="primary">{{ modification.carousel_drawing_type_name }}</el-button>
           </el-radio-group>
         </el-form-item>
 
-        <template v-if="modification.carousel_drawing_type == 1">
-          <el-form-item label="图文详情:">
-            <vue-html5-editor :content="modification.initData" auto-height @change="modificationUpdateData"></vue-html5-editor>
+        <template v-if="modificationCarouselDrawingType >> 0 === 1">
+          <el-form-item label="图文详情:" id="modificationMyQuill">
+            <quill-editor
+              v-if="modificationCarouselDrawingType >> 0 === 1"
+              ref="myTextEditor"
+              v-model="modification.initData"
+              :options="editorOption"
+              @showImageUI="imageHandler"
+              @change="modificationUpdateData">
+            </quill-editor>
           </el-form-item>
+          <input type="file" name="file" id="fileinput" @change="customimgupload($event)" style="display: none;">
         </template>
 
-        <template v-else-if="modification.carousel_drawing_type == 2">
+        <template v-else-if="modificationCarouselDrawingType >> 0 === 2">
           <el-form-item label="商品款号:">
             <el-tooltip class="item" effect="dark" content="输入的商品款号将与此轮播图关联,下方会展示此款商品的缩略图,请核实!" placement="right-start">
               <el-input
@@ -319,7 +336,7 @@
           </el-form-item>
         </template>
 
-        <template v-if="modification.carousel_drawing_type == 3">
+        <template v-if="modificationCarouselDrawingType >> 0 === 3">
           <el-form-item label="视频地址:">
             <el-tooltip class="item" effect="dark" content="请输入培训视频地址!" placement="right-start">
               <el-input
@@ -390,6 +407,8 @@
     },
     data () {
       return {
+        // 富文本对象
+        editorOption: {},
         // 最终上传数据
         addCarouselDrawing: 'Shop/addCarouselDrawing',
 
@@ -496,9 +515,6 @@
           // 轮播图位置
           location: '',
 
-          // 轮播图类型
-          carousel_drawing_type: '',
-
           // 轮播图类型名称
           carousel_drawing_type_name: '',
 
@@ -517,12 +533,70 @@
           // 视频地址
           carousel_drawing_video_url: ''
         },
+        modificationCarouselDrawingType: '', // 轮播图类型
         // 文件上传
         uploadAddCarouselDrawing: API.uploadAddCarouselDrawing
       }
     },
-
+    watch: {
+      carousel_drawing_type: function (val) {
+        if (document.getElementById('myQuill')) {
+          var aEle = document.getElementById('myQuill').getElementsByTagName('*')
+          for(let i = 0; i < aEle.length; i++){
+            /*当className相等时添加到数组中*/
+            if(aEle[i].className == 'ql-toolbar ql-snow'){
+              aEle[i]
+              var _parentElement = aEle[i].parentNode
+              if(_parentElement){
+                _parentElement.removeChild(aEle[i])
+              }
+            }
+          }
+        }
+      },
+      modificationCarouselDrawingType: function (val) {
+        if (document.getElementById('modificationMyQuill')) {
+          var aEle = document.getElementById('modificationMyQuill').getElementsByTagName('*')
+          for(let i = 0; i < aEle.length; i++){
+            /*当className相等时添加到数组中*/
+            if(aEle[i].className == 'ql-toolbar ql-snow'){
+              aEle[i]
+              var _parentElement = aEle[i].parentNode
+              if(_parentElement){
+                _parentElement.removeChild(aEle[i])
+              }
+            }
+          }
+        }
+      },
+    },
     methods: {
+      /* ------------------ 自定义富文本图片上传 ------------------- */
+      imageHandler() {
+        let fileinput = document.getElementById('fileinput')
+        fileinput.click()
+      },
+      customimgupload(){
+        // var that=this;
+        var formData = new FormData()
+        formData.append('image', fileinput.files[0])
+        if(fileinput.files[0]){
+          API.myAjax({
+            url: API.editorServer,
+            data: formData,
+            success: msg => {
+              var imageUrl = `${msg}`
+              var range = this.$refs.myTextEditor.quillEditor.getSelection()
+              var length = range.index
+              this.$refs.myTextEditor.quillEditor.insertEmbed(length, 'image', imageUrl)
+            },
+            fail: error => {
+              console.log(error)
+            }
+          })
+        }
+      },
+      /* --------------------------------------------------------- */
 
       // 获取轮播图列表
       getCarouselDrawingList (tab, event) {
@@ -566,7 +640,7 @@
 
       // 富文本每次改变的回调 更新数据
       updateData (data) {
-        this.newDetails = data
+        this.newDetails = data.html
       },
 
       // 后台获取轮播图位置
@@ -837,17 +911,17 @@
 
             this.modification.location = this.modification.phpGetmodificationData.location
 
-            this.modification.carousel_drawing_type = this.modification.phpGetmodificationData.type
+            this.modificationCarouselDrawingType = this.modification.phpGetmodificationData.type
 
             this.modification.carousel_drawing_type_name = this.modification.phpGetmodificationData.type_name
 
-            if (this.modification.carousel_drawing_type >> 0 === 1) {
+            if (this.modificationCarouselDrawingType >> 0 === 1) {
               this.modification.newDetails = this.modification.phpGetmodificationData.value
               this.modification.initData = this.modification.phpGetmodificationData.value
-            } else if (this.modification.carousel_drawing_type >> 0 === 2) {
+            } else if (this.modificationCarouselDrawingType >> 0 === 2) {
               this.modification.model = this.modification.phpGetmodificationData.value
               this.modificationGetShopIdThumbImg()
-            } else if (this.modification.carousel_drawing_type >> 0 === 3) {
+            } else if (this.modificationCarouselDrawingType >> 0 === 3) {
               this.modification.carousel_drawing_video_url = this.modification.phpGetmodificationData.value
             }
           } else {
@@ -873,7 +947,7 @@
 
       // 富文本每次改变的回调 更新数据
       modificationUpdateData (data) {
-        this.modification.newDetails = data
+        this.modification.newDetails = data.html
       },
 
       // 获取指定商品对应缩略图
@@ -897,11 +971,11 @@
 
       // 上传修改后的数据请求
       modificationPhpPostData () {
-        const type = this.modification.carousel_drawing_type >> 0
+        const type = this.modificationCarouselDrawingType >> 0
         if (this.modification.name) {
           if (this.modification.location) {
             if (this.modification.carousel_drawing_url || this.modification.imageUrl) {
-              if (this.modification.carousel_drawing_type) {
+              if (this.modificationCarouselDrawingType) {
                 switch (type) {
                   // 轮播图类型 图文
                   case 1:
@@ -912,7 +986,7 @@
                         'name': this.modification.name,
                         'carousel_drawing_url': this.modification.carousel_drawing_url || this.modification.imageUrl,
                         'location': this.modification.location,
-                        'carousel_drawing_type': this.modification.carousel_drawing_type,
+                        'carousel_drawing_type': this.modificationCarouselDrawingType,
                         'description': this.modification.newDetails
                       })
                       .then(msg => {
@@ -940,7 +1014,7 @@
                         'name': this.modification.name,
                         'carousel_drawing_url': this.modification.carousel_drawing_url || this.modification.imageUrl,
                         'location': this.modification.location,
-                        'carousel_drawing_type': this.modification.carousel_drawing_type,
+                        'carousel_drawing_type': this.modificationCarouselDrawingType,
                         'description': this.modification.model
                       })
                       .then(msg => {
@@ -968,7 +1042,7 @@
                         'name': this.modification.name,
                         'carousel_drawing_url': this.modification.carousel_drawing_url || this.modification.imageUrl,
                         'location': this.modification.location,
-                        'carousel_drawing_type': this.modification.carousel_drawing_type,
+                        'carousel_drawing_type': this.modificationCarouselDrawingType,
                         'description': this.modification.carousel_drawing_video_url
                       })
                       .then(msg => {

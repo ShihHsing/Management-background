@@ -127,7 +127,7 @@
     },
     watch: {
       training_type: function (val) {
-        if (val === '2') {
+        if (document.getElementById('myQuill')) {
           var aEle = document.getElementById('myQuill').getElementsByTagName('*')
           for(let i = 0; i < aEle.length; i++){
             /*当className相等时添加到数组中*/
@@ -139,7 +139,6 @@
               }
             }
           }
-          console.log(aEle)
         }
       }
     },
