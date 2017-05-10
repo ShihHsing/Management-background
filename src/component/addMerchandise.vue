@@ -452,7 +452,7 @@ export default {
     // 第一次进入初始化 为上传准确性
     // 最终上传以 newDescription 数据为准
     updateData (data) {
-      this.newDescription = data
+      this.newDescription = data.html
     },
 
     submitForm (formName) {

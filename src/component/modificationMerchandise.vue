@@ -186,10 +186,12 @@
                   <quill-editor
                     ref="myTextEditor"
                     v-model="description"
-                    @change="updateData"
-                    :options="editorOption">
+                    :options="editorOption"
+                    @showImageUI="imageHandler"
+                    @change="updateData">
                   </quill-editor>
                 </div>
+                <input type="file" name="file" id="fileinput" @change="customimgupload($event)" style="display: none;">
                 <div style="color: #666;width: 100%;text-align: center;margin-bottom: 35px;">商品详情图片大小不能超过1M,否则会导致添加商品失败</div>
                 <el-form-item>
                   <el-button type="primary" @click="flag4 && submitForm('End')">下一步</el-button>
@@ -376,12 +378,38 @@ export default {
   },
 
   methods: {
+    /* ------------------ 自定义富文本图片上传 ------------------- */
+    imageHandler() {
+      let fileinput = document.getElementById('fileinput')
+      fileinput.click()
+    },
+    customimgupload(){
+      // var that=this;
+      var formData = new FormData()
+      formData.append('image', fileinput.files[0])
+      if(fileinput.files[0]){
+        API.myAjax({
+          url: API.editorServer,
+          data: formData,
+          success: msg => {
+            var imageUrl = `${msg}`
+            var range = this.$refs.myTextEditor.quillEditor.getSelection()
+            var length = range.index
+            this.$refs.myTextEditor.quillEditor.insertEmbed(length, 'image', imageUrl)
+          },
+          fail: error => {
+            console.log(error)
+          }
+        })
+      }
+    },
+    /* --------------------------------------------------------- */
     // 富文本数据更新
     // 如果用户操则会更新数据
     // 第一次进入初始化 为上传准确性
     // 最终上传以 newDescription 数据为准
     updateData (data) {
-      this.newDescription = data
+      this.newDescription = data.html
     },
     // 获取商品详细信息
     getGoodsDetail () {
