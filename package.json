@@ -12,6 +12,7 @@
     "element-ui": "^1.2.5",
     "qs": "^6.4.0",
     "vue": "^2.1.0",
+    "vue-quill-editor": "^2.2.1",
     "vuex": "^2.2.1"
   },
   "devDependencies": {

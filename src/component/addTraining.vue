@@ -52,7 +52,12 @@
               <el-form-item label="图文详情:">
                 <el-tooltip class="item" effect="dark" placement="left">
                   <div slot="content">图文详情每张图片大小不能超过1MB</br>文字不许超过1000字</br>图片将以等宽不等高的方式展示在使用端</div>
-                  <vue-html5-editor content="若只输入文字请选择字体大小" :height="500" @change="updateData"></vue-html5-editor>
+                  <quill-editor
+                    ref="myTextEditor"
+                    v-model="form.newDescription"
+                    :options="editorOption">
+                  </quill-editor>
+                  <!-- <vue-html5-editor content="若只输入文字请选择字体大小" :height="500" @change="updateData"></vue-html5-editor> -->
                 </el-tooltip>
               </el-form-item>
             </template>
@@ -102,11 +107,13 @@
           training_type: '1',
 
           // 图文详情
-          newDescription: '',
+          newDescription: '若只输入文字请选择字体大小',
 
           // 视频地址
           video_url: ''
         },
+        // 富文本
+        editorOption: {},
         // 验证
         rules: {
           training_title: [
@@ -148,13 +155,6 @@
         .catch(error => {
           this.consoleError(`服务器${error.response}`)
         })
-      },
-
-      // 富文本数据更新 第一次进入初始化 为上传准确性
-      // 如果用户操则会更新数据 最终上传以 newDescription 数据为准
-      updateData (data) {
-        this.form.newDescription = data
-        console.log(data)
       },
 
       // 图片上传成功后

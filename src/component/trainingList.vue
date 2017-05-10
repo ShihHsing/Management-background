@@ -8,29 +8,29 @@
           </div>
           <el-row>
 
-            <el-form 
-              ref="form" 
+            <el-form
+              ref="form"
               :model="form"
               label-position="left"
               inline>
 
               <el-row type="flex" justify="space-around">
                 <el-form-item label="培训分类:">
-                  <el-select 
-                    v-model="form.training_classify" 
+                  <el-select
+                    v-model="form.training_classify"
                     placeholder="请选择"
                     clearable >
-                    <el-option 
-                      v-for="item in form.training_classify_list" 
-                      :label="item.classify_name" 
+                    <el-option
+                      v-for="item in form.training_classify_list"
+                      :label="item.classify_name"
                       :value="item.id">
                     </el-option>
                   </el-select>
                 </el-form-item>
 
                 <el-form-item label="培训类型:">
-                  <el-select 
-                    v-model="form.training_type" 
+                  <el-select
+                    v-model="form.training_type"
                     placeholder="请选择"
                     clearable >
                     <el-option label="图文" value="1"></el-option>
@@ -41,7 +41,7 @@
                 <el-form-item label="关键字:">
                   <el-input v-model="form.keyword" placeholder="请输入关键字"></el-input>
                 </el-form-item>
-                
+
                 <el-form-item>
                   <el-button type="success" @click="searchTraining">立即搜索</el-button>
                 </el-form-item>
@@ -68,7 +68,7 @@
                 <img
                   class="imgList"
                   v-show="scope.row.thumb_image"
-                  :src="scope.row.thumb_image" 
+                  :src="scope.row.thumb_image"
                   :alt="scope.row.classify_name">
               </template>
             </el-table-column>
@@ -109,21 +109,21 @@
                     </el-button>
                   </template>
                   <template v-else>
-                    <el-button 
+                    <el-button
                       @click="handleTrainingRecommend(scope.row.id,'1')"
                       size="mini">
                         推荐
                     </el-button>
                   </template>
 
-                  <el-button 
-                    type="text" 
-                    icon="edit" 
+                  <el-button
+                    type="text"
+                    icon="edit"
                     @click="getModifyTrainingInfo(scope.row.id)">
                   </el-button>
-                  <el-button 
-                    type="text" 
-                    icon="delete" 
+                  <el-button
+                    type="text"
+                    icon="delete"
                     @click="removeTraining(scope.row.id, scope.$index, training_list)">
                   </el-button>
                 </el-row>
@@ -134,7 +134,7 @@
           </el-table>
           <el-row
             style="margin-top: 20px;"
-            type="flex" 
+            type="flex"
             justify="center">
             <el-col :span="22">
               <el-pagination
@@ -150,28 +150,28 @@
         </el-card>
       </el-col>
     </el-row>
-    
+
     <!-- 修改 -->
     <el-dialog title="修改商品" v-model="dialogFormVisible">
-      <el-form 
-        ref="form" 
+      <el-form
+        ref="form"
         :model="modify_form"
-        label-width="100px" 
+        label-width="100px"
         style="width: 100%;"
         label-position="left">
 
         <el-form-item label="培训标题:" prop="training_title">
-          <el-input 
-            v-model="modify_form.training_title" 
+          <el-input
+            v-model="modify_form.training_title"
             placeholder="请输入培训标题"
             disabled>
           </el-input>
         </el-form-item>
         <el-form-item label="培训分类:">
           <el-select v-model="modify_form.training_classify" placeholder="请选择培训分类">
-            <el-option 
-              v-for="item in form.training_classify_list" 
-              :label="item.classify_name" 
+            <el-option
+              v-for="item in form.training_classify_list"
+              :label="item.classify_name"
               :value="item.id">
             </el-option>
           </el-select>
@@ -199,7 +199,12 @@
           <el-form-item label="图文详情:">
             <el-tooltip class="item" effect="dark" placement="left">
               <div slot="content">图文详情每张图片大小不能超过1MB</br>文字不许超过1000字</br>图片将以等宽不等高的方式展示在使用端</div>
-              <vue-html5-editor :content="modify_form.content" :height="500" @change="updateData"></vue-html5-editor>
+              <!-- <vue-html5-editor :content="modify_form.content" :height="500" @change="updateData"></vue-html5-editor> -->
+              <quill-editor
+                ref="myTextEditor"
+                v-model="modify_form.content"
+                :options="editorOption">
+              </quill-editor>
             </el-tooltip>
           </el-form-item>
         </template>
@@ -225,6 +230,7 @@
     name: 'trainingList',
     data () {
       return {
+        editorOption: {}, // 富文本对象
         form: {
           // 培训分类:
           training_classify: '',
@@ -270,9 +276,6 @@
 
           // 富文本展示
           content: '',
-
-          // 图文详情
-          newDescription: '',
 
           // 视频地址
           video_url: ''
@@ -333,7 +336,7 @@
                   training_classify: this.modify_form.training_classify,
                   training_type: this.modify_form.training_type,
                   thumb_image_url: this.modify_form.thumb_image_url,
-                  training_value: this.modify_form.newDescription || this.modify_form.content,
+                  training_value: this.modify_form.content,
                   request_flag: 'modify'
                 }
                 this.modifyTrainingInfoAxios(Data)
@@ -381,13 +384,6 @@
         .catch(error => {
           this.consoleError(`服务器${error.response}`)
         })
-      },
-
-      // 富文本数据更新 第一次进入初始化 为上传准确性
-      // 如果用户操则会更新数据 最终上传以 newDescription 数据为准
-      updateData (data) {
-        this.modify_form.newDescription = data
-        console.log(data)
       },
 
       // 图片上传成功后

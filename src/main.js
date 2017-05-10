@@ -9,7 +9,9 @@ import axios from './assets/axios/http.js'
 import './assets/editor/editor.config.js'
 import Qs from 'qs'
 import './assets/public/sx_style.less'
+import VueQuillEditor from 'vue-quill-editor'
 
+Vue.use(VueQuillEditor)
 Vue.use(ElementUI)
 
 Vue.use(VueResource)
