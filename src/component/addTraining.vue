@@ -7,11 +7,11 @@
             <h2 style="float: left">新增培训</h2>
           </div>
 
-          <el-form 
-            ref="form" 
+          <el-form
+            ref="form"
             :model="form"
             :rules="rules"
-            label-width="100px" 
+            label-width="100px"
             style="width: 100%;"
             label-position="left">
 
@@ -22,9 +22,9 @@
             </el-form-item>
             <el-form-item label="培训分类:">
               <el-select v-model="form.training_classify" placeholder="请选择培训分类">
-                <el-option 
-                  v-for="item in form.training_classify_list" 
-                  :label="item.classify_name" 
+                <el-option
+                  v-for="item in form.training_classify_list"
+                  :label="item.classify_name"
                   :value="item.id">
                 </el-option>
               </el-select>
@@ -63,8 +63,8 @@
             </template>
 
             <el-form-item>
-              <el-button 
-                type="primary" 
+              <el-button
+                type="primary"
                 @click="onSubmit('form')"
                 style="float: right;">立即创建</el-button>
             </el-form-item>
@@ -83,6 +83,8 @@
     name: 'addTraining',
     data () {
       return {
+        // 文件上传
+        uploadAddTrainingInfo: API.uploadAddTrainingInfo,
         form: {
           // 培训标题:
           training_title: '',
@@ -103,10 +105,7 @@
           newDescription: '',
 
           // 视频地址
-          video_url: '',
-
-          // 文件上传
-          uploadAddTrainingInfo: API.uploadAddTrainingInfo
+          video_url: ''
         },
         // 验证
         rules: {
