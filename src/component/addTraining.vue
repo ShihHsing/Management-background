@@ -131,6 +131,7 @@
     },
 
     methods: {
+      /* ------------------ 自定义富文本图片上传 ------------------- */
       imageHandler() {
         let fileinput = document.getElementById('fileinput')
         fileinput.click()
@@ -155,7 +156,7 @@
           })
         }
       },
-
+      /* --------------------------------------------------------- */
       // 获取分类
       getTrainingClassifyList () {
         this.$axios.post(API.getTrainingClassifyList)
