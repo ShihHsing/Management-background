@@ -5,8 +5,8 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <h2 style="float: left">培训分类列表</h2>
-            <el-button 
-            type="text" 
+            <el-button
+            type="text"
             style="float: right" @click="addTrain = true">新增分类</el-button>
           </div>
           <el-table
@@ -32,13 +32,13 @@
               <template scope="scope">
 
                 <el-row type="flex" justify="space-around">
-                  <el-button 
-                    type="text" 
-                    icon="edit" 
+                  <el-button
+                    type="text"
+                    icon="edit"
                     @click="modificationTrain(scope.row)"></el-button>
-                  <el-button 
-                    type="text" 
-                    icon="delete" 
+                  <el-button
+                    type="text"
+                    icon="delete"
                     @click="deleteTrain(scope.row.id)"></el-button>
                 </el-row>
 
@@ -46,7 +46,7 @@
               </template>
             </el-table-column>
           </el-table>
-          
+
           <el-dialog title="新增分类" style="text-align: center;" v-model="addTrain" size="tiny">
             <el-input v-model="classify" placeholder="请输入分类名称"></el-input>
             <span slot="footer" class="dialog-footer">
@@ -202,7 +202,7 @@
         const reg = /^[\u4E00-\u9FA5A-Za-z0-9]{0,15}$/
         if (this.list_length < 10) {
           if (this.classify) {
-            if (reg.Newer(this.classify)) {
+            if (reg.test(this.classify)) {
               this.$axios.post(API.addTrainingClassify, {
                 classify: this.classify
               })
