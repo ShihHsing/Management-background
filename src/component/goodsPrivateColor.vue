@@ -7,22 +7,22 @@
             <span style="font-size: 22px;">商品私有颜色</span>
             <el-button style="float: right;" type="text" @click="dialogVisible = true">操作说明</el-button>
           </div>
-          <el-form 
-            :model="goodsPrivatePropertyValues" 
-            :rules="goodsPrivatePropertyValuesRules" 
-            ref="goodsPrivatePropertyValues"  
+          <el-form
+            :model="goodsPrivatePropertyValues"
+            :rules="goodsPrivatePropertyValuesRules"
+            ref="goodsPrivatePropertyValues"
             label-position="top">
             <el-form-item label="商品品牌" prop="commodityBrand">
-              <el-select 
-                v-model="goodsPrivatePropertyValues.commodityBrand" 
+              <el-select
+                v-model="goodsPrivatePropertyValues.commodityBrand"
                 placeholder="请选择商品品牌"
                 @change="getParentId">
                 <el-option v-for="item in goodsPrivatePropertyValues.commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="商品分类" prop="commodityClassification">
-              <el-select 
-                v-model="goodsPrivatePropertyValues.commodityClassification" 
+              <el-select
+                v-model="goodsPrivatePropertyValues.commodityClassification"
                 placeholder="请选择商品分类"
                 @change="getParentId">
                 <el-option v-for="item in goodsPrivatePropertyValues.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
@@ -61,14 +61,14 @@
     </el-row>
 
     <!-- 提示用户页面操作须知 -->
-    <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
+    <!-- <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
       <span>1.仅针对自有品牌除本平台提供商品颜色以外的自有商品颜色的添加。</span></br>
       <span>2.您只能操作您自有商品颜色。</span></br>
       <span>3.请注意文明用语!</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 

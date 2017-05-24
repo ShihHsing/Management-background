@@ -7,10 +7,10 @@
             <span style="font-size: 22px;">商品私有属性值</span>
             <el-button style="float: right;" type="text" @click="dialogVisible = true">操作说明</el-button>
           </div>
-          <el-form 
-            :model="goodsPrivatePropertyValues" 
-            :rules="goodsPrivatePropertyValuesRules" 
-            ref="goodsPrivatePropertyValues"  
+          <el-form
+            :model="goodsPrivatePropertyValues"
+            :rules="goodsPrivatePropertyValuesRules"
+            ref="goodsPrivatePropertyValues"
             label-position="top">
             <el-form-item label="商品品牌" prop="commodityBrand">
               <el-select v-model="goodsPrivatePropertyValues.commodityBrand" placeholder="请选择商品品牌" v-on:change="getCommodityClassificationProperties();">
@@ -61,7 +61,7 @@
     </el-row>
 
     <!-- 提示用户页面操作须知 -->
-    <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
+    <!-- <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
       <span>1.仅针对自有品牌除本平台提供商品属性以外的自有商品属性的添加。</span></br>
       <span>2.您只能完善您自有商品属性的属性值。</span></br>
       <span>3.若需要添加商品分类属性请移步至<router-link to="/goodsPrivateProperty">商品私有属性</router-link>添加后完善属性值。</span></br>
@@ -69,7 +69,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 

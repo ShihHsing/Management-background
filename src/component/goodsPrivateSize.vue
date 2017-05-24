@@ -7,10 +7,10 @@
             <span style="font-size: 22px;">商品私有尺寸</span>
             <el-button style="float: right;" type="text" @click="dialogVisible = true">操作说明</el-button>
           </div>
-          <el-form 
-            :model="goodsPrivatePropertyValues" 
-            :rules="goodsPrivatePropertyValuesRules" 
-            ref="goodsPrivatePropertyValues"  
+          <el-form
+            :model="goodsPrivatePropertyValues"
+            :rules="goodsPrivatePropertyValuesRules"
+            ref="goodsPrivatePropertyValues"
             label-position="top">
             <el-form-item label="商品品牌" prop="commodityBrand">
               <el-select v-model="goodsPrivatePropertyValues.commodityBrand" placeholder="请选择商品品牌" @change="getParentId">
@@ -56,14 +56,14 @@
     </el-row>
 
     <!-- 提示用户页面操作须知 -->
-    <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
+    <!-- <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
       <span>1.仅针对自有品牌除本平台提供商品尺寸以外的自有商品尺寸的添加。</span></br>
       <span>2.您只能操作您自有商品尺寸。</span></br>
       <span>3.请注意文明用语!</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
