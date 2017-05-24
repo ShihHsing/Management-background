@@ -178,6 +178,8 @@ export default {
 
     resetForm (formName) {
       this.$refs[formName].resetFields()
+      // 清空 私有尺寸
+      this.goodsPrivatePropertyValues.dynamicTags = []
     },
 
     // 获取商品品牌和商品分类
