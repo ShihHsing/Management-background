@@ -179,7 +179,9 @@
         </el-pagination>
       </el-col>
     </el-row>
-
+    </br>
+    </br>
+    </br>
     <el-dialog title="月销量" v-model="dialogSaleCount" size="tiny">
       <el-input-number v-model="sale_count" :min="0"></el-input-number>
       <span slot="footer" class="dialog-footer">
