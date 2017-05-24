@@ -87,6 +87,11 @@
                 <template v-if="shop_id == scope.row.shop_id">
                   <router-link size="small" class="el-button el-button--warning el-button--small" type="warning" :to="{path: 'modificationMerchandise', query: {shopID: scope.row.id}}">编辑</router-link>
                 </template>
+                <template v-else>
+                  <el-row type="flex" justify="center">
+                    <span>此商品为公共商品</span>
+                  </el-row>
+                </template>
               </template>
             </el-table-column>
             <el-table-column
@@ -96,13 +101,24 @@
               <template scope="scope">
                 <template v-if="shop_id != 1">
                   <template v-for="(item,index) in scope.row.switch_list">
-                    <el-form>
-                      <el-form-item :label="item.switch_name">
-                        <!-- <span>{{ index }}</span> -->
-                        <el-switch v-model="goodsSetSwitchModel[scope.$index][index].model" @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
-                        </el-switch>
-                      </el-form-item>
-                    </el-form>
+                    <template v-if="scope.row.shop_id == 1">
+                      <el-form v-show="scope.row.switch_list[index].switch_name != '上架'">
+                        <el-form-item :label="item.switch_name">
+                          <!-- <span>{{ index }}</span> -->
+                          <el-switch v-model="goodsSetSwitchModel[scope.$index][index].model" @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
+                          </el-switch>
+                        </el-form-item>
+                      </el-form>
+                    </template>
+                    <template v-else>
+                      <el-form>
+                        <el-form-item :label="item.switch_name">
+                          <!-- <span>{{ index }}</span> -->
+                          <el-switch v-model="goodsSetSwitchModel[scope.$index][index].model" @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
+                          </el-switch>
+                        </el-form-item>
+                      </el-form>
+                    </template>
                   </template>
                   <!-- 这是一个Debug的办法 为了配合商品属性开关动态效果的失效 -->
                   <el-switch
@@ -135,6 +151,15 @@
                 </template>
               </template>
             </el-table-column>
+
+            <el-table-column
+              label="月销设置"
+              width="120">
+              <template scope="scope">
+                {{ scope.row.sale_count }}件&nbsp;&nbsp;&nbsp;
+                <el-button type="primary" size="small" @click="handleSaleCount(scope.row.id, scope.row.sale_count)">编辑</el-button>
+              </template>
+            </el-table-column>
           </el-table-column>
         </el-table>
       </el-col>
@@ -154,6 +179,13 @@
         </el-pagination>
       </el-col>
     </el-row>
+
+    <el-dialog title="月销量" v-model="dialogSaleCount" size="tiny">
+      <el-input-number v-model="sale_count" :min="0"></el-input-number>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="postSaleCount()">设置</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -173,6 +205,14 @@ export default {
       dialogVisible: [],
       // 商品设置数据模型
       goodsSetSwitchModel: [],
+      // 月销数量模型
+      saleCountModel: [],
+      // 月销量设置弹出层
+      dialogSaleCount: false,
+      // 设置月销商品ID
+      sale_id: null,
+      // 设置月销量数量
+      sale_count: null,
       // 当前页
       current_page: 0,
       // 总页数
@@ -358,6 +398,15 @@ export default {
             }
             this.goodsSetSwitchModel[i] = model
           }
+          // 设置月销模型
+          this.saleCount = []
+          for (var i = 0; i < this.shopDateList.length; i++) {
+            let count = {
+              count: 0,
+              status: true
+            }
+            this.saleCount[i] = count
+          }
         } else {
           this.consoleError(`${msg.data.return_code}`)
         }
@@ -457,6 +506,33 @@ export default {
           // statement
           this.consoleSuccess(`${msg.data.return_code}`)
           // this.searchShopData()
+        } else {
+          this.consoleError(`${msg.data.return_code}`)
+        }
+      })
+      .catch(error => {
+        this.consoleError(`服务器${error.response}`)
+      })
+    },
+
+    // 设置月销量
+    handleSaleCount (id, sale_count) {
+      this.sale_count = sale_count
+      this.sale_id = id
+      this.dialogSaleCount = true
+    },
+
+    // 提交月销量
+    postSaleCount () {
+      this.$axios.post(API.handleSaleCount, {
+        'goods_id': this.sale_id,
+        'sale_count': this.sale_count
+      })
+      .then(msg => {
+        if (msg.data.flag >> 0 === 1000) {
+          this.dialogSaleCount = false
+          this.consoleSuccess(`${msg.data.return_code}`)
+          this.searchShopData(this.current_page)
         } else {
           this.consoleError(`${msg.data.return_code}`)
         }
