@@ -651,6 +651,8 @@ export default {
           this.getColorClassification('color_list')
           /* ================================ */
         } else {
+          // 解除按钮锁定
+          this.flag1 = true
           this.consoleError(`商品属性${msg.data.return_code}`)
         }
       }, (response) => {
