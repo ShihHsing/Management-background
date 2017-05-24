@@ -152,14 +152,16 @@
               </template>
             </el-table-column>
 
-            <el-table-column
-              label="月销设置"
-              width="120">
-              <template scope="scope">
-                {{ scope.row.sale_count }}件&nbsp;&nbsp;&nbsp;
-                <el-button type="primary" size="small" @click="handleSaleCount(scope.row.id, scope.row.sale_count)">编辑</el-button>
-              </template>
-            </el-table-column>
+            <template v-if="shop_id != 1">
+              <el-table-column
+                label="月销设置"
+                width="120">
+                <template scope="scope">
+                  {{ scope.row.sale_count }}件&nbsp;&nbsp;&nbsp;
+                  <el-button type="primary" size="small" @click="handleSaleCount(scope.row.id, scope.row.sale_count)">编辑</el-button>
+                </template>
+              </el-table-column>
+            </template>
           </el-table-column>
         </el-table>
       </el-col>
