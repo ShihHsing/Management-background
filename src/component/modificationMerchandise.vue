@@ -52,7 +52,7 @@
                 </el-form-item>
 
                 <div v-for="(item,index) in two.privateProperty">
-                  <el-form-item :label="item.argument_value">
+                  <el-form-item :label="item.argument_value" required>
                     <el-select placeholder="请选择" v-model="two.privatePropertyList[index].attributeValue" v-on:change="getPrivatePropertyList();">
                       <el-option v-for="childItem in item.child_list" :label="childItem.argument_value" :value="childItem.id"></el-option>
                     </el-select>
@@ -77,6 +77,7 @@
                   <el-upload
                     class="upload-demo"
                     :action="uploadAddNewerGoodsInfo"
+                    :on-remove="removeThreeImage"
                     list-type="picture"
                     :on-success="handleSuccess1"
                     :on-error="uploadError"
@@ -378,6 +379,10 @@ export default {
   },
 
   methods: {
+    /*-------------------------- 移除列表图 -------------------------*/
+    removeThreeImage() {
+      this.three.thumb_image_url = ''
+    },
     /* ------------------ 自定义富文本图片上传 ------------------- */
     imageHandler() {
       let fileinput = document.getElementById('fileinput')
@@ -511,14 +516,22 @@ export default {
     submitForm (formName) {
       switch (formName) {
         case 'two':
-          /* === 移除绑定事件 多次连续点击产生Bug === */
-          this.flag1 = false
-          /* ======================================== */
-          // 获取商品尺寸
-          this.getColorClassification('color_list')
-          break
+        this.$refs[formName].validate(valid => {
+          if(valid){
+            if (this.twoReg()) {
+              /* === 移除绑定事件 多次连续点击产生Bug === */
+              this.flag1 = false
+              /* ======================================== */
+              // 获取商品尺寸
+              this.getColorClassification('color_list')
+            } else {
+              this.consoleError('请完善商品属性')
+            }
+          }
+        })
+        break
         case 'three':
-          if (this.three.thumb_image_url !== '') {
+          if (this.three.thumb_image_url != '') {
             /* === 移除绑定事件 多次连续点击产生Bug === */
             this.flag2 = false
             /* ======================================== */
@@ -530,21 +543,33 @@ export default {
           }
           break
         case 'four':
-          // var count = 0
-          // for (let i = 0; i < this.four.colorAndImg.length; i++) {
-          //   if (this.four.colorAndImg[i].imgUrl !== '') {
-          //     count++
-          //   }
-          // }
-          // if (this.four.checkedCities.length > 0 && this.four.checkedSize.length > 0 && count === this.four.colorAndImg.length) {
-          /* === 移除绑定事件 多次连续点击产生Bug === */
-          this.flag3 = false
-          /* ======================================== */
-          this.active ++
-          this.$refs.elCarousel.next()
-          // } else {
-          //   this.consoleError('请完善商品颜色图片与尺寸信息')
-          // }
+          var count = 0
+          for (let i = 0; i < this.four.colorAndImg.length; i++) {
+            if (this.four.colorAndImg[i].imgUrl !== '') {
+              count++
+            }
+          }
+          if (this.four.checkedSize.length > 0) {
+            if (this.four.checkedCities.length > 0) {
+              if (count === this.four.colorAndImg.length) {
+                /* === 移除绑定事件 多次连续点击产生Bug === */
+                this.flag3 = false
+                /* ======================================== */
+                this.active ++
+                this.$refs.elCarousel.next()
+              } else {
+                this.consoleError('请完善商品图片信息')
+              }
+            } else if (this.four.checkedCities.length == 0 && count === this.four.colorAndImg.length){
+              /* === 移除绑定事件 多次连续点击产生Bug === */
+              this.flag3 = false
+              /* ======================================== */
+              this.active ++
+              this.$refs.elCarousel.next()
+            }
+          } else {
+            this.consoleError('请完善商品尺寸信息')
+          }
           break
         default:
           if (this.newDescription !== '') {
@@ -779,12 +804,17 @@ export default {
     twoReg () {
       // 计数检查数据模型是否有空值存在
       var countReg = true
-      for (let i = 0, length1 = this.two.privatePropertyList.length; i < length1; i++) {
-        if (this.two.privatePropertyList[i].attributeValue === '') {
-          countReg = false
+      if (this.two.privatePropertyList.length !== 0) {
+        for (var i = 0, length1 = this.two.privatePropertyList.length; i < length1; i++) {
+          if (this.two.privatePropertyList[i].attributeValue === '') {
+            countReg = false
+          }
         }
+        return countReg
+      } else {
+        console.log(`two.privatePropertyList数据模型为空,与预期不符!`)
+        return false
       }
-      return countReg
     },
 
     // 颜色选择 单选
