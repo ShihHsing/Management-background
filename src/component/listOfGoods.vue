@@ -102,7 +102,7 @@
                 <template v-if="shop_id != 1">
                   <template v-for="(item,index) in scope.row.switch_list">
                     <template v-if="scope.row.shop_id == 1">
-                      <el-form v-show="scope.row.switch_list[index].switch_name != '上架'">
+                      <el-form v-if="scope.row.switch_list[index].switch_name != '上架'">
                         <el-form-item :label="item.switch_name">
                           <!-- <span>{{ index }}</span> -->
                           <el-switch v-model="goodsSetSwitchModel[scope.$index][index].model" @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
