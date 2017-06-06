@@ -50,12 +50,11 @@ export default {
   //   // 初始化获取路由地址
   //   this.getRouterUrl()
   // },
-  computed:{
+  computed: {
     router_url: function () {
       return this.$route.path
     }
   },
-
 
   methods: {
     handleSelect (key, keyPath) {
