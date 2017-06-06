@@ -10,7 +10,7 @@
             </el-button>
           </div>
 
-          <el-form 
+          <el-form
             label-position="left">
             <el-upload
               ref="upload"
@@ -30,8 +30,8 @@
 
     <!-- 错误提示模板 -->
     <el-dialog title="格式有误信息列表" v-model="error" size="tiny">
-      <a 
-        :href="errorDataListUrl" 
+      <a
+        :href="errorDataListUrl"
         download="错误数据"
         style="color: #fff;">
         <el-button type="danger">
@@ -87,12 +87,11 @@
               }
               break
             default:
-              if (response.ret_msg) {
-                this.consoleWarning(response.ret_msg)
+              if (response.return_code) {
+                this.consoleWarning(response.return_code)
               } else {
                 this.consoleWarning(`服务器发生未知错误!请稍后尝试!`)
               }
-              break
           }
         }
       },

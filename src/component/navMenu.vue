@@ -43,14 +43,17 @@ import '../assets/style/navMenu.less'
 export default {
   name: 'navMenu',
   data () {
-    return {
-      router_url: ''
-    }
+    return {}
   },
 
-  created: function () {
-    // 初始化获取路由地址
-    this.getRouterUrl()
+  // created: function () {
+  //   // 初始化获取路由地址
+  //   this.getRouterUrl()
+  // },
+  computed: {
+    router_url: function () {
+      return this.$route.path
+    }
   },
 
   methods: {

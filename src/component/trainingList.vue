@@ -572,7 +572,29 @@
           keyword: this.form.keyword,
           current_page: 1
         }
-        this.getTrainingList(Data)
+        this.$axios.post(API.listTrainingInfo, Data)
+        .then(msg => {
+          console.log(msg)
+          const data = msg.data
+          switch (data.flag) {
+            case 1000:
+              this.training_list = data.training_list
+              this.current_page = data.current_page
+              this.total_pages = data.pages
+              break
+            case 9001:
+              this.consoleWarning(`暂无该培训数据!`)
+              this.initData()
+              break
+            default:
+              this.consoleError(`暂无该培训数据,请重试!`)
+              this.initData()
+              break
+          }
+        })
+        .catch(error => {
+          this.consoleError(`服务器${error.response}`)
+        })
       },
 
       // 获取列表

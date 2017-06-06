@@ -82,7 +82,7 @@
                 </el-form-item>
 
                 <div v-for="(item,index) in privateProperty" v-if="privateProperty">
-                  <el-form-item :label="item.argument_value">
+                  <el-form-item :label="item.argument_value" required>
                     <el-select placeholder="请选择" v-model="two.privatePropertyList[index].attributeValue" v-on:change="getPrivatePropertyList();">
                       <el-option v-for="childItem in item.child_list" :label="childItem.argument_value" :value="childItem.id"></el-option>
                     </el-select>
@@ -651,6 +651,8 @@ export default {
           this.getColorClassification('color_list')
           /* ================================ */
         } else {
+          // 解除按钮锁定
+          this.flag1 = true
           this.consoleError(`商品属性${msg.data.return_code}`)
         }
       }, (response) => {

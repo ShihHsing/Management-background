@@ -3,16 +3,16 @@
     <el-col :span="12" class="logoTitle">
       <router-link to="/home"><h1>哎哟不错店家管理系统</h1></router-link>
     </el-col>
-    <!-- <el-col :span="3" :offset="7" class="storeSelect">
-      <el-select v-model="value" placeholder="请选择">
+    <el-col :span="3" :offset="7" class="storeSelect">
+      <el-select v-model="shop" placeholder="请选择">
         <el-option
-          v-for="item in options"
-          :label="item.label"
-          :value="item.value">
+          v-for="item in own_shop_list"
+          :label="item.name"
+          :value="item.id">
         </el-option>
       </el-select>
-    </el-col> -->
-    <el-col :offset="10" :span="2" class="user">
+    </el-col>
+    <el-col :span="2" class="user">
       <div @click="dialogVisible = true">
         <img src="../assets/img/e032a74b8985691686afe44af7391b91a477ab7e.jpg_320x200.jpg" height="200" width="320" :alt="userName">
       </div>
@@ -30,7 +30,7 @@
 <script>
 import store from '../assets/store'
 import { mapActions } from 'vuex'
-import { USER_SIGNOUT } from '../assets/store/user'
+import { USER_SIGNOUT, USER_SIGNIN } from '../assets/store/user'
 import '../assets/style/logoTop.less'
 import * as API from '../assets/axios/api.js'
 
@@ -40,34 +40,32 @@ export default {
     return {
       // 对话框控制
       dialogVisible: false,
-      // 门店选择
-      options: [{
-        value: '选项1',
-        label: '深大店'
-      }, {
-        value: '选项2',
-        label: '南山店'
-      }, {
-        value: '选项3',
-        label: '高新园店'
-      }, {
-        value: '选项4',
-        label: '宝安店'
-      }, {
-        value: '选项5',
-        label: '石岩店'
-      }],
-      value: '选项1',
       // 用户名字
       userName: '哎哟不错',
       // 用户头像
       userImgUrl: '',
-      userPhone: store.state.user.userData.phone_number
-      // session_id: store.state.user.userData.session_id
+      userPhone: store.state.user.userData.emp.phone_number,
+      // 门店列表
+      own_shop_list: store.state.user.userData.own_shop_list,
+      // 选择门店
+      shop: store.state.user.userData.own_shop_list[0].shop_id
+    }
+  },
+  watch:{
+    shop: function (val) {
+      // TODO
+      // 切换门店方法
+      this.chageShop(val)
+    },
+    own_shop_list: function (val) {
+      if (val.length > 0) {
+        this.shop = val[0].shop_id
+      }
     }
   },
   methods: {
     ...mapActions([USER_SIGNOUT]),
+    ...mapActions([USER_SIGNIN]),
     logOut () {
       this.$axios.post(API.logOut)
       .then(msg => {
@@ -86,6 +84,25 @@ export default {
       .catch(response => {
         console.log(response.data)
         this.dialogVisible = true
+      })
+    },
+    // 跟换门店
+    chageShop (id) {
+      this.$axios.post(API.changeTheShop, {
+        shop_id: id
+      })
+      .then(msg => {
+        console.log(msg)
+        if (msg.data.flag === '01') {
+          const userData = msg.data
+          this.USER_SIGNIN({ userData })
+          this.consoleSuccess(`${msg.data.return_code}`)
+        } else {
+          this.consoleError(msg.data.return_code)
+        }
+      })
+      .catch(response => {
+        console.log(response.data)
       })
     },
     consoleSuccess (success) {
