@@ -24,13 +24,18 @@ export default {
     html,body{
         height: 100%;
         width: 100%;
-        overflow: hidden;
+
+        min-width: 1200px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
         a{
             text-decoration: none;
         }
         #app{
             height: 100%;
             width: 100%;
+
             overflow: hidden;
         }
     }
