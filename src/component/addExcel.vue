@@ -50,7 +50,7 @@
         box-sizing: border-box;
 
         width: 95%;
-        height: 89%;
+        height: 80%;
         
         margin: 0 auto;
         margin-top: 86px;
