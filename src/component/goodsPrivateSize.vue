@@ -240,6 +240,11 @@ export default {
             .then((msg) => {
                 const data = msg.data
 
+                if (data.flag >> 0 !== 1000) {
+                    this.$message.error(data.return_code)
+                    return false
+                }
+
                 // 商品品牌列表
                 var product_list = data.product_list
                 this.goodsPrivatePropertyValues.commodityBrandList = product_list

@@ -249,7 +249,7 @@ export default {
             .then(msg => {
                 const data = msg.data
 
-                if (data.flag !== 1000) {
+                if (data.flag >> 0 !== 1000) {
                     this.$message.error(data.return_code)
                     return false
                 }
