@@ -4,7 +4,7 @@
         <div class="logo_left_wrap">
             <div class="logo">
                 <el-row type="flex" justify="center">
-                    <router-link to="/home"><img src="../assets/img/login/nav_logo.png"></router-link>
+                    <router-link to="/home"><img src="../assets/img/logo-top/nav_logo.png"></router-link>
                 </el-row>
             </div>
         </div>
@@ -109,7 +109,7 @@
                 cursor: pointer;
 
                 padding-left: 25px;
-                background: url('../assets/img/login/user_center.png') no-repeat left center;
+                background: url('../assets/img/logo-top/user_center.png') no-repeat left center;
             }
             img{
                 width: 20px;

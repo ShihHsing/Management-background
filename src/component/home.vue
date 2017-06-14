@@ -1,6 +1,6 @@
 <template>
     <div id="home">
-        <h2>{{ name }} 您好,欢迎您使用哎哟不错电价管理系统</h2>
+        <h2>{{ name }} 您好,欢迎您使用哎哟不错店家管理系统</h2>
     </div>
 </template>
 
@@ -24,8 +24,9 @@ export default {
         width: 100%;
         height: 100%;
         
-        padding-top: 78px;
-        background: url('../assets/img/login/home_banner.jpg') no-repeat center center #EBEFF5;
+        margin-top: 8px;
+        padding-top: 70px;
+        background: url('../assets/img/home/home_banner.jpg') no-repeat center center #EBEFF5;
         background-size: cover;
         h2{
             font-weight: 500;

@@ -6,7 +6,7 @@
                 <header class="login_top_body_header">
                     <h1>   
                         <!-- TODO: 跳转首页 -->
-                        <img src="../../assets/img/login/nav_logo.png">
+                        <img src="../../assets/img/login/logo.png">
                     </h1>
                     <div class="contact">
                         服务热线</br>0755-83667791
