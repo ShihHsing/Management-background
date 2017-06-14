@@ -49,10 +49,14 @@
                 flex: 1;
 
                 padding-bottom: 60px;
-                overflow-x: auto;
+                overflow: hidden;
                 .body{
+                    box-sizing: border-box;
+
                     height: 100%;
                     width: 100%;
+                    
+                    margin-top: 8px;
 
                     background: #EBEFF5;
                     .breadcrumb{
