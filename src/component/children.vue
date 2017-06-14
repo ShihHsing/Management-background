@@ -42,6 +42,7 @@
                 width: 200px;
 
                 padding-bottom: 80px;
+
             }
             .bodyWrap{
                 height: 100%;
@@ -53,13 +54,18 @@
                     height: 100%;
                     width: 100%;
                     .breadcrumb{
+                        position: fixed;
+                        top: 88px;
+
                         display: flex;
                         align-items: center;
-
+                        
+                        // margin-top: 10px;
                         padding-left: 35px;
 
                         width: 100%;
                         height: 70px;
+                        background: #EBEFF5;
                     }
                 }
             }

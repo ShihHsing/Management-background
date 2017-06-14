@@ -20,15 +20,20 @@ export default {
 
 <style lang="less">
     #home{
+        box-sizing: border-box;
         width: 100%;
         height: 100%;
-
-        background: url('../assets/img/login/home_banner.jpg') no-repeat center center;
+        
+        padding-top: 78px;
+        background: url('../assets/img/login/home_banner.jpg') no-repeat center center #EBEFF5;
         background-size: cover;
         h2{
+            font-weight: 500;
             font-size: 18px;
             color: #1D8CE0;
             text-indent: 35px;
+            line-height: 50px;
+            background: #fff;
         }
     }
 </style>
