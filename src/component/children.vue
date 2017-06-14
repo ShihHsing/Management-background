@@ -53,6 +53,8 @@
                 .body{
                     height: 100%;
                     width: 100%;
+
+                    background: #EBEFF5;
                     .breadcrumb{
                         position: fixed;
                         top: 88px;

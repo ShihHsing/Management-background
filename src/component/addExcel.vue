@@ -1,156 +1,158 @@
 <template>
-  <div id="addExcel">
-    <el-row type="flex" class="steps" justify="center">
-      <el-col :span="12">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <h2 style="float: left">会员导入</h2>
-            <el-button type="text" style="float: right;">
-              <a :href="addExcelTemplateUrl" download="会员模板.xlsx">模板下载</a>
+    <div id="addExcel">
+        <el-col :span="24">
+            <!-- 头部 -->
+            <div class="addExcel_top">
+                <span>会员导入</span>
+                <a 
+                    :href="addExcelTemplateUrl" 
+                    download="会员模板.xlsx">
+                    模板下载
+                </a>
+            </div>
+            <el-form
+                label-position="left"
+                class="add_excel_form">
+                <el-upload
+                    ref="upload"
+                    class="upload-demo"
+                    :action="uploadAddExcel"
+                    :on-success="handleSuccess"
+                    :before-upload="handleBefore"
+                    :multiple="false"
+                    name="file_excel">
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    </br></br>
+                    <div slot="tip" class="el-upload__tip">上传文件后缀名必须为.xlsx</div>
+                </el-upload>
+            </el-form>
+        </el-col>
+
+        <!-- 错误提示模板 -->
+        <el-dialog title="格式有误信息列表" v-model="error" size="tiny">
+            <a
+                :href="errorDataListUrl"
+                download="错误数据"
+                style="color: #fff;">
+            <el-button type="danger">
+            错误数据下载
             </el-button>
-          </div>
-
-          <el-form
-            label-position="left">
-            <el-upload
-              ref="upload"
-              class="upload-demo"
-              :action="uploadAddExcel"
-              :on-success="handleSuccess"
-              :before-upload="handleBefore"
-              :multiple="false"
-              name="file_excel">
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">上传文件后缀名必须为.xlsx</div>
-            </el-upload>
-          </el-form>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <!-- 错误提示模板 -->
-    <el-dialog title="格式有误信息列表" v-model="error" size="tiny">
-      <a
-        :href="errorDataListUrl"
-        download="错误数据"
-        style="color: #fff;">
-        <el-button type="danger">
-          错误数据下载
-        </el-button>
-      </a>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="error = false">取 消</el-button>
-        <el-button type="primary" @click="error = false">确 定</el-button>
-      </span>
-    </el-dialog>
-  </div>
+            </a>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="error = false">取 消</el-button>
+            </span>
+        </el-dialog>
+    </div>
 </template>
 
+<style lang="less">
+    #addExcel{
+        box-sizing: border-box;
+
+        width: 95%;
+        height: 89%;
+        
+        margin: 0 auto;
+        margin-top: 86px;
+
+        background: #fff;
+        .addExcel_top{
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+
+            height: 50px;
+            
+            padding: 0 30px;
+
+            border-bottom: 1px solid #E5E9F2;
+
+            line-height: 50px;
+            font-size: 18px;
+            color: #8492A6;
+            a{
+                color: #1D8CE0;
+                font-size: 12px;
+            }
+        }
+        .add_excel_form{
+            box-sizing: border-box;
+            padding: 30px;
+            .el-upload__tip{
+                color: #C0CCDA;
+            }
+        }
+    }
+</style>
+
 <script>
-  import { addExcelTemplateUrl, uploadAddExcel } from '../assets/axios/api.js'
-  export default{
+import { addExcelTemplateUrl, uploadAddExcel } from '../assets/axios/api.js'
+export default{
     name: 'addExcel',
     data () {
-      return {
-        addExcelTemplateUrl,
-        // 错误文件下载链接
-        errorDataListUrl: null,
-        error: false,
-        // 文件上传
-        uploadAddExcel
-      }
+        return {
+            addExcelTemplateUrl,
+            errorDataListUrl: null, // 错误文件下载链接
+            error: false,
+            uploadAddExcel // 文件上传
+        }
     },
     created: function () {},
     methods: {
-      handleSuccess (response) {
-        if (response.flag) {
-          const flag = response.flag
-          switch (flag) {
-            case 1000:
-              this.consoleSuccess(`文件导入成功!`)
-              const uploadFiles = this.$refs.upload.uploadFiles
-              if (uploadFiles.length === 2) {
-                uploadFiles.shift()
-              }
-              break
-            case 9002:
-              if (response.error_data) {
-                const uploadFiles = this.$refs.upload.uploadFiles
-                if (uploadFiles.length === 2) {
-                  uploadFiles.shift()
+        handleSuccess (response) {
+            if (response.flag) {
+                const flag = response.flag
+                switch (flag) {
+                case 1000:
+                    this.$message({
+                        message: '文件导入成功!',
+                        type: 'success'
+                    })
+                    const uploadFiles = this.$refs.upload.uploadFiles
+                    if (uploadFiles.length === 2) {
+                        uploadFiles.shift()
+                    }
+                    break
+                case 9002:
+                    if (response.error_data) {
+                        const uploadFiles = this.$refs.upload.uploadFiles
+                        if (uploadFiles.length === 2) {
+                            uploadFiles.shift()
+                        }
+                        this.$message.error(`导入数据失败!文件生成中!请下载文件后查看错误并修改!`)
+                        this.errorDataListUrl = response.error_data
+                        setTimeout(() => {
+                            this.error = true
+                        }, 800)
+                    }
+                    break
+                default:
+                    if (!response.return_code) {
+                        this.$message({
+                            message: '服务器发生未知错误!请稍后尝试!',
+                            type: 'warning'
+                        })
+                        return false
+                    }
+                    this.$message({
+                        message: response.return_code,
+                        type: 'warning'
+                    })
+                    break
                 }
-                this.consoleError(`导入数据失败!文件生成中!请下载文件后查看错误并修改!`)
-                this.errorDataListUrl = response.error_data
-                setTimeout(() => {
-                  this.error = true
-                }, 800)
-              }
-              break
-            default:
-              if (response.return_code) {
-                this.consoleWarning(response.return_code)
-              } else {
-                this.consoleWarning(`服务器发生未知错误!请稍后尝试!`)
-              }
-          }
+            }
+        },
+        handleBefore (file) {
+            const fileType = Boolean(file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            if (!fileType) {
+                this.$message({
+                    message: '上传文件后缀名必须为.xlsx!',
+                    type: 'warning'
+                })
+                return false
+            }
         }
-      },
-      handleBefore (file) {
-        console.log(file)
-        const fileType = Boolean(file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        console.log(fileType)
-        if (!fileType) {
-          this.consoleWarning(`您上传文件为${file.type}类型,但上传文件后缀名必须为或.xlsx!`)
-          return false
-        }
-      },
-
-      consoleSuccess (success) {
-        this.$notify({
-          title: '成功',
-          message: success,
-          type: 'success'
-        })
-      },
-
-      consoleWarning (warning) {
-        this.$notify({
-          title: '警告',
-          message: warning,
-          type: 'warning'
-        })
-      },
-
-      consoleNews (news) {
-        this.$notify.info({
-          title: '消息',
-          message: news
-        })
-      },
-
-      consoleError (error) {
-        this.$notify.error({
-          title: '错误',
-          message: error
-        })
-      }
-    },
-    components: {}
-  }
+    }
+}
 </script>
 
-<style>
-  .steps{
-    height: auto;
-    width: 100%;
-    margin-top: 100px;
-  }
-  .clearfix:before,
-  .clearfix:after {
-      display: table;
-      content: "";
-  }
-  .clearfix:after {
-      clear: both
-  }
-</style>
