@@ -24,8 +24,6 @@ export default {
         width: 100%;
         height: 100%;
         
-        margin-top: 8px;
-        padding-top: 70px;
         background: url('../assets/img/home/home_banner.jpg') no-repeat center center #EBEFF5;
         background-size: cover;
         h2{

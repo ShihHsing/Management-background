@@ -1,34 +1,38 @@
 <template>
     <div id="goodsPrivateProperty">
-        <el-col :span="24">
+        <el-col :span="24" style="height: 100%; width: 100%;">
             <!-- 头部 -->
             <div class="goodsPrivateProperty_top">
                 <span>商品私有属性</span>
                 <el-button class="OI" type="text" @click="dialogVisible = true">操作说明</el-button>
             </div>
-            <el-form
-                :model="goodsPrivateProperty"
-                :rules="goodsPrivatePropertyRules"
-                ref="goodsPrivateProperty"
-                label-position="top"
-                class="goodsPrivateProperty_form">
-                <el-form-item label="商品品牌" prop="commodityBrand">
-                    <el-select v-model="goodsPrivateProperty.commodityBrand" placeholder="请选择商品品牌">
-                    <el-option v-for="item in goodsPrivateProperty.commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="商品分类" prop="commodityClassification">
-                    <el-select v-model="goodsPrivateProperty.commodityClassification" placeholder="请选择商品分类">
-                    <el-option v-for="item in goodsPrivateProperty.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="添加商品私有属性" prop="addGoodsPrivateProperty">
-                    <el-input style="width: 217px;" v-model="goodsPrivateProperty.addGoodsPrivateProperty" placeholder="请添加商品私有属性"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="submitForm('goodsPrivateProperty')">提交</el-button>
-                </el-form-item>
-            </el-form>
+            <div class="goodsPrivateProperty_form_wrap">
+                <div class="goodsPrivateProperty_form_body sx_basis_scroll sx_scroll_style">
+                    <el-form
+                        :model="goodsPrivateProperty"
+                        :rules="goodsPrivatePropertyRules"
+                        ref="goodsPrivateProperty"
+                        label-position="top"
+                        class="goodsPrivateProperty_form">
+                        <el-form-item label="商品品牌" prop="commodityBrand">
+                            <el-select v-model="goodsPrivateProperty.commodityBrand" placeholder="请选择商品品牌">
+                            <el-option v-for="item in goodsPrivateProperty.commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="商品分类" prop="commodityClassification">
+                            <el-select v-model="goodsPrivateProperty.commodityClassification" placeholder="请选择商品分类">
+                            <el-option v-for="item in goodsPrivateProperty.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="添加商品私有属性" prop="addGoodsPrivateProperty">
+                            <el-input style="width: 217px;" v-model="goodsPrivateProperty.addGoodsPrivateProperty" placeholder="请添加商品私有属性"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="submitForm('goodsPrivateProperty')">提交</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
         </el-col>
 
         <!-- 提示用户页面操作须知 -->
@@ -45,15 +49,12 @@
 
 <style lang="less">
     #goodsPrivateProperty{
-        box-sizing: border-box;
-
-        width: 95%;
-        height: 80%;
+        width: 100%;
+        height: 100%;
         
-        margin: 0 auto;
-        margin-top: 86px;
-
         background: #fff;
+
+        overflow: hidden;
         .goodsPrivateProperty_top{
             box-sizing: border-box;
             display: flex;
@@ -73,15 +74,27 @@
                 font-size: 12px;
             }
         }
-        .goodsPrivateProperty_form{
+        .goodsPrivateProperty_form_wrap{
             box-sizing: border-box;
-            padding: 30px;
 
-            label{
-                color: #8492A6;
-            }
-            .el-tag{
-                margin-right: 15px!important;
+            width: 100%;
+            height: 100%;
+            
+            padding-bottom: 50px;
+            .goodsPrivateProperty_form_body{
+                width: 100%;
+                height: 100%;
+                .goodsPrivateProperty_form{
+                    box-sizing: border-box;
+                    padding: 30px;
+
+                    label{
+                        color: #8492A6;
+                    }
+                    .el-tag{
+                        margin-right: 15px!important;
+                    }
+                }
             }
         }
     }

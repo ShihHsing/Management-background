@@ -47,14 +47,9 @@
 
 <style lang="less">
     #addExcel{
-        box-sizing: border-box;
-
-        width: 95%;
-        height: 80%;
+        width: 100%;
+        height: 100%;
         
-        margin: 0 auto;
-        margin-top: 86px;
-
         background: #fff;
         .addExcel_top{
             box-sizing: border-box;

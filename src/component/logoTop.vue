@@ -61,7 +61,6 @@
         -moz-box-shadow: 1px 1px 20px #8492A6; /* Firefox */
         -webkit-box-shadow: 1px 1px 20px #8492A6; /* Safari 和 Chrome */
         box-shadow: 1px 1px 20px #8492A6; /* Opera 10.5+, 以及使用了IE-CSS3的IE浏览器 */
-
         .logo_left_wrap{
             width: 200px;
             .logo{

@@ -1,66 +1,71 @@
 <template>
     <div id="goodsPrivateSize">
-        <el-col :span="24">
+        <el-col :span="24" style="height: 100%; width: 100%;">
             <!-- 头部 -->
             <div class="goodsPrivateSize_top">
                 <span>商品私有尺寸</span>
                 <el-button class="OI" type="text" @click="dialogVisible = true">操作说明</el-button>
             </div>
-            <el-form
-                :model="goodsPrivatePropertyValues"
-                :rules="goodsPrivatePropertyValuesRules"
-                ref="goodsPrivatePropertyValues"
-                label-position="top"
-                class="goodsPrivateSize_form">
-                <el-form-item label="商品品牌" prop="commodityBrand">
-                    <el-select 
-                        v-model="goodsPrivatePropertyValues.commodityBrand" 
-                        placeholder="请选择商品品牌" 
-                        @change="getParentId">
-                    <el-option 
-                        v-for="item in goodsPrivatePropertyValues.commodityBrandList" 
-                        :label="item.product_name" 
-                        :value="item.id">
-                    </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="商品分类" prop="commodityClassification">
-                    <el-select v-model="goodsPrivatePropertyValues.commodityClassification" placeholder="请选择商品分类" @change="getParentId">
-                    <el-option 
-                        v-for="item in goodsPrivatePropertyValues.commodityClassificationList" 
-                        :label="item.category_name" 
-                        :value="item.id">
-                    </el-option>
-                    </el-select>
-                </el-form-item>
+            <div class="goodsPrivateSize_form_wrap">
+                <div class="goodsPrivateSize_form_body sx_basis_scroll sx_scroll_style">
+                    <el-form
+                        :model="goodsPrivatePropertyValues"
+                        :rules="goodsPrivatePropertyValuesRules"
+                        ref="goodsPrivatePropertyValues"
+                        label-position="top"
+                        class="goodsPrivateSize_form">
+                        <el-form-item label="商品品牌" prop="commodityBrand">
+                            <el-select 
+                                v-model="goodsPrivatePropertyValues.commodityBrand" 
+                                placeholder="请选择商品品牌" 
+                                @change="getParentId">
+                            <el-option 
+                                v-for="item in goodsPrivatePropertyValues.commodityBrandList" 
+                                :label="item.product_name" 
+                                :value="item.id">
+                            </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="商品分类" prop="commodityClassification">
+                            <el-select v-model="goodsPrivatePropertyValues.commodityClassification" placeholder="请选择商品分类" @change="getParentId">
+                            <el-option 
+                                v-for="item in goodsPrivatePropertyValues.commodityClassificationList" 
+                                :label="item.category_name" 
+                                :value="item.id">
+                            </el-option>
+                            </el-select>
+                        </el-form-item>
 
-                <el-form-item label="商品私有尺寸" prop="goodsPrivatePropertyValuesText">
-                    <el-tag
-                        v-for="tag in goodsPrivatePropertyValues.dynamicTags"
-                        :closable="true"
-                        :close-transition="false"
-                        @close="handleClose(tag)"
-                        type="primary"
-                        style="width: 217px;">
-                        {{tag}}
-                    </el-tag>
-                    <el-input
-                        class="input-new-tag"
-                        v-if="goodsPrivatePropertyValues.inputVisible"
-                        v-model="goodsPrivatePropertyValues.inputValue"
-                        ref="saveTagInput"
-                        size="mini"
-                        @keyup.enter.native="handleInputConfirm"
-                        @blur="handleInputConfirm"
-                        style="width: 217px;">
-                    </el-input>
-                    <el-button v-else class="button-new-tag" @click="showInput">添加</el-button>
-                </el-form-item></br>
+                        <el-form-item label="商品私有尺寸" prop="goodsPrivatePropertyValuesText">
+                            <el-tag
+                                v-for="tag in goodsPrivatePropertyValues.dynamicTags"
+                                :closable="true"
+                                :close-transition="false"
+                                @close="handleClose(tag)"
+                                type="primary"
+                                style="width: 217px;">
+                                {{tag}}
+                            </el-tag>
+                            <el-input
+                                class="input-new-tag"
+                                v-if="goodsPrivatePropertyValues.inputVisible"
+                                v-model="goodsPrivatePropertyValues.inputValue"
+                                ref="saveTagInput"
+                                size="mini"
+                                @keyup.enter.native="handleInputConfirm"
+                                @blur="handleInputConfirm"
+                                style="width: 217px;">
+                            </el-input>
+                            <el-button v-else class="button-new-tag" @click="showInput">添加</el-button>
+                        </el-form-item></br>
 
-                <el-form-item>
-                    <el-button type="primary" @click="submitForm('goodsPrivatePropertyValues')">提交</el-button>
-                </el-form-item>
-            </el-form>
+                        <el-form-item>
+                            <el-button type="primary" @click="submitForm('goodsPrivatePropertyValues')">提交</el-button>
+                        </el-form-item>
+                    </el-form>
+                
+                </div>
+            </div>
         </el-col>
 
         <!-- 提示用户页面操作须知 -->
@@ -77,15 +82,12 @@
 
 <style lang="less">
     #goodsPrivateSize{
-        box-sizing: border-box;
-
-        width: 95%;
-        height: 80%;
+        width: 100%;
+        height: 100%;
         
-        margin: 0 auto;
-        margin-top: 86px;
-
         background: #fff;
+
+        overflow: hidden;
         .goodsPrivateSize_top{
             box-sizing: border-box;
             display: flex;
@@ -105,15 +107,27 @@
                 font-size: 12px;
             }
         }
-        .goodsPrivateSize_form{
+        .goodsPrivateSize_form_wrap{
             box-sizing: border-box;
-            padding: 30px;
 
-            label{
-                color: #8492A6;
-            }
-            .el-tag{
-                margin-right: 15px!important;
+            width: 100%;
+            height: 100%;
+            
+            padding-bottom: 50px;
+            .goodsPrivateSize_form_body{
+                width: 100%;
+                height: 100%;
+                .goodsPrivateSize_form{
+                    box-sizing: border-box;
+                    padding: 30px;
+
+                    label{
+                        color: #8492A6;
+                    }
+                    .el-tag{
+                        margin-right: 15px!important;
+                    }
+                }
             }
         }
     }
