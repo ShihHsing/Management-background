@@ -14,7 +14,7 @@
         <div class="addMerchandise_form_wrap">
             <div class="addMerchandise_form_body">
                 <el-row type="flex" class="steps_wrap" justify="center">
-                    <el-col :span="12" class="steps">
+                    <el-col :span="14" class="steps">
                         <el-carousel
                             indicator-position="none"
                             :autoplay="false"
