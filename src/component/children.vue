@@ -96,7 +96,7 @@
 
                             box-sizing: border-box;
 
-                            padding: 35px;
+                            padding: 0 35px 35px 35px;
 
                             overflow: hidden;
                         }
@@ -106,67 +106,6 @@
         }
     }
 }
-    // #children{
-    //     height: 100%;
-    //     width: 100%;
-
-    //     overflow: hidden;
-    //     .children_body{
-    //         display: flex;
-
-    //         height: 100%;
-    //         width: 100%;
-    //         .navMenuWrap{
-    //             height: 100%;
-    //             width: 200px;
-
-    //             padding-bottom: 80px;
-    //         }
-    //         .bodyWrap{
-    //             height: 100%;
-    //             flex: 1;
-
-    //             padding-bottom: 60px;
-    //             overflow: hidden;
-    //             .body{
-    //                 position: relative;
-    //                 box-sizing: border-box;
-
-    //                 height: 100%;
-    //                 width: 100%;
-                    
-    //                 margin-top: 8px;
-
-    //                 background: #EBEFF5;
-    //                 .breadcrumb{
-    //                     display: flex;
-    //                     align-items: center;
-                        
-    //                     // margin-top: 10px;
-    //                     padding-left: 35px;
-
-    //                     width: 100%;
-    //                     height: 70px;
-    //                     background: #EBEFF5;
-    //                 }
-    //                 .children_html_wrap{
-    //                     position: absolute;
-    //                     top: 0;
-    //                     box-sizing: border-box;
-
-    //                     width: 100%;
-    //                     height: 100%;
-
-    //                     padding-bottom: 70px;
-    //                     // .children_html{
-    //                     //     width: 100%;
-    //                     //     height: 100%;
-    //                     // }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
 </style>
 
 <script>

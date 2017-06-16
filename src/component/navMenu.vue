@@ -85,7 +85,6 @@
 </style>
 
 <script>
-import '../assets/style/navMenu.less'
 export default {
     name: 'navMenu',
     data () {
