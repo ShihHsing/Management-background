@@ -171,7 +171,7 @@ export default {
                     return false
                 }
 
-                if (this.goodsPrivatePropertyValues.dynamicTags.length < 0) {
+                if (!this.goodsPrivatePropertyValues.dynamicTags.length > 0) {
                     this.$message({
                         message: '请完善商品分类属性属性值',
                         type: 'warning'

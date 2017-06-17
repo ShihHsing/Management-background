@@ -835,7 +835,6 @@ export default {
         // ////////////////////////////////////////
         userColorModelHistoricalRecord () {
             if (this.userColorHistoricalRecord.length >= 2) {
-                // statement
                 this.userColorHistoricalRecord.splice(0, 1)
                 this.userColorHistoricalRecord.push(this.four.checkedCities)
                 return false

@@ -184,7 +184,7 @@ export default {
                     const data = msg.data
 
                     if (data.flag !== 1000) {
-                        this.$message.error(`服务器发生未知错误!`)
+                        this.$message.error(data.return_code)
                         return false
                     }
 
@@ -212,7 +212,7 @@ export default {
                     return false
                 }
 
-                if (this.goodsPrivatePropertyValues.dynamicTags.length < 0) {
+                if (!this.goodsPrivatePropertyValues.dynamicTags.length > 0) {
                     this.$message({
                         message: '请完善商品分类属性属性值!',
                         type: 'warning'
@@ -230,7 +230,7 @@ export default {
                     const data = msg.data
 
                     if (data.flag !== 1000) {
-                        this.consoleError(data.return_code)
+                        this.$message.error(data.return_code)
                         return false
                     }
 

@@ -202,7 +202,7 @@ export default {
                     this.$message.error('请完善必填信息')
                     return false
                 }
-                if (this.goodsPrivatePropertyValues.dynamicTags.length < 0) {
+                if (!this.goodsPrivatePropertyValues.dynamicTags.length > 0) {
                     this.$message({
                         message: '请完善商品分类属性属性值',
                         type: 'warning'
