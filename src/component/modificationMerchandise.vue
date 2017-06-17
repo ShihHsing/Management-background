@@ -159,10 +159,17 @@
                                             </el-form-item>
                                             <el-form-item label="商品图片" required>
                                                 <div v-for="(city,index) in four.checkedCities">
-                                                    <el-upload class="upload-demo" :action="uploadAddNewerGoodsInfo" :thumbnail-mode="true"
-                                                    :multiple="false" :on-success="colorAndImgSuccess" :on-error="uploadError"
-                                                    name="normal_image" :data="{'imgColor': four.checkedCities[index]}" ref="normal_image"
-                                                    list-type="picture">
+                                                    <el-upload class="upload-demo" 
+                                                        :action="uploadAddNewerGoodsInfo" 
+                                                        :thumbnail-mode="true"
+                                                        :multiple="false" 
+                                                        :on-success="colorAndImgSuccess" 
+                                                        :on-error="uploadError"
+                                                        :on-remove="colorAndImgRemove"
+                                                        name="normal_image" 
+                                                        :data="{'imgColor': four.checkedCities[index]}" 
+                                                        ref="normal_image"
+                                                        list-type="picture">
                                                         <el-button size="small" type="primary">
                                                             请上传
                                                             <em>
@@ -455,7 +462,7 @@ export default {
                         this.$refs.myTextEditor.quillEditor.insertEmbed(length, 'image', imageUrl)
                     },
                     fail: error => {
-                        console.log(error)
+                        this.$message.error('图片上传失败')
                     }
                 })
             }
@@ -471,87 +478,86 @@ export default {
         // 获取商品详细信息
         getGoodsDetail () {
             if (this.shopID !== '') {
-                // statement
                 this.$axios.post(API.modifyNewerGoodsInfo, {
                     'goods_id': this.$route.query.shopID,
                     'request_flag': 'goods_detail'
                 })
-                .then((msg) => {
-                    if (msg.data.flag >> 0 === 1000) {
-                        if (msg.data.goods_detail !== '' || msg.data.goods_detail !== 'null') {
-                            var goods_detail = msg.data.goods_detail
-                            this.goods_detail = goods_detail
-                            // statement
-                            // 商品品牌
-                            this.one.commodityBrand = goods_detail.product_id
-                            // 商品分类
-                            this.one.commodityClassification = goods_detail.category_id
-                            // 商品标题
-                            this.two.commodityTitle = goods_detail.title
-                            // 商品简介
-                            this.two.commodityIntroduction = goods_detail.sub_title
-                            // 商品款号
-                            this.two.commodityNumber = goods_detail.model
-                            // 商品条码
-                            this.two.commodityBarcode = goods_detail.code
-                            // 商品价格
-                            this.two.price = goods_detail.price
-                            // 易企秀
-                            this.two.shop_show = goods_detail.show_url
-                            // 商品列表图
-                            if (goods_detail.thumb_image !== '无') {
-                                this.three.thumb_image_file_list = [{
-                                    name: '商品列表图.jpg(若修改请删除后重新添加!)',
-                                    url: goods_detail.thumb_image
-                                }]
-                            }
-                            this.three.thumb_image_url = goods_detail.thumb_image
-                            // 商品音频
-                            if (goods_detail.audio !== '无') {
-                                this.three.audio_file_list = [{
-                                    name: '商品音频.mp3(若修改请删除后重新添加!)',
-                                    url: goods_detail.audio
-                                }]
-                                this.three.audio_url = goods_detail.audio
-                            }
-                            // 商品视频
-                            if (goods_detail.video !== '无') {
-                                this.three.video_file_list = [{
-                                    name: '商品视频.mp4(若修改请删除后重新添加!)',
-                                    url: goods_detail.video
-                                }]
-                                this.three.video_url = goods_detail.video
-                            }
-
-                            // 尺码
-                            if (goods_detail.sub_args.length !== 0) {
-                                for (var i = 0; i < goods_detail.sub_args.length; i++) {
-                                    if (goods_detail.sub_args[i].argument_name === '尺寸') {
-                                        this.four.checkedSize.push(goods_detail.sub_args[i].argument_value)
-                                    }
-                                }
-                            } else {
-                                console.log(`获取尺码字段与预期不符!`)
-                            }
-                            // 图文详情数据
-                            this.description = goods_detail.description
-                            this.newDescription = this.description
-                            /* ======== 初始化获取商品品牌和商品分类 ======== */
-                            this.getCommodityBrandAndCommodityClassification()
-                            /* ============================================== */
-                        } else {
-                            this.consoleNews('服务器发生未知错误,请刷新后重试!')
-                        }
-                    } else {
+                .then(msg => {
+                    if (msg.data.flag >> 0 !== 1000) {
                         this.$message.error(msg.data.return_code)
+                        return false
                     }
+                    if (msg.data.goods_detail === '' || msg.data.goods_detail === 'null') {
+                        this.$message('服务器发生未知错误,请刷新后重试!')
+                        return false
+                    }
+                    var goods_detail = msg.data.goods_detail
+                    this.goods_detail = goods_detail
+                    // statement
+                    // 商品品牌
+                    this.one.commodityBrand = goods_detail.product_id
+                    // 商品分类
+                    this.one.commodityClassification = goods_detail.category_id
+                    // 商品标题
+                    this.two.commodityTitle = goods_detail.title
+                    // 商品简介
+                    this.two.commodityIntroduction = goods_detail.sub_title
+                    // 商品款号
+                    this.two.commodityNumber = goods_detail.model
+                    // 商品条码
+                    this.two.commodityBarcode = goods_detail.code
+                    // 商品价格
+                    this.two.price = goods_detail.price
+                    // 易企秀
+                    this.two.shop_show = goods_detail.show_url
+                    // 商品列表图
+                    if (goods_detail.thumb_image !== '无') {
+                        this.three.thumb_image_file_list = [{
+                            name: '商品列表图.jpg(若修改请删除后重新添加!)',
+                            url: goods_detail.thumb_image
+                        }]
+                    }
+                    this.three.thumb_image_url = goods_detail.thumb_image
+                    // 商品音频
+                    if (goods_detail.audio !== '无') {
+                        this.three.audio_file_list = [{
+                            name: '商品音频.mp3(若修改请删除后重新添加!)',
+                            url: goods_detail.audio
+                        }]
+                        this.three.audio_url = goods_detail.audio
+                    }
+                    // 商品视频
+                    if (goods_detail.video !== '无') {
+                        this.three.video_file_list = [{
+                            name: '商品视频.mp4(若修改请删除后重新添加!)',
+                            url: goods_detail.video
+                        }]
+                        this.three.video_url = goods_detail.video
+                    }
+
+                    // 尺码
+                    if (goods_detail.sub_args.length === 0) {
+                        console.log(`获取尺码字段与预期不符!`)
+                        return false
+                    }
+                    for (var i = 0; i < goods_detail.sub_args.length; i++) {
+                        if (goods_detail.sub_args[i].argument_name === '尺寸') {
+                            this.four.checkedSize.push(goods_detail.sub_args[i].argument_value)
+                        }
+                    }
+                    // 图文详情数据
+                    this.description = goods_detail.description
+                    this.newDescription = this.description
+                    /* ======== 初始化获取商品品牌和商品分类 ======== */
+                    this.getCommodityBrandAndCommodityClassification()
+                    /* ============================================== */
                 })
                 .catch(error => {
                     this.$message.error('服务器异常')
                 })
-            } else {
-                this.$message.error('获取商品详细信息失败!请稍后重试!')
+                return false
             }
+            this.$message.error('获取商品详细信息失败!请稍后重试!')
         },
 
         // 删除颜色图片
@@ -565,30 +571,32 @@ export default {
             switch (formName) {
             case 'two':
                 this.$refs[formName].validate(valid => {
-                    if (valid) {
-                        if (this.twoReg()) {
-                            /* === 移除绑定事件 多次连续点击产生Bug === */
-                            this.flag1 = false
-                            /* ======================================== */
-                            // 获取商品尺寸
-                            this.getColorClassification('color_list')
-                        } else {
-                            this.$message.error('请完善商品属性')
-                        }
+                    if (!valid) {
+                        this.$message.error('请完善商品属性')
+                        return false
                     }
+                    if (!this.twoReg()) {
+                        this.$message.error('请完善商品属性')
+                        return false
+                    }
+                    /* === 移除绑定事件 多次连续点击产生Bug === */
+                    this.flag1 = false
+                    /* ======================================== */
+                    // 获取商品尺寸
+                    this.getColorClassification('color_list')
                 })
                 break
             case 'three':
-                if (this.three.thumb_image_url !== '') {
-                    /* === 移除绑定事件 多次连续点击产生Bug === */
-                    this.flag2 = false
-                    /* ======================================== */
-                    this.active ++
-                    this.$refs.elCarousel.next()
-                    this.four.dialogVisible = true
-                } else {
-                    this.consoleWarning(`请完善商品缩略图`)
+                if (this.three.thumb_image_url === '') {
+                    this.$message('请完善商品缩略图')
+                    return false
                 }
+                /* === 移除绑定事件 多次连续点击产生Bug === */
+                this.flag2 = false
+                /* ======================================== */
+                this.active ++
+                this.$refs.elCarousel.next()
+                this.four.dialogVisible = true
                 break
             case 'four':
                 var count = 0
@@ -597,37 +605,40 @@ export default {
                         count++
                     }
                 }
-                if (this.four.checkedSize.length > 0) {
-                    if (this.four.checkedCities.length > 0) {
-                        if (count === this.four.colorAndImg.length) {
-                            /* === 移除绑定事件 多次连续点击产生Bug === */
-                            this.flag3 = false
-                            /* ======================================== */
-                            this.active ++
-                            this.$refs.elCarousel.next()
-                        } else {
-                            this.$message.error('请完善商品图片信息')
-                        }
-                    } else if (this.four.checkedCities.length === 0 && count === this.four.colorAndImg.length) {
-                        /* === 移除绑定事件 多次连续点击产生Bug === */
-                        this.flag3 = false
-                        /* ======================================== */
-                        this.active ++
-                        this.$refs.elCarousel.next()
-                    }
-                } else {
+                if (!this.four.checkedSize.length > 0) {
                     this.$message.error('请完善商品尺寸信息')
+                    return false
+                }
+
+                if (this.four.checkedCities.length === 0 && count === this.four.colorAndImg.length) {
+                    /* === 移除绑定事件 多次连续点击产生Bug === */
+                    this.flag3 = false
+                    /* ======================================== */
+                    this.active ++
+                    this.$refs.elCarousel.next()
+                }
+
+                if (this.four.checkedCities.length > 0) {
+                    if (count !== this.four.colorAndImg.length) {
+                        this.$message.error('请完善商品图片信息')
+                        return false
+                    }
+                    /* === 移除绑定事件 多次连续点击产生Bug === */
+                    this.flag3 = false
+                    /* ======================================== */
+                    this.active ++
+                    this.$refs.elCarousel.next()
                 }
                 break
             default:
-                if (this.newDescription !== '') {
-                    /* === 移除绑定事件 多次连续点击产生Bug === */
-                    this.flag4 = false
-                    /* ======================================== */
-                    this.postAddShopData()
-                } else {
+                if (this.newDescription === '') {
                     this.$message.error('请完善商品详情')
+                    return false
                 }
+                /* === 移除绑定事件 多次连续点击产生Bug === */
+                this.flag4 = false
+                /* ======================================== */
+                this.postAddShopData()
                 break
             }
         },
@@ -643,21 +654,7 @@ export default {
 
         // 商品列表图
         handleSuccess1 (response, file, fileList) {
-            if (response.flag >> 0 === 1000) {
-                // statement
-                // false数据不存在 true数据上传成功
-                this.three.thumb_image = false
-                this.three.thumb_imageList = response
-                this.three.thumb_image_url = response.file_url
-                const uploadFiles = this.$refs.thumb_image.uploadFiles
-                if (uploadFiles.length === 2) {
-                    uploadFiles.shift()
-                }
-                this.$message({
-                    message: response.return_code,
-                    type: 'success'
-                })
-            } else {
+            if (response.flag >> 0 !== 1000) {
                 this.three.thumb_image = true
                 this.$refs.thumb_image.clearFiles()
                 const uploadFiles = this.$refs.thumb_image.uploadFiles
@@ -665,25 +662,26 @@ export default {
                     uploadFiles.shift()
                 }
                 this.$message.error(response.return_code)
+                return false
             }
+
+            // false数据不存在 true数据上传成功
+            this.three.thumb_image = false
+            this.three.thumb_imageList = response
+            this.three.thumb_image_url = response.file_url
+            const uploadFiles = this.$refs.thumb_image.uploadFiles
+            if (uploadFiles.length === 2) {
+                uploadFiles.shift()
+            }
+            this.$message({
+                message: response.return_code,
+                type: 'success'
+            })
         },
 
         // 商品音频
         handleSuccess2 (response, file, fileList) {
-            if (response.flag >> 0 === 1000) {
-                // false数据不存在 true数据上传成功
-                this.three.audio = false
-                this.three.audioList = response
-                this.three.audio_url = response.file_url
-                const uploadFiles = this.$refs.audio.uploadFiles
-                if (uploadFiles.length === 2) {
-                    uploadFiles.shift()
-                }
-                this.$message({
-                    message: response.return_code,
-                    type: 'success'
-                })
-            } else {
+            if (response.flag >> 0 !== 1000) {
                 this.three.audio = true
                 this.$refs.audio.clearFiles()
                 const uploadFiles = this.$refs.audio.uploadFiles
@@ -691,26 +689,25 @@ export default {
                     uploadFiles.shift()
                 }
                 this.$message.error(response.return_code)
+                return false
             }
+            // false数据不存在 true数据上传成功
+            this.three.audio = false
+            this.three.audioList = response
+            this.three.audio_url = response.file_url
+            const uploadFiles = this.$refs.audio.uploadFiles
+            if (uploadFiles.length === 2) {
+                uploadFiles.shift()
+            }
+            this.$message({
+                message: response.return_code,
+                type: 'success'
+            })
         },
 
         // 商品视频
         handleSuccess3 (response, file, fileList) {
-            if (response.flag >> 0 === 1000) {
-                // statement
-                // false数据不存在 true数据上传成功
-                this.three.video = false
-                this.three.videoList = response
-                this.three.video_url = response.file_url
-                const uploadFiles = this.$refs.video.uploadFiles
-                if (uploadFiles.length === 2) {
-                    uploadFiles.shift()
-                }
-                this.$message({
-                    message: response.return_code,
-                    type: 'success'
-                })
-            } else {
+            if (response.flag >> 0 !== 1000) {
                 this.three.video = true
                 this.$refs.video.clearFiles()
                 const uploadFiles = this.$refs.video.uploadFiles
@@ -718,7 +715,20 @@ export default {
                     uploadFiles.shift()
                 }
                 this.$message.error(response.return_code)
+                return false
             }
+            // false数据不存在 true数据上传成功
+            this.three.video = false
+            this.three.videoList = response
+            this.three.video_url = response.file_url
+            const uploadFiles = this.$refs.video.uploadFiles
+            if (uploadFiles.length === 2) {
+                uploadFiles.shift()
+            }
+            this.$message({
+                message: response.return_code,
+                type: 'success'
+            })
         },
 
         // 获取商品品牌和商品分类
@@ -728,6 +738,10 @@ export default {
                 request_flag: 'product_list'
             })
             .then((msg) => {
+                if (msg.data.flag >> 0 !== 1000) {
+                    this.$message.error(msg.data.return_code)
+                    return false
+                }
                 // 商品品牌列表
                 var product_list = msg.data.product_list
                 _this.one.commodityBrandList = product_list
@@ -752,47 +766,48 @@ export default {
                 category_id: this.one.commodityClassification
             })
             .then((msg) => {
-                console.log(msg.data)
-                if (msg.data.flag >> 0 === 1000) {
-                    /* =================== 获取商品属性 ======================== */
-                    if (msg.data.category_arguments_list.category_argument_list) {
-                        _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list
-                    } else {
-                        console.log(`category_argument_list字段不存在`)
-                    }
-                    /* ======================================================== */
-
-                    /* ====== 接收服务器信息 向原有数据模型动态添加新模型 ===== */
-                    if (this.two.privateProperty !== 0) {
-                        for (let i = 0; i < this.two.privateProperty.length; i++) {
-                            // 接收服务器信息 向原有数据模型动态添加新模型
-                            var newAttribute = {
-                                attribute: this.two.privateProperty[i].argument_value,
-                                attributeValue: ''
-                            }
-                            this.two.privatePropertyList.push(newAttribute)
-                        }
-                    } else {
-                        console.log(`privateProperty字段为空,请检查!`)
-                    }
-                    /* ======================================================= */
-
-                    /* ==================== 分类属性选择 ===================== */
-                    if (this.goods_detail.sub_args.length !== 0 && this.two.privatePropertyList.length !== 0) {
-                        for (let i = 0; i < this.goods_detail.sub_args.length; i++) {
-                            for (let ii = 0; ii < this.two.privatePropertyList.length; ii++) {
-                                if (this.goods_detail.sub_args[i].argument_name === this.two.privatePropertyList[ii].attribute) {
-                                    this.two.privatePropertyList[ii].attributeValue = this.goods_detail.sub_args[i].argument_id
-                                }
-                            }
-                        }
-                    } else {
-                        console.log(`goods_detail.sub_args字段与this.privatePropertyList字段与预期不符!`)
-                    }
-                    /* ======================================================= */
-                } else {
-                    console.log(msg.data.return_code)
+                if (msg.data.flag >> 0 !== 1000) {
+                    this.$message.error(msg.data.return_code)
+                    return false
                 }
+
+                /* =================== 获取商品属性 ======================== */
+                if (!msg.data.category_arguments_list.category_argument_list) {
+                    console.log(`category_argument_list字段不存在`)
+                    return false
+                }
+                _this.two.privateProperty = msg.data.category_arguments_list.category_argument_list
+                /* ======================================================== */
+
+                /* ====== 接收服务器信息 向原有数据模型动态添加新模型 ===== */
+                if (this.two.privateProperty === 0) {
+                    console.log('privateProperty字段为空,请检查!')
+                    return false
+                }
+                for (let i = 0; i < this.two.privateProperty.length; i++) {
+                    // 接收服务器信息 向原有数据模型动态添加新模型
+                    var newAttribute = {
+                        attribute: this.two.privateProperty[i].argument_value,
+                        attributeValue: ''
+                    }
+                    this.two.privatePropertyList.push(newAttribute)
+                }
+                /* ======================================================= */
+
+                /* ==================== 分类属性选择 ===================== */
+                if (this.goods_detail.sub_args.length === 0 && this.two.privatePropertyList.length === 0) {
+                    console.log(`goods_detail.sub_args字段与this.privatePropertyList字段与预期不符!`)
+                    return false
+                }
+
+                for (let i = 0; i < this.goods_detail.sub_args.length; i++) {
+                    for (let ii = 0; ii < this.two.privatePropertyList.length; ii++) {
+                        if (this.goods_detail.sub_args[i].argument_name === this.two.privatePropertyList[ii].attribute) {
+                            this.two.privatePropertyList[ii].attributeValue = this.goods_detail.sub_args[i].argument_id
+                        }
+                    }
+                }
+                /* ======================================================= */
             })
             .catch(error => {
                 this.$message.error('服务器异常')
@@ -803,24 +818,22 @@ export default {
         twoReg () {
             // 计数检查数据模型是否有空值存在
             var countReg = true
-            if (this.two.privatePropertyList.length !== 0) {
-                for (var i = 0, length1 = this.two.privatePropertyList.length; i < length1; i++) {
-                    if (this.two.privatePropertyList[i].attributeValue === '') {
-                        countReg = false
-                    }
-                }
-                return countReg
-            } else {
-                console.log(`two.privatePropertyList数据模型为空,与预期不符!`)
+            if (this.two.privatePropertyList.length === 0) {
+                console.log('two.privatePropertyList数据模型为空,与预期不符!')
                 return false
             }
+
+            for (var i = 0, length1 = this.two.privatePropertyList.length; i < length1; i++) {
+                if (this.two.privatePropertyList[i].attributeValue === '') {
+                    countReg = false
+                }
+            }
+            return countReg
         },
 
         // 颜色选择 单选
         handleCheckedCitiesChange (value) {
             var checkedCount = value.length
-            console.log(value, checkedCount, '颜色单选')
-            console.log(value, this.four.cities)
             // 记录用户每次颜色选择的操作
             this.userColorModelHistoricalRecord()
             // 根据用户选择颜色 动态生成颜色、图片对应关系
@@ -848,62 +861,69 @@ export default {
                 request_flag: request_flag
             })
             .then((msg) => {
-                if (msg.data.flag >> 0 === 1000) {
-                    if (request_flag === 'color_list') {
-                        const arr1 = []
-                        const arr2 = []
-                        /* ================== 颜色列表 ======================*/
-                        const categoryColorList = msg.data.category_color_list
-                        if (categoryColorList.length !== 0) {
-                            for (let i = 0, length1 = categoryColorList.length; i < length1; i++) {
-                                arr1.push(categoryColorList[i].argument_value)
-                            }
-                        } else {
-                            console.log(`category_color_list字段与预期不符!`)
-                        }
-                        /* ================================================ */
+                if (msg.data.flag >> 0 !== 1000) {
+                    this.$message({
+                        message: msg.data.return_code,
+                        type: 'warning'
+                    })
+                    return false
+                }
+                if (request_flag === 'color_list') {
+                    const arr1 = []
+                    const arr2 = []
+                    /* ================== 颜色列表 ======================*/
+                    const categoryColorList = msg.data.category_color_list
+                    if (categoryColorList.length === 0) {
+                        console.log(`category_color_list字段与预期不符!`)
+                        return false
+                    }
 
-                        /* =============== 商品颜色对应图片关系绑定 =============== */
-                        if (this.goods_detail.image_url.length !== 0) {
-                            for (let i = 0, length1 = this.goods_detail.image_url.length; i < length1; i++) {
-                                arr2.push(this.goods_detail.image_url[i].color_name)
-                            }
-                        } else {
-                            console.log(`this.goods_detail.image_url与预期不符`)
-                        }
-                        /* ======================================================== */
+                    for (let i = 0, length1 = categoryColorList.length; i < length1; i++) {
+                        arr1.push(categoryColorList[i].argument_value)
+                    }
+                    /* ================================================ */
 
-                        /* -------- arr1中去除arr2中所包含的元素 -------- */
-                        for (let i = arr1.length - 1; i >= 0; i--) {
-                            for (let ii = arr2.length - 1; ii >= 0; ii--) {
-                                if (arr2[ii] === arr1[i]) {
-                                    arr1.splice(i, 1)
-                                }
-                            }
-                        }
-                        /* ---------------------------------------------- */
-                        this.four.cities = arr1
-                        this.four.colorList = msg.data.category_color_list
+                    /* =============== 商品颜色对应图片关系绑定 =============== */
+                    if (this.goods_detail.image_url.length === 0) {
+                        console.log(`this.goods_detail.image_url与预期不符`)
+                        return false
+                    }
 
-                        /* ============== 获取尺寸 ============== */
-                        this.getColorClassification('size_list')
-                        /* ====================================== */
-                    } else if (request_flag === 'size_list') {
-                        if (msg.data.category_size_list.length !== 0) {
-                            for (var i = 0; i < msg.data.category_size_list.length; i++) {
-                                this.four.size_list.push(msg.data.category_size_list[i].argument_value)
+                    for (let i = 0, length1 = this.goods_detail.image_url.length; i < length1; i++) {
+                        arr2.push(this.goods_detail.image_url[i].color_name)
+                    }
+                    /* ======================================================== */
+
+                    /* -------- arr1中去除arr2中所包含的元素 -------- */
+                    for (let i = arr1.length - 1; i >= 0; i--) {
+                        for (let ii = arr2.length - 1; ii >= 0; ii--) {
+                            if (arr2[ii] === arr1[i]) {
+                                arr1.splice(i, 1)
                             }
-                            this.four.sizeList = msg.data.category_size_list
-                            /* ===== 进入下一步骤 ===== */
-                            this.active ++
-                            this.$refs.elCarousel.next()
-                            /* ======================= */
-                        } else {
-                            console.log(`category_size_list字段与预期不符!`)
                         }
                     }
-                } else {
-                    this.consoleWarning(msg.data.return_code)
+                    /* ---------------------------------------------- */
+                    this.four.cities = arr1
+                    this.four.colorList = msg.data.category_color_list
+
+                    /* ============== 获取尺寸 ============== */
+                    this.getColorClassification('size_list')
+                    /* ====================================== */
+                }
+                if (request_flag === 'size_list') {
+                    if (msg.data.category_size_list.length === 0) {
+                        console.log(`category_size_list字段与预期不符!`)
+                        return false
+                    }
+
+                    for (var i = 0; i < msg.data.category_size_list.length; i++) {
+                        this.four.size_list.push(msg.data.category_size_list[i].argument_value)
+                    }
+                    this.four.sizeList = msg.data.category_size_list
+                    /* ===== 进入下一步骤 ===== */
+                    this.active ++
+                    this.$refs.elCarousel.next()
+                    /* ======================= */
                 }
             })
             .catch(error => {
@@ -936,36 +956,37 @@ export default {
         // 动态生成颜色图片对应关系数据模型
         createColorAndImg () {
             // 初始化数据模型 可能要做DeBug处理 若用户上传图片又改动选择颜色 图片对应关系也会被初始化
-            if (this.four.colorAndImg.length >> 0 === 0) {
-                for (var j = 0; j < this.four.checkedCities.length; j++) {
-                    const colorImg = {
-                        color: this.four.checkedCities[j],
-                        imgUrl: ''
-                    }
-                    this.four.colorAndImg.push(colorImg)
-                }
-            } else {
-            // 判断用户是添加还是删除
-            // 0代表删除 1代表添加
+            if (this.four.colorAndImg.length >> 0 !== 0) {
+                // 判断用户是添加还是删除
+                // 0代表删除 1代表添加
                 var userOperation = (this.userColorHistoricalRecord[1].length) > (this.userColorHistoricalRecord[0].length) ? 1 : 0
                 var userOperationColor = this.removeDuplicate()
-                if (userOperation >> 0 === 1) {
+
+                switch (userOperation >> 0) {
+                case 1:
                     const colorImg = {
                         color: userOperationColor[0],
                         imgUrl: ''
                     }
                     this.four.colorAndImg.push(colorImg)
-                } else if (userOperation >> 0 === 0) {
+                    break
+                case 0:
                     for (let i = 0; i < this.four.colorAndImg.length; i++) {
                         if (this.four.colorAndImg[i].color === userOperationColor[0]) {
                             this.four.colorAndImg.splice(i, 1)
                         }
                     }
+                    break
                 }
-                console.log(userOperationColor[0], '去重结果', this.userColorHistoricalRecord[0].length, '前一步用户选择', this.userColorHistoricalRecord[1].length, '当前用户选择', userOperation >> 0 === 1 ? '添加' : '删除', '用户操作')
+                return false
             }
-
-            console.log(this.four.colorAndImg, '数据模型')
+            for (var j = 0; j < this.four.checkedCities.length; j++) {
+                const colorImg = {
+                    color: this.four.checkedCities[j],
+                    imgUrl: ''
+                }
+                this.four.colorAndImg.push(colorImg)
+            }
         },
 
         // 两数组比较去重
@@ -999,27 +1020,43 @@ export default {
             if (this.userColorHistoricalRecord.length >= 2) {
                 this.userColorHistoricalRecord.splice(0, 1)
                 this.userColorHistoricalRecord.push(this.four.checkedCities)
-            } else {
-                this.userColorHistoricalRecord.push(this.four.checkedCities)
+                return false
             }
+
+            this.userColorHistoricalRecord.push(this.four.checkedCities)
         },
 
         // 商品颜色图片
         colorAndImgSuccess (response, file, fileList) {
-            if (response.flag >> 0 === 1000) {
-                // statement
-                var imgColor = response.imgColor
-                for (var i = 0; i < this.four.colorAndImg.length; i++) {
-                    if (this.four.colorAndImg[i].color === imgColor) {
-                        this.four.colorAndImg[i].imgUrl = response.file_url
+            if (response.flag >> 0 !== 1000) {
+                this.$message.error(response.return_code)
+                return false
+            }
+
+            // statement
+            var imgColor = response.imgColor
+            for (var i = 0; i < this.four.colorAndImg.length; i++) {
+                if (this.four.colorAndImg[i].color === imgColor) {
+                    this.four.colorAndImg[i].imgUrl = response.file_url
+                }
+            }
+            this.$message({
+                message: response.return_code,
+                type: 'success'
+            })
+        },
+
+        // 移除图片
+        colorAndImgRemove (file, fileList) {
+            console.log(file, fileList)
+            const response = file.response // 服务器返回数据
+            const imgColor = response.imgColor // 删除图片对应颜色
+            for (var i = this.four.colorAndImg.length - 1; i >= 0; i--) {
+                if (this.four.colorAndImg[i].color === imgColor) {
+                    if (this.four.colorAndImg[i].imgUrl) {
+                        this.four.colorAndImg[i].imgUrl = ''
                     }
                 }
-                this.$message({
-                    message: response.return_code,
-                    type: 'success'
-                })
-            } else {
-                this.$message.error(response.return_code)
             }
         },
 
@@ -1129,17 +1166,19 @@ export default {
                 goods_id: this.goods_detail.id
             })
             .then((msg) => {
-                if (msg.data.flag >> 0 === 1000) {
-                    this.$message({
-                        message: msg.return_code,
-                        type: 'success'
-                    })
-                    setTimeout(() => {
-                        this.$router.push({ path: 'listOfGoods' })
-                    }, 2000)
-                } else {
+                if (msg.data.flag >> 0 !== 1000) {
+                    this.flag4 = true // 提交失败是可以修改后在提交
                     this.$message.error(msg.data.return_code)
+                    return false
                 }
+
+                this.$message({
+                    message: msg.return_code,
+                    type: 'success'
+                })
+                setTimeout(() => {
+                    this.$router.push({ path: 'listOfGoods' })
+                }, 2000)
             })
             .catch(error => {
                 this.$message.error('服务器异常')
