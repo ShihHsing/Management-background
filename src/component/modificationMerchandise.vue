@@ -1,7 +1,14 @@
 <template>
     <div id="modificationMerchandise">
         <div class="modificationMerchandise_top">
-            <el-col :span="8">
+            <el-col :span="2" style="height: 75px;">
+                <router-link to="/listOfGoods">
+                    <el-button type="text">
+                        <i class="el-icon-arrow-left"></i>
+                    </el-button>
+                </router-link>
+            </el-col>
+            <el-col :span="8" :offset="6">
                 <el-steps :active="active" finish-status="success">
                     <el-step title="步骤 1">
                     </el-step>
@@ -280,7 +287,7 @@
         .modificationMerchandise_top{
             box-sizing: border-box;
             display: flex;
-            justify-content: center;
+            // justify-content: center;
             align-items: center;
 
             height: 133px;

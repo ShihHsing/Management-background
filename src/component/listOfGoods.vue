@@ -77,7 +77,7 @@
                                 width="80">
                                 <template scope="scope" >
                                     <template v-if="shop_id == scope.row.shop_id">
-                                        <router-link size="small" class="el-button el-button--warning el-button--small" type="warning" :to="{path: 'modificationMerchandise', query: {shopID: scope.row.id}}">编辑</router-link>
+                                        <router-link size="small" class="el-button el-button--warning el-button--small" type="warning" :to="{path: 'modificationMerchandise', query: {shopID: scope.row.id}}"><i class="el-icon-edit"></i></router-link>
                                     </template>
                                     <template v-else>
                                         <el-row type="flex" justify="center">

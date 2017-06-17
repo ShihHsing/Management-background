@@ -1,64 +1,71 @@
 <template>
     <div id="add3DModel">
-            <el-col :span="24" style="height: 100%; width: 100%;">
-              <!-- 头部 -->
-                <div class="add3DModel_top">
-                    <span>添加3D模型</span>
-                </div>
-                <div class="add3DModel_form_wrap">
+        <el-col :span="24" style="height: 100%; width: 100%;">
+            <!-- 头部 -->
+            <div class="add3DModel_top">
+                <router-link to="/listOfGoods">
+                    <el-button type="text">
+                        <i class="el-icon-arrow-left"></i>
+                    </el-button>
+                </router-link>
+                <span>
+                    添加3D模型
+                </span>
+            </div>
+            <div class="add3DModel_form_wrap">
                 <div class="add3DModel_form_body sx_basis_scroll sx_scroll_style">
-                <el-form label-position="left" label-width="80px" class="add3DModel_form">
-                    <el-form-item label="商品款号:">
-                        <el-input placeholder="请输入内容" v-model="code" :disabled="true" style="width: 217px;">
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item label="商品颜色:">
-                        <el-input placeholder="请输入内容" v-model="color" :disabled="true" style="width: 217px;">
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item label="IOS unity模型:">
-                        <el-upload class="upload-demo" :action="uploadHandle3DModel" name="ios_unity_file"
-                        :on-success="addIosUnity" :on-error="uploadError">
-                            <el-button size="small" type="primary">
-                                点击上传
-                            </el-button>
-                        </el-upload>
-                    </el-form-item>
-                    <el-form-item label="Android unity模型:">
-                        <el-upload class="upload-demo" :action="uploadHandle3DModel" name="android_unity_file"
-                        :on-success="addAndroidUnity" :on-error="uploadError">
-                            <el-button size="small" type="primary">
-                                点击上传
-                            </el-button>
-                        </el-upload>
-                    </el-form-item>
-                    <el-form-item label="添加3D缩略图:">
-                        <div v-for="(city,index) in colorImg">
-                            <el-upload :action="uploadHandle3DModel" :multiple="false" :on-success="colorAndImgSuccess"
-                            :on-error="uploadError" :before-upload="uploadBefore" name="thumbnail"
-                            :data="{'imgColor': colorImg[index]}" list-type="picture">
+                    <el-form label-position="left" label-width="80px" class="add3DModel_form">
+                        <el-form-item label="商品款号:">
+                            <el-input placeholder="请输入内容" v-model="code" :disabled="true" style="width: 217px;">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="商品颜色:">
+                            <el-input placeholder="请输入内容" v-model="color" :disabled="true" style="width: 217px;">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="IOS unity模型:">
+                            <el-upload class="upload-demo" :action="uploadHandle3DModel" name="ios_unity_file"
+                            :on-success="addIosUnity" :on-error="uploadError">
                                 <el-button size="small" type="primary">
-                                    请上传{{ colorImg[index] }}商品的3D缩略图
+                                    点击上传
                                 </el-button>
-                                <div slot="tip" class="el-upload__tip" style="color:#555;">
-                                    请上传
-                                    <b style="color:#20A0FF;">
-                                        {{ colorImg[index] }}
-                                    </b>
-                                    商品的商品图片,并只能上传jpg/png文件，且不超过500kb 200*200
-                                </div>
                             </el-upload>
-                        </div>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="phpPostData()">
-                            提交
-                        </el-button>
-                    </el-form-item>
-                </el-form>
+                        </el-form-item>
+                        <el-form-item label="Android unity模型:">
+                            <el-upload class="upload-demo" :action="uploadHandle3DModel" name="android_unity_file"
+                            :on-success="addAndroidUnity" :on-error="uploadError">
+                                <el-button size="small" type="primary">
+                                    点击上传
+                                </el-button>
+                            </el-upload>
+                        </el-form-item>
+                        <el-form-item label="添加3D缩略图:">
+                            <div v-for="(city,index) in colorImg">
+                                <el-upload :action="uploadHandle3DModel" :multiple="false" :on-success="colorAndImgSuccess"
+                                :on-error="uploadError" name="thumbnail"
+                                :data="{'imgColor': colorImg[index]}" list-type="picture">
+                                    <el-button size="small" type="primary">
+                                        请上传{{ colorImg[index] }}商品的3D缩略图
+                                    </el-button>
+                                    <div slot="tip" class="el-upload__tip" style="color:#555;">
+                                        请上传
+                                        <b style="color:#20A0FF;">
+                                            {{ colorImg[index] }}
+                                        </b>
+                                        商品的商品图片,并只能上传jpg/png文件，且不超过500kb 200*200
+                                    </div>
+                                </el-upload>
+                            </div>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="phpPostData()">
+                                提交
+                            </el-button>
+                        </el-form-item>
+                    </el-form>
                 </div>
-                </div>
-            </el-col>
+            </div>
+        </el-col>
         </el-row>
     </div>
 </template>
@@ -74,7 +81,6 @@
         .add3DModel_top{
             box-sizing: border-box;
             display: flex;
-            justify-content: space-between;
 
             height: 50px;
             
@@ -85,6 +91,9 @@
             line-height: 50px;
             font-size: 18px;
             color: #8492A6;
+            button{
+                padding-right: 30px;
+            }
         }
         .add3DModel_form_wrap{
             box-sizing: border-box;
