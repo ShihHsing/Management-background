@@ -122,7 +122,7 @@
 </style>
 
 <script>
-import * as API from '../assets/axios/api.js'
+import * as API from '../../assets/axios/api.js'
 export default{
     name: 'add3DModel',
     data () {

@@ -54,29 +54,29 @@
         /*---------------------------- 导航图标 ------------------------*/
         .home{
             padding-left: 30px;
-            background: url('../assets/img/nav-menu/home_default.png') no-repeat left center;
+            background: url('../../assets/img/nav-menu/home_default.png') no-repeat left center;
             background-size: 18px;
         }
         .selected_home{
             padding-left: 30px;
-            background: url('../assets/img/nav-menu/home_selected.png') no-repeat left center;
+            background: url('../../assets/img/nav-menu/home_selected.png') no-repeat left center;
             background-size: 18px;
         }
         .shop_manage{
             padding-left: 30px;
-            background: url('../assets/img/nav-menu/commodity_management_default.png') no-repeat left
+            background: url('../../assets/img/nav-menu/commodity_management_default.png') no-repeat left
              center;
              background-size: 18px;
         }
         .addExcel{
             padding-left: 30px;
-            background: url('../assets/img/nav-menu/member_import_default.png') no-repeat left
+            background: url('../../assets/img/nav-menu/member_import_default.png') no-repeat left
              center;
              background-size: 18px;
         }
         .selected_addExcel{
             padding-left: 30px;
-            background: url('../assets/img/nav-menu/member_import_selected.png') no-repeat left
+            background: url('../../assets/img/nav-menu/member_import_selected.png') no-repeat left
              center;
              background-size: 18px;
         }
@@ -93,7 +93,6 @@ export default {
 
     computed: {
         router_url: function () {
-            console.log(this.$route.path)
             return this.$route.path
         }
     },

@@ -3,7 +3,7 @@
         <el-col :span="24" style="height: 100%; width: 100%;">
             <!-- 头部 -->
             <div class="goodsPrivateProperty_top">
-                <span>商品私有属性</span>
+                <span>商品属性</span>
                 <el-button class="OI" type="text" @click="dialogVisible = true">操作说明</el-button>
             </div>
             <div class="goodsPrivateProperty_form_wrap">
@@ -24,8 +24,8 @@
                             <el-option v-for="item in goodsPrivateProperty.commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="添加商品私有属性" prop="addGoodsPrivateProperty">
-                            <el-input style="width: 217px;" v-model="goodsPrivateProperty.addGoodsPrivateProperty" placeholder="请添加商品私有属性"></el-input>
+                        <el-form-item label="添加商品属性" prop="addGoodsPrivateProperty">
+                            <el-input style="width: 217px;" v-model="goodsPrivateProperty.addGoodsPrivateProperty" placeholder="请添加商品属性"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="submitForm('goodsPrivateProperty')">提交</el-button>
@@ -38,7 +38,7 @@
         <!-- 提示用户页面操作须知 -->
         <el-dialog title="操作说明" v-model="dialogVisible" size="tiny">
             <span>1.仅针对自有品牌除本平台提供商品属性以外的自有商品属性的添加。</span></br>
-            <span>2.添加私有属性后请移步至<router-link to="/goodsPrivatePropertyValues">商品私有属性值</router-link>完善属性值选项。</span></br>
+            <span>2.添加属性后请移步至<router-link to="/goodsPrivatePropertyValues">商品属性值</router-link>完善属性值选项。</span></br>
             <span>3.请注意文明用语!</span>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -101,7 +101,7 @@
 </style>
 
 <script>
-import { addNewerCategoryArguments, addNewerGoodsInfo } from '../assets/axios/api.js'
+import { addNewerCategoryArguments, addNewerGoodsInfo } from '../../assets/axios/api.js'
 export default {
     name: 'goodsPrivateProperty',
     data () {
@@ -112,7 +112,7 @@ export default {
                 commodityBrandList: [],
                 commodityClassification: '', // 商品分类
                 commodityClassificationList: [],
-                addGoodsPrivateProperty: '' // 添加商品私有属性
+                addGoodsPrivateProperty: '' // 添加商品属性
             },
             goodsPrivatePropertyRules: { // 验证规则
                 commodityBrand: [
@@ -122,7 +122,7 @@ export default {
                     { required: true, message: '请选择商品分类', trigger: 'change' }
                 ],
                 addGoodsPrivateProperty: [
-                    { required: true, message: '请添加商品私有属性', trigger: 'change' }
+                    { required: true, message: '请添加商品属性', trigger: 'change' }
                 ]
             }
         }

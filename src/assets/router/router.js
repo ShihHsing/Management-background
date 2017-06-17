@@ -12,11 +12,11 @@ const routes = [
         meta: { auth: false }
     }, {
         path: '/children', // 子页面
-        component: resolve => require(['../../component/children.vue'],
+        component: resolve => require(['../../component/public/children.vue'],
         resolve),
         children: [{
             path: '/home', // 首页
-            component: resolve => require(['../../component/home.vue'],
+            component: resolve => require(['../../component/login/home.vue'],
             resolve),
             name: '首页'
         }, {
@@ -31,37 +31,37 @@ const routes = [
             name: '商品分类'
         }, {
             path: '/goodsPrivateColor', // 商品私有颜色
-            component: resolve => require(['../../component/goodsPrivateColor.vue'],
+            component: resolve => require(['../../component/shop_management/goodsPrivateColor.vue'],
             resolve),
             name: '商品管理/自定义属性/商品颜色'
         }, {
             path: '/goodsPrivateSize', // 商品私有尺码
-            component: resolve => require(['../../component/goodsPrivateSize.vue'],
+            component: resolve => require(['../../component/shop_management/goodsPrivateSize.vue'],
             resolve),
             name: '商品管理/自定义属性/商品尺寸'
         }, {
             path: '/goodsPrivateProperty', // 商品私有属性
-            component: resolve => require(['../../component/goodsPrivateProperty.vue'],
+            component: resolve => require(['../../component/shop_management/goodsPrivateProperty.vue'],
             resolve),
             name: '商品管理/自定义属性/商品属性'
         }, {
             path: '/goodsPrivatePropertyValues', // 商品私有属性值
-            component: resolve => require(['../../component/goodsPrivatePropertyValues.vue'],
+            component: resolve => require(['../../component/shop_management/goodsPrivatePropertyValues.vue'],
             resolve),
             name: '商品管理/自定义属性/商品属性值'
         }, {
             path: '/addMerchandise', // 添加商品
-            component: resolve => require(['../../component/addMerchandise.vue'],
+            component: resolve => require(['../../component/shop_management/addMerchandise.vue'],
             resolve),
             name: '商品管理/添加商品'
         }, {
             path: '/modificationMerchandise', // 修改商品
-            component: resolve => require(['../../component/modificationMerchandise.vue'],
+            component: resolve => require(['../../component/shop_management/modificationMerchandise.vue'],
             resolve),
             name: '商品管理/修改商品'
         }, {
             path: '/listOfGoods', // 商品列表
-            component: resolve => require(['../../component/listOfGoods.vue'],
+            component: resolve => require(['../../component/shop_management/listOfGoods.vue'],
             resolve),
             name: '商品管理/商品列表'
         }, {
@@ -82,7 +82,7 @@ const routes = [
             resolve)
         }, {
             path: '/add3DModel', // 3D模型上传
-            component: resolve => require(['../../component/add3DModel.vue'],
+            component: resolve => require(['../../component/shop_management/add3DModel.vue'],
             resolve),
             name: '商品管理/3D模型上传'
         }, {

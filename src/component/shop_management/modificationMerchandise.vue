@@ -333,7 +333,7 @@
 </style>
 
 <script>
-import * as API from '../assets/axios/api.js'
+import * as API from '../../assets/axios/api.js'
 // 脚本文件
 export default {
     name: 'modificationMerchandise',

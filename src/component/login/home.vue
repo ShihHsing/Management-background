@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import store from '../assets/store'
+import store from '../../assets/store'
 
 export default {
     name: 'home',
@@ -24,7 +24,7 @@ export default {
         width: 100%;
         height: 100%;
         
-        background: url('../assets/img/home/home_banner.jpg') no-repeat center center #EBEFF5;
+        background: url('../../assets/img/home/home_banner.jpg') no-repeat center center #EBEFF5;
         background-size: cover;
         h2{
             font-weight: 500;
