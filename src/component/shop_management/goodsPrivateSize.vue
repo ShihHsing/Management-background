@@ -178,7 +178,7 @@ export default {
                 .then(msg => {
                     const data = msg.data
 
-                    if (data.flag >> 0 === 1000) {
+                    if (data.flag >> 0 !== 1000) {
                         this.$message.error('服务器异常')
                         return false
                     }
@@ -204,7 +204,7 @@ export default {
                 }
                 if (!this.goodsPrivatePropertyValues.dynamicTags.length > 0) {
                     this.$message({
-                        message: '请完善商品分类属性属性值',
+                        message: '请完善商品尺寸',
                         type: 'warning'
                     })
                     return false
