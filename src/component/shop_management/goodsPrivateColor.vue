@@ -214,7 +214,7 @@ export default {
 
                 if (!this.goodsPrivatePropertyValues.dynamicTags.length > 0) {
                     this.$message({
-                        message: '请完善商品分类属性属性值!',
+                        message: '请完善商品颜色!',
                         type: 'warning'
                     })
                     return false
