@@ -211,6 +211,8 @@ export default {
                     message: data.return_code,
                     type: 'success'
                 })
+                // 刷新页面
+                window.location.reload()
             })
             .catch(response => {
                 this.$message('服务器Error')
