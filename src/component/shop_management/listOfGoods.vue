@@ -304,7 +304,7 @@ export default {
 
         // 搜索商品
         onSubmit () {
-            if (this.searchShopList.commodityBrand === '' || this.searchShopList.commodityClassification === '' || this.searchShopList.model === '') {
+            if (this.searchShopList.commodityBrand === '' && this.searchShopList.commodityClassification === '' && this.searchShopList.model === '') {
                 this.$message.error('请完善搜索信息,至少需要一个搜索条件')
                 return false
             }
