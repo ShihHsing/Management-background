@@ -291,11 +291,9 @@ export default {
                 }
 
                 // 商品品牌列表
-                var product_list = data.product_list
-                this.commodityBrandList = product_list
+                this.commodityBrandList = data.product_list
                 // 商品分类列表
-                var category_list = data.category_list
-                this.commodityClassificationList = category_list
+                this.commodityClassificationList = data.category_list
             })
             .catch(error => {
                 this.$message.error('服务器异常')
