@@ -179,7 +179,7 @@ export default {
                 this.USER_SIGNOUT() // 退出登录
 
                 this.$message({
-                    data: data.return_code,
+                    message: data.return_code,
                     type: 'success'
                 })
 
@@ -202,13 +202,13 @@ export default {
             .then(msg => {
                 const data = msg.data
                 if (data.flag !== '01') {
-                    this.consoleError(data.return_code)
+                    this.$message.error(data.return_code)
                     return false
                 }
                 const userData = data
                 this.USER_SIGNIN({ userData })// 通知vuex改变状态树
-                this.consoleSuccess({
-                    data: data.return_code,
+                this.$message({
+                    message: data.return_code,
                     type: 'success'
                 })
             })
