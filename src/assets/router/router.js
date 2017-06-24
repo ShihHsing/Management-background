@@ -92,15 +92,18 @@ const routes = [
         }, {
             path: '/trainingClassifyList', // 添加培训分类&&培训分类列表
             component: resolve => require(['../../component/trainingClassifyList.vue'],
-            resolve)
+            resolve),
+            name: '管理员/培训功能/培训分类'
         }, {
             path: '/addTraining', // 添加培训详情
             component: resolve => require(['../../component/addTraining.vue'],
-            resolve)
+            resolve),
+            name: '管理员/培训功能/添加培训'
         }, {
             path: '/trainingList', // 培训列表
             component: resolve => require(['../../component/trainingList.vue'],
-            resolve)
+            resolve),
+            name: '管理员/培训功能/培训列表'
         }, {
             path: '/addExcel', // 老会员导入
             component: resolve => require(['../../component/addExcel.vue'],
