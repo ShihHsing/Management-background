@@ -2,32 +2,32 @@
     <div id="listOfGoods">
         <el-row style="margin-bottom: 15px;">
             <el-col :span="24">
-                    <el-form ref="searchShopList" :model="searchShopList" :rules="rules" label-position="left" label-width="75px">
-                        <el-row type="flex" class="row-bg" justify="space-between">
-                            <el-col :span="6">
-                                <el-form-item label="商品品牌:" prop="commodityBrand">
-                                    <el-select v-model="searchShopList.commodityBrand" clearable placeholder="请选择商品品牌">
-                                        <el-option v-for="item in commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="6">
-                                <el-form-item label="商品分类:" prop="commodityClassification">
-                                    <el-select v-model="searchShopList.commodityClassification" clearable placeholder="请选择商品分类">
-                                        <el-option v-for="item in commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="6">
-                                <el-form-item label="商品款号:" prop="model">
-                                    <el-input v-model="searchShopList.model" style="width: 217px;" placeholder="请输入商品款号"></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="5">
-                                <el-button type="primary" @click="onSubmit" style="float: right;">立即搜索</el-button>
-                            </el-col>
-                        </el-row>
-                    </el-form>
+                <el-form ref="searchShopList" :model="searchShopList" :rules="rules" label-position="left" label-width="75px">
+                    <el-row type="flex" justify="space-between">
+                        <el-col :span="6">
+                            <el-form-item label="商品品牌:" prop="commodityBrand">
+                                <el-select v-model="searchShopList.commodityBrand" clearable placeholder="请选择商品品牌">
+                                    <el-option v-for="item in commodityBrandList" :label="item.product_name" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item label="商品分类:" prop="commodityClassification">
+                                <el-select v-model="searchShopList.commodityClassification" clearable placeholder="请选择商品分类">
+                                    <el-option v-for="item in commodityClassificationList" :label="item.category_name" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item label="商品款号:" prop="model">
+                                <el-input v-model="searchShopList.model" style="width: 217px;" placeholder="请输入商品款号"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-button type="primary" @click="onSubmit" style="float: right;">立即搜索</el-button>
+                        </el-col>
+                    </el-row>
+                </el-form>
             </el-col>
         </el-row>
         <div class="listOfGoods_body_wrap">
