@@ -18,7 +18,7 @@
                         label-position="left">
                         <el-form-item label="培训标题:" prop="training_title">
                             <el-tooltip class="item" effect="dark" content="标题唯一,不允许重复" placement="left">
-                                <el-input v-model="form.training_title" placeholder="请输入培训标题">
+                                <el-input v-model="form.training_title" placeholder="请输入培训标题" style="width: 217px;">
                                 </el-input>
                             </el-tooltip>
                         </el-form-item>
