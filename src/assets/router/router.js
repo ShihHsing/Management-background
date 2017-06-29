@@ -88,7 +88,8 @@ const routes = [
         }, {
             path: '/addCarouselDrawing', // 添加轮播图
             component: resolve => require(['../../component/addCarouselDrawing.vue'],
-            resolve)
+            resolve),
+            name: '管理员/轮播图'
         }, {
             path: '/trainingClassifyList', // 添加培训分类&&培训分类列表
             component: resolve => require(['../../component/trainingClassifyList.vue'],
