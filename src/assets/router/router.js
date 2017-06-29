@@ -33,37 +33,37 @@ const routes = [
             path: '/goodsPrivateColor', // 商品私有颜色
             component: resolve => require(['../../component/shop_management/goodsPrivateColor.vue'],
             resolve),
-            name: '商品管理/自定义属性/商品颜色'
+            name: '商品管理-自定义属性-商品颜色'
         }, {
             path: '/goodsPrivateSize', // 商品私有尺码
             component: resolve => require(['../../component/shop_management/goodsPrivateSize.vue'],
             resolve),
-            name: '商品管理/自定义属性/商品尺寸'
+            name: '商品管理-自定义属性-商品尺寸'
         }, {
             path: '/goodsPrivateProperty', // 商品私有属性
             component: resolve => require(['../../component/shop_management/goodsPrivateProperty.vue'],
             resolve),
-            name: '商品管理/自定义属性/商品属性'
+            name: '商品管理-自定义属性-商品属性'
         }, {
             path: '/goodsPrivatePropertyValues', // 商品私有属性值
             component: resolve => require(['../../component/shop_management/goodsPrivatePropertyValues.vue'],
             resolve),
-            name: '商品管理/自定义属性/商品属性值'
+            name: '商品管理-自定义属性-商品属性值'
         }, {
             path: '/addMerchandise', // 添加商品
             component: resolve => require(['../../component/shop_management/addMerchandise.vue'],
             resolve),
-            name: '商品管理/添加商品'
+            name: '商品管理-添加商品'
         }, {
             path: '/modificationMerchandise', // 修改商品
             component: resolve => require(['../../component/shop_management/modificationMerchandise.vue'],
             resolve),
-            name: '商品管理/修改商品'
+            name: '商品管理-修改商品'
         }, {
             path: '/listOfGoods', // 商品列表
             component: resolve => require(['../../component/shop_management/listOfGoods.vue'],
             resolve),
-            name: '商品管理/商品列表'
+            name: '商品管理-商品列表'
         }, {
             path: '/addRobotInstructions', // 机器人使用说明
             component: resolve => require(['../../component/addRobotInstructions.vue'],
@@ -84,27 +84,27 @@ const routes = [
             path: '/add3DModel', // 3D模型上传
             component: resolve => require(['../../component/shop_management/add3DModel.vue'],
             resolve),
-            name: '商品管理/3D模型上传'
+            name: '商品管理-3D模型上传'
         }, {
             path: '/addCarouselDrawing', // 添加轮播图
             component: resolve => require(['../../component/addCarouselDrawing.vue'],
             resolve),
-            name: '管理员/轮播图'
+            name: '管理员-轮播图'
         }, {
             path: '/trainingClassifyList', // 添加培训分类&&培训分类列表
             component: resolve => require(['../../component/trainingClassifyList.vue'],
             resolve),
-            name: '管理员/培训功能/培训分类'
+            name: '管理员-培训功能-培训分类'
         }, {
             path: '/addTraining', // 添加培训详情
             component: resolve => require(['../../component/addTraining.vue'],
             resolve),
-            name: '管理员/培训功能/添加培训'
+            name: '管理员-培训功能-添加培训'
         }, {
             path: '/trainingList', // 培训列表
             component: resolve => require(['../../component/trainingList.vue'],
             resolve),
-            name: '管理员/培训功能/培训列表'
+            name: '管理员-培训功能-培训列表'
         }, {
             path: '/addExcel', // 老会员导入
             component: resolve => require(['../../component/addExcel.vue'],
@@ -114,6 +114,16 @@ const routes = [
             path: '/editorTest',
             component: resolve => require(['../../component/editorTest.vue'],
             resolve)
+        }, {
+            path: '/addShareholder',
+            component: resolve => require(['../../component/shareholder/addShareholder.vue'],
+            resolve),
+            name: '3D购股东-添加股东'
+        }, {
+            path: '/shareholderList',
+            component: resolve => require(['../../component/shareholder/shareholderList.vue'],
+            resolve),
+            name: '3D购股东-股东列表'
         }]
     }, {
         path: '*',

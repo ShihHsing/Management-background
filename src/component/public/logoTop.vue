@@ -191,6 +191,10 @@ export default {
             .catch(response => {
                 this.dialogVisible = false // 关闭对话框
                 this.$message('服务器Error')
+                setTimeout(() => {
+                    // 退出到登录页
+                    this.$router.replace({ path: '/login' })
+                }, 1000)
             })
         },
 

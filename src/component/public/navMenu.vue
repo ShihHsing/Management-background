@@ -7,17 +7,12 @@
                     首页
                 </span>
             </el-menu-item>
-            <!-- <el-submenu index="门店管理">
-            <template slot="title">门店管理</template>
-            </el-submenu> -->
             <el-submenu index="商品管理">
                 <template slot="title">
                     <span class="shop_manage">
                         商品管理
                     </span>
                 </template>
-                <!-- <el-menu-item index="/commodityBrand">商品品牌</el-menu-item> -->
-                <!-- <el-menu-item index="/commodityClassification">商品分类</el-menu-item> -->
                 <el-submenu index="商品属性">
                     <template slot="title">
                         自定义属性
@@ -41,21 +36,31 @@
                 <el-menu-item index="/listOfGoods">
                     商品列表
                 </el-menu-item>
-                <!-- <el-menu-item index="/addCarouselDrawing">新增轮播图</el-menu-item> -->
             </el-submenu>
             <el-menu-item index="/addExcel">
                 <span class="addExcel" v-bind:class="[router_url == '/addExcel' ? 'selected_addExcel' : 'addExcel']">
                     会员导入
                 </span>
             </el-menu-item>
-            <el-submenu index="管理员">
+
+            <el-submenu index="3D购股东">
+                <template slot="title">
+                    <span class="shareholder">
+                        3D购股东
+                    </span>
+                </template>
+                <el-menu-item index="/addShareholder">
+                    添加股东
+                </el-menu-item>
+                <el-menu-item index="/shareholderList">
+                    股东列表
+                </el-menu-item>
+            </el-submenu>
+            <!--                   管理员权限                   -->
+            <el-submenu index="管理员" v-if="phoneNumber === '15914383361'">
                 <template slot="title">
                     管理员
                 </template>
-                <!-- <el-menu-item index="/goodsSetSwitch">商品设置开关</el-menu-item>
-                <el-menu-item index="/privateBrandStores">添加自有品牌</el-menu-item>
-                <el-menu-item index="/addRobotInstructions">机器人使用说明</el-menu-item>
-                <el-menu-item index="/tvmFansList">TVM活动吸粉列表</el-menu-item> -->
                 <el-submenu index="培训功能">
                     <template slot="title">
                         培训功能
@@ -121,15 +126,31 @@
              center;
              background-size: 18px;
         }
+        .shareholder{
+            padding-left: 30px;
+            background: url('../../assets/img/nav-menu/3d_shareholders_default.png') no-repeat left
+             center;
+             background-size: 18px;
+        }
+        .selected_shareholder{
+            padding-left: 30px;
+            background: url('../../assets/img/nav-menu/3d_shareholders_selected.png') no-repeat left
+             center;
+             background-size: 18px;
+        }
 
     }
 </style>
 
 <script>
+import store from '../../assets/store'
 export default {
     name: 'navMenu',
     data () {
-        return {}
+        return {
+            // 用户姓名
+            phoneNumber: store.state.user.userData.emp.phone_number
+        }
     },
 
     computed: {
