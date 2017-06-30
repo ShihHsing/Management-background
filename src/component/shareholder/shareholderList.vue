@@ -25,20 +25,24 @@
                         element-loading-text="加载中...">
                         <el-table-column
                             prop="s_name"
-                            label="姓名">
+                            label="姓名"
+                            width="80">
                         </el-table-column>
                         <el-table-column
                             prop="s_phone_number"
-                            label="手机号">
+                            label="手机号"
+                            width="140">
                         </el-table-column>
                         <el-table-column
                             prop="s_integral"
-                            label="积分">
+                            label="积分"
+                            width="120">
                         </el-table-column>
                         <el-table-column
-                            label="兑换">
+                            label="兑换"
+                            width="100">
                             <template scope="scope">
-                                <el-button type="primary">兑换</el-button>
+                                <el-button type="primary" @click="openIntegralForm(scope.row)">兑换</el-button>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -58,6 +62,18 @@
                     </el-pagination>
                 </div>
             </div>
+            <el-dialog title="积分兑换" v-model="dialogTableVisible">
+                <el-form :label-position="top">
+                    <el-form-item label="请选择兑换积分数量">
+                        <!-- TODO: max传进最大积分数 -->
+                        <el-input-number v-model="minusIntegral" :min="1" :max="shareholderInfo.s_integral >> 0"></el-input-number>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogTableVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="exchangeIntegral">确 定</el-button>
+                </div>
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -108,7 +124,7 @@
 </style>
 
 <script>
-import { getShareholderList } from '../../assets/axios/api.js'
+import { getShareholderList, exchangeIntegral } from '../../assets/axios/api.js'
 export default {
     name: 'addShareholder',
     data () {
@@ -122,6 +138,9 @@ export default {
             current_page: 0, // 当前页
             total_pages: 0, // 总页数
             page_size: 0, // 每页条数
+            dialogTableVisible: false, // 兑换窗口控件
+            minusIntegral: 0, // 积分
+            shareholderInfo: [], // 待操作股东信息
             rules: { // 验证规则
                 nameORiphoneNumer: [
                     { max: 15, message: ' 15 个字符以内', trigger: 'blur' }
@@ -130,6 +149,8 @@ export default {
         }
     },
     created: function () {
+        // 初始化
+        this.getShareholderList()
         this.$nextTick(function () { // 获取表格高度
             this.tableHeight = document.getElementById('table').offsetHeight
         })
@@ -184,8 +205,41 @@ export default {
         handleCurrentChange (val) {
             this.currentPage = val
             this.getShareholderList(this.searchShareholderList.nameORiphoneNumer, val)
-        }
+        },
+        // 打开积分变动组件
+        openIntegralForm (shareholderInfo) {
+            // 绑定要操作的股东ID
+            this.shareholderInfo = shareholderInfo
+            // 打开
+            this.dialogTableVisible = true
+            // 清空积分模型
+            this.minusIntegral = 1
+        },
+        // 积分兑换
+        exchangeIntegral () {
+            this.$axios.post(exchangeIntegral, {
+                s_id: this.shareholderInfo.s_id,
+                s_integral: this.minusIntegral
+            })
+            .then(msg => {
+                const data = msg.data
 
+                if (data.status !== 1000) {
+                    this.$message.error(data.ret_msg)
+                    return false
+                }
+
+                this.$message({
+                    message: data.ret_msg,
+                    type: 'success'
+                })
+                this.getShareholderList(this.keyword, this.current_page)
+                this.dialogTableVisible = false
+            })
+            .catch(error => {
+                this.$message.error('服务器异常')
+            })
+        }
     }
 }
 </script>

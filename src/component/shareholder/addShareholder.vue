@@ -153,6 +153,8 @@ export default {
                         message: data.ret_msg,
                         type: 'success'
                     })
+                    this.addShareholderValues.name = ''
+                    this.addShareholderValues.phone_number = ''
                 })
                 .catch(error => {
                     this.$message.error('服务器异常')
