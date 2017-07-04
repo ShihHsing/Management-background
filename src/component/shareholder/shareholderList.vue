@@ -232,6 +232,8 @@ export default {
 
                 if (data.status !== 1000) {
                     this.$message.error(data.ret_msg)
+                    // 关闭loading
+                    this.loading = false
                     return false
                 }
 

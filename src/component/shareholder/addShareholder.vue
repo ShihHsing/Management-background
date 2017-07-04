@@ -15,7 +15,7 @@
                         ref="addShareholderValues"
                         label-position="left"
                         class="addShareholder_form"
-                        label-width="90px">
+                        label-width="120px">
                         
                         <el-form-item label="股东姓名" prop="name">
                             <el-input v-model="addShareholderValues.name" style="width: 217px;" maxlength="15"></el-input>
