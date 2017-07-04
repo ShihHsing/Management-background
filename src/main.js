@@ -23,20 +23,20 @@ Vue.prototype.$axios = axios
 Vue.prototype.$Qs = Qs
 
 router.beforeEach(({ meta, path }, from, next) => {
-  var { auth = true } = meta
-  var isLogin = Boolean(store.state.user.userData) // true用户已登录， false用户未登录
-  if (auth && !isLogin && path !== '/login') {
-    return next({ path: '/login' })
-  }
-  next()
+    var { auth = true } = meta
+    var isLogin = Boolean(store.state.user.userData) // true用户已登录， false用户未登录
+    if (auth && !isLogin && path !== '/login') {
+        return next({ path: '/login' })
+    }
+    next()
 })
 
 new Vue({
-  el: '#app',
-  store,
-  router,
-  axios,
-  render: h => h(App)
+    el: '#app',
+    store,
+    router,
+    axios,
+    render: h => h(App)
 })
 
 console.log('%c↘ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↙', 'color:red')
