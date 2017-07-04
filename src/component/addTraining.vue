@@ -22,14 +22,14 @@
                                 </el-input>
                             </el-tooltip>
                         </el-form-item>
-                        <el-form-item label="培训分类:">
+                        <el-form-item label="培训分类:" required>
                             <el-select v-model="form.training_classify" placeholder="请选择培训分类">
                                 <el-option v-for="item in form.training_classify_list" :label="item.classify_name"
                                 :value="item.id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="培训缩略图:">
+                        <el-form-item label="培训缩略图:" required>
                             <el-tooltip class="item" effect="dark" placement="left">
                                 <div slot="content">
                                     图片大小不能超过1MB
@@ -44,7 +44,7 @@
                                 </el-upload>
                             </el-tooltip>
                         </el-form-item>
-                        <el-form-item label="培训类型:">
+                        <el-form-item label="培训类型:" required>
                             <el-radio class="radio" v-model="training_type" label="1">
                                 图文
                             </el-radio>
@@ -53,7 +53,7 @@
                             </el-radio>
                         </el-form-item>
                         <template v-if="training_type  >> 0 === 1">
-                            <el-form-item label="图文详情:" id="myQuill">
+                            <el-form-item label="图文详情:" id="myQuill" required>
                                 <el-tooltip class="item" effect="dark" placement="left">
                                     <div slot="content">
                                         图文详情每张图片大小不能超过1MB
@@ -71,7 +71,7 @@
                             style="display: none;">
                         </template>
                         <template v-else>
-                            <el-form-item label="视频地址:">
+                            <el-form-item label="视频地址:" required>
                                 <el-input v-model="form.video_url" placeholder="请输入视频地址">
                                 </el-input>
                             </el-form-item>
@@ -154,7 +154,7 @@ export default{
                 training_classify: '', // 培训分类:
                 training_classify_list: [], // 服务端获取分类
                 thumb_image_url: '', // 培训缩略图:
-                newDescription: '若只输入文字请选择字体大小', // 图文详情
+                newDescription: '', // 图文详情
                 video_url: ''  // 视频地址
             },
             editorOption: {}, // 富文本对象
@@ -277,14 +277,14 @@ export default{
                 if (!valid) {
                     return false
                 }
-                if (this.form.training_classify) {
+                if (!this.form.training_classify) {
                     this.$message({
                         message: '请选择培训分类',
                         type: 'warning'
                     })
                     return false
                 }
-                if (this.form.thumb_image_url) {
+                if (!this.form.thumb_image_url) {
                     this.$message({
                         message: '请上传培训缩略图',
                         type: 'warning'

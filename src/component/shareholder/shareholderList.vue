@@ -232,6 +232,9 @@ export default {
 
                 if (data.status !== 1000) {
                     this.$message.error(data.ret_msg)
+                    this.dataList = []
+                    this.total = 0
+                    this.current_page = 0
                     // 关闭loading
                     this.loading = false
                     return false
