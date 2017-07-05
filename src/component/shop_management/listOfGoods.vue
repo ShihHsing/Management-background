@@ -322,6 +322,7 @@ export default {
         },
 
         searchShopData (val) {
+            this.loading = true
             this.$axios.post(API.listNewerGoodsInfo, {
                 'product_id': this.searchShopList.commodityBrand,
                 'category_id': this.searchShopList.commodityClassification,
@@ -336,6 +337,7 @@ export default {
                     this.total_pages = 0
                     this.current_page = 0
                     this.shopDateList = []
+                    this.loading = false
                     return false
                 }
 
@@ -365,8 +367,11 @@ export default {
                     }
                     this.goodsSetSwitchModel[i] = model
                 }
+
+                this.loading = false
             })
             .catch(error => {
+                this.loading = false
                 this.$message.error('服务器异常')
             })
         },
