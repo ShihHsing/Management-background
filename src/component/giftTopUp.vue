@@ -26,7 +26,7 @@
                         </el-form-item>
 
                         <el-form-item label="礼品数量" prop="phone_number" required>
-                            <el-input-number :disabled='this.award_count_max === 0' v-model="award_count" :min="1" :max="award_count_max"></el-input-number>
+                            <el-input-number :disabled='this.award_count_max === 0' v-model.number="award_count" :min="1" :max="award_count_max"></el-input-number>
                         </el-form-item>
 
                         <el-form-item>
@@ -40,10 +40,10 @@
                             prop="award_name"
                             label="礼品">
                             </el-table-column>
-                            <el-table-column
+                            <!-- <el-table-column
                             prop="award_count"
                             label="总量">
-                            </el-table-column>
+                            </el-table-column> -->
                             <el-table-column
                             prop="passed"
                             label="可充值量">
@@ -143,14 +143,18 @@ export default {
     methods: {
         // 获取分类列表
         awardList () {
-            this.$axios.post(chargeTheCostfreeAward)
+            this.$axios.post(chargeTheCostfreeAward, {
+                init: 'init'
+            })
             .then(msg => {
                 const data = msg.data
 
                 if (data.flag !== 1000) {
-                    this.$message.error(data.return_code)
+                    this.$message.error(data.ret_msg)
                     return false
                 }
+
+                this.awardList = data.award_list
             })
             .catch(error => {
                 this.$message.error('服务器异常')
@@ -188,6 +192,7 @@ export default {
                     message: data.return_code,
                     type: 'success'
                 })
+                this.awardList()
             })
             .catch(error => {
                 this.$message.error('服务器异常')
