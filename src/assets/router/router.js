@@ -65,6 +65,11 @@ const routes = [
             resolve),
             name: '商品管理-商品列表'
         }, {
+            path: '/giftTopUp', // 培训列表
+            component: resolve => require(['../../component/giftTopUp.vue'],
+            resolve),
+            name: '砸金蛋礼品充值'
+        }, {
             path: '/addRobotInstructions', // 机器人使用说明
             component: resolve => require(['../../component/addRobotInstructions.vue'],
             resolve)

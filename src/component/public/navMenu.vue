@@ -42,7 +42,6 @@
                     会员导入
                 </span>
             </el-menu-item>
-
             <el-submenu index="3D购股东" v-if="phoneNumber !== '15914383361'">
                 <template slot="title">
                     <span class="shareholder">
@@ -56,7 +55,10 @@
                     股东列表
                 </el-menu-item>
             </el-submenu>
-            <!--                   管理员权限                   -->
+            <el-menu-item index="/giftTopUp">
+                砸金蛋礼品充值
+            </el-menu-item>
+            <!-- 管理员权限 -->
             <el-submenu index="管理员" v-if="phoneNumber === '15914383361'">
                 <template slot="title">
                     管理员
@@ -78,7 +80,6 @@
                 <el-menu-item index="/addCarouselDrawing">
                     轮播图
                 </el-menu-item>
-                </el-submenu>
             </el-submenu>
         </el-menu>
     </div>
