@@ -123,26 +123,27 @@ export default {
     },
     created: function () {
         // 初始化
-        this.$axios.post(chargeTheCostfreeAward, {
-            init: 'init'
-        })
-        .then(msg => {
-            const data = msg.data
+        // this.$axios.post(chargeTheCostfreeAward, {
+        //     init: 'init'
+        // })
+        // .then(msg => {
+        //     const data = msg.data
 
-            if (data.flag !== 1000) {
-                this.$message.error(data.ret_msg)
-                return false
-            }
+        //     if (data.flag !== 1000) {
+        //         this.$message.error(data.return_code)
+        //         return false
+        //     }
 
-            this.awardList = data.award_list
-        })
-        .catch(error => {
-            this.$message.error('服务器异常')
-        })
+        //     this.awardList = data.award_list
+        // })
+        // .catch(error => {
+        //     this.$message.error('服务器异常')
+        // })
+        this.getAwardList()
     },
     methods: {
         // 获取分类列表
-        awardList () {
+        getAwardList () {
             this.$axios.post(chargeTheCostfreeAward, {
                 init: 'init'
             })
@@ -150,10 +151,12 @@ export default {
                 const data = msg.data
 
                 if (data.flag !== 1000) {
-                    this.$message.error(data.ret_msg)
+                    this.$message.error(data.return_code)
                     return false
                 }
-
+                this.award_id = null
+                this.award_count = null
+                this.award_count_max = null
                 this.awardList = data.award_list
             })
             .catch(error => {
@@ -192,7 +195,7 @@ export default {
                     message: data.return_code,
                     type: 'success'
                 })
-                this.awardList()
+                this.getAwardList()
             })
             .catch(error => {
                 this.$message.error('服务器异常')
