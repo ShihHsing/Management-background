@@ -54,6 +54,12 @@
                 <el-menu-item index="/shareholderList">
                     股东列表
                 </el-menu-item>
+                <el-menu-item index="/orderDivided">
+                    订单分成
+                </el-menu-item>
+                <el-menu-item index="/withdrawList">
+                    提现列表
+                </el-menu-item>
             </el-submenu>
             <el-menu-item index="/giftTopUp">
                 砸金蛋礼品充值

@@ -123,12 +123,26 @@ const routes = [
             path: '/addShareholder',
             component: resolve => require(['../../component/shareholder/addShareholder.vue'],
             resolve),
-            name: '3D购股东-添加股东'
+            name: '3D购股东-添加股东',
+            meta: { auth: false }
         }, {
             path: '/shareholderList',
             component: resolve => require(['../../component/shareholder/shareholderList.vue'],
             resolve),
-            name: '3D购股东-股东列表'
+            name: '3D购股东-股东列表',
+            meta: { auth: false }
+        }, {
+            path: '/orderDivided',
+            component: resolve => require(['../../component/shareholder/orderDivided.vue'],
+            resolve),
+            name: '3D购股东-订单分成',
+            meta: { auth: false }
+        }, {
+            path: '/withdrawList',
+            component: resolve => require(['../../component/shareholder/withdrawList.vue'],
+            resolve),
+            name: '3D购股东-提现列表',
+            meta: { auth: false }
         }]
     }, {
         path: '*',
