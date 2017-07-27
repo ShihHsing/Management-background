@@ -23,7 +23,7 @@
                     name="file_excel">
                     <el-button size="small" type="primary">点击上传</el-button>
                     </br></br>
-                    <div slot="tip" class="el-upload__tip">上传文件后缀名必须为.xlsx</div>
+                    <div slot="tip" class="el-upload__tip">上传文件后缀名必须为.xlsx或.xls</div>
                 </el-upload>
             </el-form>
         </el-col>
