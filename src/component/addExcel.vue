@@ -138,7 +138,7 @@ export default{
             }
         },
         handleBefore (file) {
-            const fileType = Boolean(file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            const fileType = Boolean(file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === 'application/vnd.ms-excel')
             if (!fileType) {
                 this.$message({
                     message: '上传文件后缀名必须为.xlsx!',
