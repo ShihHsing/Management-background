@@ -4,7 +4,7 @@
             <el-form ref="searchShareholderList" :model="searchShareholderList" :rules="rules">
                 <el-col :span="6">
                     <el-form-item prop="nameORiphoneNumer">
-                        <el-input v-model="searchShareholderList.nameORiphoneNumer" style="width: 217px;" placeholder="请输入股东姓名或手机号"></el-input>
+                        <el-input v-model="searchShareholderList.nameORiphoneNumer" style="width: 90%;" placeholder="请输入股东姓名或手机号"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="5">
@@ -40,27 +40,21 @@
                         </el-table-column>
                         <el-table-column
                             label="兑换"
-                            width="100">
+                            width="65">
                             <template scope="scope">
-                                <el-button type="primary" @click="openIntegralForm(scope.row)">兑换</el-button>
+                                <el-button type="text" @click="openIntegralForm(scope.row)">兑换</el-button>
                             </template>
                         </el-table-column>
                         <el-table-column
                             prop="s_share_url"
                             label="分享链接">
                         </el-table-column>
-                        <!-- <el-table-column
-                            label="复制链接"
-                            width="100">
-                            <template scope="scope">
-                                <el-button type="primary" @click="copyValue(scope.row.s_share_url)">复制</el-button>
-                            </template>
-                        </el-table-column> -->
                         <el-table-column
                             label="操作"
-                            width="150">
+                            width="220">
                             <template scope="scope">
-                                <el-button type="primary" @click="getShareholderInfoById(scope.row.s_id)">修改股东信息</el-button>
+                                <el-button type="text" @click="getShareholderInfoById(scope.row.s_id)">修改股东信息</el-button>
+                                <el-button type="text" @click="getShareholderInfoById(scope.row.s_id)">查看股东详情</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -240,11 +234,6 @@ export default {
                     return false
                 }
 
-                this.$message({
-                    message: data.ret_msg,
-                    type: 'success'
-                })
-
                 // 绑定数据
                 this.dataList = data.data.list
                 // 总条数
@@ -326,11 +315,6 @@ export default {
                 }
 
                 this.dialogShareholdVisible = true // 打开股东信息组件
-
-                this.$message({
-                    message: data.ret_msg,
-                    type: 'success'
-                })
             })
             .catch(error => {
                 this.$message.error('服务器异常')
@@ -369,37 +353,6 @@ export default {
                 })
             })
         }
-        // TODO: 复制
-        // copyValue (strValue) {
-        //     console.log(strValue)
-        //     if (!this.isIE()) {
-        //         console.log('---------------chrome-----------------')
-        //         window.clipboardData.setData('Text', strValue)
-        //         window.alert('您已成功复制了此地址')
-        //     } else {
-        //         console.log('---------------IE-----------------')
-        //         this.copy(strValue)
-        //         window.alert('内容已被复制')
-        //     }
-        // },
-        // isIE (number) {
-        //     if (!!window.ActiveXObject || 'ActiveXObject' in window) {
-        //         return true
-        //     } else {
-        //         return false
-        //     }
-        // },
-        // copy (text2copy) {
-        //     var flashcopier = 'flashcopier'
-        //     if (!document.getElementById(flashcopier)) {
-        //         var divholder = document.createElement('div')
-        //         divholder.id = flashcopier
-        //         document.body.appendChild(divholder)
-        //     }
-        //     document.getElementById(flashcopier).innerHTML = ''
-        //     var divinfo = '<embed src="http://files.jb51.net/demoimg/200910/_clipboard.swf" FlashVars="clipboard="+text2copy+"" width="0" height="0" type="application/x-shockwave-flash"></embed>' // 这里是关键
-        //     document.getElementById(flashcopier).innerHTML = divinfo
-        // }
     }
 }
 </script>

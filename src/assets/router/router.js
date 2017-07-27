@@ -114,7 +114,8 @@ const routes = [
             path: '/addExcel', // 老会员导入
             component: resolve => require(['../../component/addExcel.vue'],
             resolve),
-            name: '会员导入'
+            name: '会员导入',
+            meta: { auth: false }
         }, {
             path: '/editorTest',
             component: resolve => require(['../../component/editorTest.vue'],
