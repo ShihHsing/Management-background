@@ -53,7 +53,7 @@
                             label="操作"
                             width="220">
                             <template scope="scope">
-                                <el-button type="text" @click="getShareholderInfoById(scope.row.s_id)">修改股东信息</el-button>
+                                <!-- <el-button type="text" @click="getShareholderInfoById(scope.row.s_id)">修改股东信息</el-button> -->
                                 <el-button type="text" @click="getShareholderInfoById(scope.row.s_id)">查看股东详情</el-button>
                             </template>
                         </el-table-column>

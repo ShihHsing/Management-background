@@ -144,6 +144,12 @@ const routes = [
             resolve),
             name: '3D购股东-提现列表',
             meta: { auth: false }
+        }, {
+            path: '/shareholderInfo',
+            component: resolve => require(['../../component/shareholder/shareholderInfo.vue'],
+            resolve),
+            name: '3D购股东-股东列表-股东详情',
+            meta: { auth: false }
         }]
     }, {
         path: '*',
