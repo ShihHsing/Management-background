@@ -54,7 +54,9 @@
                             width="220">
                             <template scope="scope">
                                 <!-- <el-button type="text" @click="getShareholderInfoById(scope.row.s_id)">修改股东信息</el-button> -->
-                                <el-button type="text" @click="getShareholderInfoById(scope.row.s_id)">查看股东详情</el-button>
+                                <router-link :to="{ path: 'shareholderInfo', query: { id: scope.row.s_id }}">
+                                    <el-button type="text" @click="getShareholderInfoById(scope.row.s_id)">查看股东详情</el-button>
+                                </router-link>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -150,7 +152,7 @@
 </style>
 
 <script>
-import { getShareholderList, exchangeIntegral, getShareholderInfoById, editShareholderInfoBySid } from '../../assets/axios/api.js'
+import { getShareholderList, exchangeIntegral } from '../../assets/axios/api.js'
 export default {
     name: 'addShareholder',
     data () {
@@ -288,69 +290,6 @@ export default {
             })
             .catch(error => {
                 this.$message.error('服务器异常')
-            })
-        },
-        // 获取股东详情
-        getShareholderInfoById (id) {
-            // 重置表单
-            if (this.$refs.sharehold) {
-                this.$refs.sharehold.resetFields()
-            }
-
-            this.$axios.post(getShareholderInfoById, {
-                s_id: id
-            })
-            .then(msg => {
-                const data = msg.data
-
-                if (data.status !== 1000) {
-                    this.$message.error(data.ret_msg)
-                    return false
-                }
-
-                this.sharehold = {
-                    id: data.data.s_id,
-                    name: data.data.s_name,
-                    phone_number: parseInt(data.data.s_phone_number)
-                }
-
-                this.dialogShareholdVisible = true // 打开股东信息组件
-            })
-            .catch(error => {
-                this.$message.error('服务器异常')
-            })
-        },
-        // 修改股东信息
-        editShareholderInfoBySid () {
-            this.$refs.sharehold.validate((valid) => {
-                if (!valid) {
-                    this.$message.error('请完善信息')
-                    return false
-                }
-
-                this.$axios.post(editShareholderInfoBySid, {
-                    s_id: this.sharehold.id,
-                    s_name: this.sharehold.name,
-                    s_phone_number: this.sharehold.phone_number
-                })
-                .then(msg => {
-                    const data = msg.data
-
-                    if (data.status !== 1000) {
-                        this.$message.error(data.ret_msg)
-                        return false
-                    }
-
-                    this.$message({
-                        message: data.ret_msg,
-                        type: 'success'
-                    })
-                    this.dialogShareholdVisible = false // 关闭股东信息组件
-                    this.getShareholderList(this.keyword, this.current_page)
-                })
-                .catch(error => {
-                    this.$message.error('服务器异常')
-                })
             })
         }
     }
