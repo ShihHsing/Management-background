@@ -4,7 +4,7 @@
             <el-form ref="searchWithdrawList" :model="searchWithdrawList" :rules="rules">
                 <el-col :span="6">
                     <el-form-item prop="nameORiphoneNumer">
-                        <el-input v-model="searchWithdrawList.nameORiphoneNumer" style="width: 90%;" placeholder="请输入订单编号、股东姓名或手机号"></el-input>
+                        <el-input v-model="searchWithdrawList.nameORiphoneNumer" style="width: 90%;" placeholder="请输入股东姓名或手机号"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="5">
@@ -32,7 +32,7 @@
                             label="股东手机号">
                         </el-table-column>
                         <el-table-column
-                            prop="s_integral"
+                            prop="w_residue_integral"
                             label="剩余积分">
                         </el-table-column>
                         <el-table-column

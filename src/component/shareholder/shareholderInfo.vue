@@ -285,14 +285,14 @@ export default {
     },
     methods: {
         // 获取股东详情
-        getShareholderInfoById (id) {
+        getShareholderInfoById () {
             // 重置表单
             if (this.$refs.sharehold) {
                 this.$refs.sharehold.resetFields()
             }
 
             this.$axios.post(getShareholderInfoById, {
-                s_id: id
+                s_id: this.id
             })
             .then(msg => {
                 const data = msg.data
