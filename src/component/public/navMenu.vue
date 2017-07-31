@@ -86,6 +86,17 @@
                 <el-menu-item index="/addCarouselDrawing">
                     轮播图
                 </el-menu-item>
+                <el-submenu index="门店管理">
+                    <template slot="title">
+                        门店管理
+                    </template>
+                    <el-menu-item index="/trainingClassifyList">
+                        添加门店
+                    </el-menu-item>
+                    <el-menu-item index="/trainingClassifyList">
+                        门店列表
+                    </el-menu-item>
+                </el-submenu>
             </el-submenu>
         </el-menu>
     </div>
