@@ -4,7 +4,7 @@
             <el-form ref="searchShareholderList" :model="searchShareholderList" :rules="rules">
                 <el-col :span="6">
                     <el-form-item prop="nameORiphoneNumer">
-                        <el-input v-model="searchShareholderList.nameORiphoneNumer" style="width: 217px;" placeholder="请输入股东姓名或手机号"></el-input>
+                        <el-input v-model="searchShareholderList.nameORiphoneNumer" style="width: 90%;" placeholder="请输入股东姓名或手机号"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="5">
@@ -40,27 +40,23 @@
                         </el-table-column>
                         <el-table-column
                             label="兑换"
-                            width="100">
+                            width="65">
                             <template scope="scope">
-                                <el-button type="primary" @click="openIntegralForm(scope.row)">兑换</el-button>
+                                <el-button type="text" @click="openIntegralForm(scope.row)">兑换</el-button>
                             </template>
                         </el-table-column>
                         <el-table-column
                             prop="s_share_url"
                             label="分享链接">
                         </el-table-column>
-                        <!-- <el-table-column
-                            label="复制链接"
-                            width="100">
-                            <template scope="scope">
-                                <el-button type="primary" @click="copyValue(scope.row.s_share_url)">复制</el-button>
-                            </template>
-                        </el-table-column> -->
                         <el-table-column
                             label="操作"
-                            width="150">
+                            width="220">
                             <template scope="scope">
-                                <el-button type="primary" @click="getShareholderInfoById(scope.row.s_id)">修改股东信息</el-button>
+                                <!-- <el-button type="text" @click="getShareholderInfoById(scope.row.s_id)">修改股东信息</el-button> -->
+                                <router-link :to="{ path: 'shareholderInfo', query: { id: scope.row.s_id }}">
+                                    <el-button type="text" @click="getShareholderInfoById(scope.row.s_id)">查看股东详情</el-button>
+                                </router-link>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -156,7 +152,7 @@
 </style>
 
 <script>
-import { getShareholderList, exchangeIntegral, getShareholderInfoById, editShareholderInfoBySid } from '../../assets/axios/api.js'
+import { getShareholderList, exchangeIntegral } from '../../assets/axios/api.js'
 export default {
     name: 'addShareholder',
     data () {
@@ -240,11 +236,6 @@ export default {
                     return false
                 }
 
-                this.$message({
-                    message: data.ret_msg,
-                    type: 'success'
-                })
-
                 // 绑定数据
                 this.dataList = data.data.list
                 // 总条数
@@ -300,106 +291,7 @@ export default {
             .catch(error => {
                 this.$message.error('服务器异常')
             })
-        },
-        // 获取股东详情
-        getShareholderInfoById (id) {
-            // 重置表单
-            if (this.$refs.sharehold) {
-                this.$refs.sharehold.resetFields()
-            }
-
-            this.$axios.post(getShareholderInfoById, {
-                s_id: id
-            })
-            .then(msg => {
-                const data = msg.data
-
-                if (data.status !== 1000) {
-                    this.$message.error(data.ret_msg)
-                    return false
-                }
-
-                this.sharehold = {
-                    id: data.data.s_id,
-                    name: data.data.s_name,
-                    phone_number: parseInt(data.data.s_phone_number)
-                }
-
-                this.dialogShareholdVisible = true // 打开股东信息组件
-
-                this.$message({
-                    message: data.ret_msg,
-                    type: 'success'
-                })
-            })
-            .catch(error => {
-                this.$message.error('服务器异常')
-            })
-        },
-        // 修改股东信息
-        editShareholderInfoBySid () {
-            this.$refs.sharehold.validate((valid) => {
-                if (!valid) {
-                    this.$message.error('请完善信息')
-                    return false
-                }
-
-                this.$axios.post(editShareholderInfoBySid, {
-                    s_id: this.sharehold.id,
-                    s_name: this.sharehold.name,
-                    s_phone_number: this.sharehold.phone_number
-                })
-                .then(msg => {
-                    const data = msg.data
-
-                    if (data.status !== 1000) {
-                        this.$message.error(data.ret_msg)
-                        return false
-                    }
-
-                    this.$message({
-                        message: data.ret_msg,
-                        type: 'success'
-                    })
-                    this.dialogShareholdVisible = false // 关闭股东信息组件
-                    this.getShareholderList(this.keyword, this.current_page)
-                })
-                .catch(error => {
-                    this.$message.error('服务器异常')
-                })
-            })
         }
-        // TODO: 复制
-        // copyValue (strValue) {
-        //     console.log(strValue)
-        //     if (!this.isIE()) {
-        //         console.log('---------------chrome-----------------')
-        //         window.clipboardData.setData('Text', strValue)
-        //         window.alert('您已成功复制了此地址')
-        //     } else {
-        //         console.log('---------------IE-----------------')
-        //         this.copy(strValue)
-        //         window.alert('内容已被复制')
-        //     }
-        // },
-        // isIE (number) {
-        //     if (!!window.ActiveXObject || 'ActiveXObject' in window) {
-        //         return true
-        //     } else {
-        //         return false
-        //     }
-        // },
-        // copy (text2copy) {
-        //     var flashcopier = 'flashcopier'
-        //     if (!document.getElementById(flashcopier)) {
-        //         var divholder = document.createElement('div')
-        //         divholder.id = flashcopier
-        //         document.body.appendChild(divholder)
-        //     }
-        //     document.getElementById(flashcopier).innerHTML = ''
-        //     var divinfo = '<embed src="http://files.jb51.net/demoimg/200910/_clipboard.swf" FlashVars="clipboard="+text2copy+"" width="0" height="0" type="application/x-shockwave-flash"></embed>' // 这里是关键
-        //     document.getElementById(flashcopier).innerHTML = divinfo
-        // }
     }
 }
 </script>

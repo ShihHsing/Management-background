@@ -54,6 +54,12 @@
                 <el-menu-item index="/shareholderList">
                     股东列表
                 </el-menu-item>
+                <el-menu-item index="/orderDivided">
+                    订单分成
+                </el-menu-item>
+                <el-menu-item index="/withdrawList">
+                    提现列表
+                </el-menu-item>
             </el-submenu>
             <el-menu-item index="/giftTopUp">
                 砸金蛋礼品充值
@@ -80,6 +86,17 @@
                 <el-menu-item index="/addCarouselDrawing">
                     轮播图
                 </el-menu-item>
+                <el-submenu index="门店管理">
+                    <template slot="title">
+                        门店管理
+                    </template>
+                    <el-menu-item index="/addStore">
+                        添加门店
+                    </el-menu-item>
+                    <el-menu-item index="/listStore">
+                        门店列表
+                    </el-menu-item>
+                </el-submenu>
             </el-submenu>
         </el-menu>
     </div>

@@ -111,6 +111,18 @@ const routes = [
             resolve),
             name: '管理员-培训功能-培训列表'
         }, {
+            path: '/addStore', // 培训列表
+            component: resolve => require(['../../component/addStore.vue'],
+            resolve),
+            name: '管理员-门店管理-添加门店',
+            meta: { auth: false }
+        }, {
+            path: '/listStore', // 培训列表
+            component: resolve => require(['../../component/listStore.vue'],
+            resolve),
+            name: '管理员-门店管理-门店列表',
+            meta: { auth: false }
+        }, {
             path: '/addExcel', // 老会员导入
             component: resolve => require(['../../component/addExcel.vue'],
             resolve),
@@ -129,6 +141,21 @@ const routes = [
             component: resolve => require(['../../component/shareholder/shareholderList.vue'],
             resolve),
             name: '3D购股东-股东列表'
+        }, {
+            path: '/orderDivided',
+            component: resolve => require(['../../component/shareholder/orderDivided.vue'],
+            resolve),
+            name: '3D购股东-订单分成'
+        }, {
+            path: '/withdrawList',
+            component: resolve => require(['../../component/shareholder/withdrawList.vue'],
+            resolve),
+            name: '3D购股东-提现列表'
+        }, {
+            path: '/shareholderInfo',
+            component: resolve => require(['../../component/shareholder/shareholderInfo.vue'],
+            resolve),
+            name: '3D购股东-股东列表-股东详情'
         }]
     }, {
         path: '*',
