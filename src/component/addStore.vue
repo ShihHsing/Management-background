@@ -199,6 +199,13 @@ export default {
             }
         }
     },
+    computed: {
+        city_id: function () {
+            if (this.addStoreValues.province_id === '100000' || this.addStoreValues.province_id === '110000' || this.addStoreValues.province_id === '120000' || this.addStoreValues.province_id === '130000' || this.addStoreValues.province_id === '410000' || this.addStoreValues.province_id === '420000') {
+                return this.addStoreValues.province_id
+            }
+        }
+    },
     created: function () {
         // 初始化获取省列表
         this.getProvinceList()
@@ -238,7 +245,59 @@ export default {
                     })
                     return false
                 }
+
+                this.addShop()
             })
+        },
+
+        // 提交添加门店数据
+        addShop () {
+            this.$axios.post(addShop, {
+                name: this.addStoreValues.name,
+                boss_name: this.addStoreValues.boss_name,
+                boss_phone_number: this.addStoreValues.boss_phone_number,
+                province_id: this.addStoreValues.province_id,
+                province_name: this.getAddressName(this.provinceList, this.addStoreValues.province_id),
+                city_id: this.addStoreValues.city_id || this.city_id,
+                city_name: this.returnCityName(),
+                district_id: this.addStoreValues.district_id,
+                district_name: this.getAddressName(this.districtList, this.addStoreValues.district_id),
+                shop_address: this.addStoreValues.shop_address,
+                info: this.addStoreValues.info
+            })
+            .then(msg => {
+                const data = msg.data
+
+                if (data.flag !== 1000) {
+                    this.$message.error(data.return_code)
+                    return false
+                }
+                this.$message({
+                    message: data.return_code,
+                    type: 'success'
+                })
+                this.$router.push('listStore')
+
+            })
+            .catch(error => {
+                this.$message.error('服务器异常')
+            })
+        },
+
+        // 获取省/市/区名称
+        getAddressName (list, id) {
+            for (var i = list.length - 1; i >= 0; i--) {
+                if (list[i].area_no === id) {
+                    return list[i].area_name
+                }
+            }
+        },
+
+        // 返回市id 由于有两个市ID数据模型 这里是做特殊处理 那个有就取那个传入getAddressName就行名称搜索
+        returnCityName () {
+            var city_id = this.addStoreValues.city_id || this.city_id
+            var cityList = this.cityList || this.provinceList
+            return this.getAddressName(cityList, city_id)
         },
 
         // 获取省列表
@@ -264,7 +323,7 @@ export default {
         // 获取市列表
         getCity (province_id) {
             // 清空市列表
-            this.
+            this.cityList = ''
             // 清空选择中的市
             this.addStoreValues.city_id = ''
             // 清空区列表
@@ -326,10 +385,9 @@ export default {
         statusCity_id () {
             if (this.addStoreValues.city_id) {
                 return true
+            } else if (this.addStoreValues.province_id !== '100000' || this.addStoreValues.province_id !== '110000' || this.addStoreValues.province_id !== '120000' || this.addStoreValues.province_id !== '130000' || this.addStoreValues.province_id !== '410000' || this.addStoreValues.province_id !== '420000') {
+                return true
             } else {
-                if (this.addStoreValues.province_id !== '100000' || this.addStoreValues.province_id !== '110000' || this.addStoreValues.province_id !== '120000' || this.addStoreValues.province_id !== '130000' || this.addStoreValues.province_id !== '410000' || this.addStoreValues.province_id !== '420000') {
-                    return true
-                }
                 return false
             }
         }

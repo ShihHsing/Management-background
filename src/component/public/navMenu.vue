@@ -90,10 +90,10 @@
                     <template slot="title">
                         门店管理
                     </template>
-                    <el-menu-item index="/trainingClassifyList">
+                    <el-menu-item index="/addStore">
                         添加门店
                     </el-menu-item>
-                    <el-menu-item index="/trainingClassifyList">
+                    <el-menu-item index="/listStore">
                         门店列表
                     </el-menu-item>
                 </el-submenu>

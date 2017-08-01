@@ -117,6 +117,12 @@ const routes = [
             name: '管理员-门店管理-添加门店',
             meta: { auth: false }
         }, {
+            path: '/listStore', // 培训列表
+            component: resolve => require(['../../component/listStore.vue'],
+            resolve),
+            name: '管理员-门店管理-门店列表',
+            meta: { auth: false }
+        }, {
             path: '/addExcel', // 老会员导入
             component: resolve => require(['../../component/addExcel.vue'],
             resolve),
