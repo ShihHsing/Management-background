@@ -79,7 +79,7 @@
                             label="变动后剩余积分">
                         </el-table-column>
                     </el-table>
-                    <div class="pagination">
+                    <!-- <div class="pagination">
                         <el-pagination
                             @current-change="handleCurrentChange"
                             :current-page="current_page"
@@ -88,7 +88,7 @@
                             :total="total"
                             style="float: right;padding: 0;">
                         </el-pagination>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
