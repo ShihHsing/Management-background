@@ -277,7 +277,6 @@ export default {
                     type: 'success'
                 })
                 this.$router.push('listStore')
-
             })
             .catch(error => {
                 this.$message.error('服务器异常')

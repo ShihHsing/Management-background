@@ -200,7 +200,7 @@ export default {
             storeList: [], // 门店数据列表
             current_page: '', // 当前页
             total_count: '', // 总条数
-            page_size: 2 // 每页条数
+            page_size: 20 // 每页条数
         }
     },
     computed: {
@@ -238,6 +238,7 @@ export default {
 
                 this.loading = false
                 if (data.flag !== 1000) {
+                    this.storeList = []
                     this.$message.error(data.return_code)
                     return false
                 }
