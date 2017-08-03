@@ -320,8 +320,8 @@ export default {
                     s_share_url: data.data.s_share_url // 分享地址
                 }
 
-                this.current_page = data.data.current_page
-                this.sum = data.data.sum
+                this.current_page = data.data.current_page >> 0
+                this.sum = data.data.sum >> 0
 
                 this.dataList = data.data.integral_log // 积分变动明细
             })
