@@ -200,11 +200,7 @@ export default {
 
                 // 跳转逻辑
                 setTimeout(() => {
-                    if (!msg.data.website_administrator) {
-                        this.$router.push({ path: 'home' })
-                        return false
-                    }
-                    this.$router.push({ path: 'addNews' })
+                    this.$router.push({ path: 'home' })
                 }, 1000)
             })
             .catch(error => {
