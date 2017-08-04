@@ -18,7 +18,8 @@ const routes = [
             path: '/home', // 首页
             component: resolve => require(['../../component/login/home.vue'],
             resolve),
-            name: '首页'
+            name: '首页',
+            meta: { auth: false }
         }, {
             path: '/commodityBrand', // 商品品牌
             component: resolve => require(['../../component/commodityBrand.vue'],
@@ -65,10 +66,16 @@ const routes = [
             resolve),
             name: '商品管理-商品列表'
         }, {
-            path: '/giftTopUp', // 培训列表
-            component: resolve => require(['../../component/giftTopUp.vue'],
+            path: '/rouletteRules', // 培训列表
+            component: resolve => require(['../../component/robot/rouletteRules.vue'],
             resolve),
-            name: '砸金蛋礼品充值'
+            name: '机器人活动管理-幸运大转盘',
+            meta: { auth: false }
+        }, {
+            path: '/giftTopUp', // 培训列表
+            component: resolve => require(['../../component/robot/giftTopUp.vue'],
+            resolve),
+            name: '机器人活动管理-砸金蛋礼品充值'
         }, {
             path: '/addRobotInstructions', // 机器人使用说明
             component: resolve => require(['../../component/addRobotInstructions.vue'],
