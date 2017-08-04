@@ -17,8 +17,8 @@
                         label-width="120px"
                         class="rouletteRules_form">
 
-                        <el-form-item label="活动规则:" prop="route_content">
-                            <el-input placeholder="请输入活动规则" type="textarea" v-model="rouletteRulesValues.route_content"></el-input>
+                        <el-form-item label="活动规则:" prop="roulette_content">
+                            <el-input placeholder="请输入活动规则" type="textarea" v-model="rouletteRulesValues.roulette_content"></el-input>
                             <p style="text-align: right;width: 500px;color: #999;font-size: 12px;height: 20px;" v-bind:class="{ fontError: isError }">{{ fontNum }}/70</p>
                         </el-form-item>
 
@@ -99,18 +99,18 @@ export default {
     data () {
         return {
             rouletteRulesValues: {
-                route_content: '' // 活动规则
+                roulette_content: '' // 活动规则
             },
             rouletteRulesRules: {
-                route_content: [
-                    { required: true, min: 1, max: 70, message: '请输入活动规则,70字以内', trigger: 'change' }
+                roulette_content: [
+                    { required: true, min: 1, max: 1000, message: '请输入活动规则,70字以内', trigger: 'change' }
                 ]
             }
         }
     },
     computed: {
         fontNum: function () {
-            return this.rouletteRulesValues.route_content.length
+            return this.rouletteRulesValues.roulette_content.length
         },
         isError: function () {
             if (this.fontNum > 70 || this.fontNum === 0) {
@@ -140,7 +140,7 @@ export default {
         // 请求
         handleRouLette () {
             this.$axios.post(handleRouLette, {
-                route_content: this.rouletteRulesValues.route_content
+                roulette_content: this.rouletteRulesValues.roulette_content
             })
             .then(msg => {
                 const data = msg.data
@@ -171,11 +171,7 @@ export default {
                     this.$message.error(data.return_code)
                     return false
                 }
-                this.$message({
-                    message: data.return_code,
-                    type: 'success'
-                })
-                this.rouletteRulesValues.route_content = data.roulette_content || '欢迎使用幸运大转盘，祝您购物愉快！\n购物满100元即可参加此活动！\n门店拥有最终解释权！'
+                this.rouletteRulesValues.roulette_content = data.roulette_content || '欢迎使用幸运大转盘，祝您购物愉快！\n购物满100元即可参加此活动！\n门店拥有最终解释权！'
             })
             .catch(error => {
                 this.$message.error('服务器异常')
