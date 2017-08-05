@@ -78,7 +78,7 @@
                 </el-menu-item> -->
             </el-submenu>
             <!-- 管理员权限 -->
-            <el-submenu index="管理员" v-if="phoneNumber === '15914383361'">
+            <el-submenu index="管理员">
                 <template slot="title">
                     管理员
                 </template>
