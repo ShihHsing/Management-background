@@ -66,13 +66,19 @@ const routes = [
             resolve),
             name: '商品管理-商品列表'
         }, {
-            path: '/rouletteRules', // 培训列表
+            path: '/rouletteRules', // 幸运大转盘
             component: resolve => require(['../../component/robot/rouletteRules.vue'],
             resolve),
             name: '机器人活动管理-幸运大转盘',
             meta: { auth: false }
         }, {
-            path: '/giftTopUp', // 培训列表
+            path: '/smashingGoldEggs', // 砸金蛋
+            component: resolve => require(['../../component/robot/smashingGoldEggs.vue'],
+            resolve),
+            name: '机器人活动管理-砸金蛋',
+            meta: { auth: false }
+        }, {
+            path: '/giftTopUp', // 砸金蛋礼品充值
             component: resolve => require(['../../component/robot/giftTopUp.vue'],
             resolve),
             name: '机器人活动管理-砸金蛋礼品充值'
