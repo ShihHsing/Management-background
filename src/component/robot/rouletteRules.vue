@@ -103,7 +103,7 @@ export default {
             },
             rouletteRulesRules: {
                 roulette_content: [
-                    { required: true, min: 1, max: 1000, message: '请输入活动规则,70字以内', trigger: 'change' }
+                    { required: true, min: 1, max: 70, message: '请输入活动规则,70字以内', trigger: 'change' }
                 ]
             }
         }
