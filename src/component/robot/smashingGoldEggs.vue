@@ -120,8 +120,12 @@ export default {
             callback()
         }
         var checkName = (rule, value, callback) => {
+            var reg = /^[\u4E00-\u9FA5A-Za-z0-9]+$/
             if (!value) {
                 return callback(new Error('请输入券名称'))
+            }
+            if (!reg.test(value)) {
+                return callback(new Error('仅能输入中文、英文、数字不包括下划线等特殊符号'))
             }
             if (value.length > 10) {
                 return callback(new Error('名称10位以内'))
