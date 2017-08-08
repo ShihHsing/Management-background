@@ -67,9 +67,9 @@
                         机器人活动
                     </span>
                 </template>
-                <el-menu-item index="/rouletteRules">
+                <!-- <el-menu-item index="/rouletteRules">
                     幸运大转盘
-                </el-menu-item>
+                </el-menu-item> -->
                 <el-menu-item index="/smashingGoldEggs">
                     砸金蛋
                 </el-menu-item>
