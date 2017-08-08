@@ -22,7 +22,7 @@
                         </el-form-item>
 
                         <el-form-item label="券金额:" prop="money" required>
-                            <el-input-number v-model="smashingGoldEggsValues.money" @change="handleChange" :min="28"></el-input-number>
+                            <el-input-number v-model="smashingGoldEggsValues.money" :min="28"></el-input-number>
                             <p style="width: 500px;color: #999;font-size: 12px;height: 20px;">*优惠券金额最少为28元</p>
                         </el-form-item>
                         
@@ -133,7 +133,7 @@ export default {
             callback()
         }
         var checkDate = (rule, value, callback) => {
-            if (!value) {
+            if (!value||!value[0]) {
                 return callback(new Error('请选择时间'))
             }
             callback()
@@ -143,7 +143,10 @@ export default {
                 name: '', // 券名称
                 money: null, // 金额
                 explain: '', // 使用条件
-                date_time: null // 获取时间戳
+                date_time: { // 获取时间戳
+                    0: '',
+                    1: ''
+                }
             },
             smashingGoldEggsRules: {
                 name: [
@@ -163,6 +166,7 @@ export default {
     },
     computed: {
         fontNum: function () {
+            if (!this.smashingGoldEggsValues) return false
             return this.smashingGoldEggsValues.explain.length
         },
         isError: function () {
@@ -172,9 +176,11 @@ export default {
             return false
         },
         start_date: function () { // 开始时间
+            if (!this.smashingGoldEggsValues) return false
             return this.smashingGoldEggsValues.date_time[0].getTime() / 1000
         },
         end_date: function () { // 结束时间
+            if (!this.smashingGoldEggsValues) return false
             if (this.smashingGoldEggsValues.date_time[0].getTime() === this.smashingGoldEggsValues.date_time[1].getTime()) {
                 return (this.smashingGoldEggsValues.date_time[1].getTime() / 1000) + 86399
             }
