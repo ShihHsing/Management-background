@@ -83,6 +83,12 @@ const routes = [
             resolve),
             name: '机器人活动管理-砸金蛋礼品充值'
         }, {
+            path: '/integralRemind', // 积分提醒
+            component: resolve => require(['../../component/robot/integralRemind.vue'],
+            resolve),
+            name: '机器人活动管理-积分提醒',
+            meta: { auth: false }
+        }, {
             path: '/addRobotInstructions', // 机器人使用说明
             component: resolve => require(['../../component/addRobotInstructions.vue'],
             resolve)

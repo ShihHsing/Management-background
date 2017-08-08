@@ -17,31 +17,26 @@
                         label-width="120px"
                         class="smashingGoldEggs_form">
         
-                        <el-form-item label="券名称:" prop="name">
+                        <el-form-item label="券名称:" prop="name" required>
                             <el-input style="width: 217px;" placeholder="请输券名称" v-model="smashingGoldEggsValues.name"></el-input>
                         </el-form-item>
 
                         <el-form-item label="券金额:" prop="money" required>
-                            <el-input style="width: 217px;" placeholder="请输券金额" v-model.number="smashingGoldEggsValues.money"></el-input>
+                            <el-input-number v-model="smashingGoldEggsValues.money" @change="handleChange" :min="28"></el-input-number>
+                            <p style="width: 500px;color: #999;font-size: 12px;height: 20px;">*优惠券金额最少为28元</p>
                         </el-form-item>
                         
-                        <el-form-item label="使用条件:" prop="rules">
-                            <el-input placeholder="请输入使用条件" type="textarea" v-model="smashingGoldEggsValues.rules"></el-input>
-                            <p style="text-align: right;width: 500px;color: #999;font-size: 12px;height: 20px;" v-bind:class="{ fontError: isError }">{{ fontNum }}/150</p>
+                        <el-form-item label="使用条件:" prop="explain">
+                            <el-input placeholder="请输入使用条件" type="textarea" v-model="smashingGoldEggsValues.explain"></el-input>
+                            <p style="text-align: right;width: 500px;color: #999;font-size: 12px;height: 20px;" v-bind:class="{ fontError: isError }">{{ fontNum }}/35</p>
                         </el-form-item>
                         
-                        <el-form-item label="活动时间" style="width: 500px;" required>
-                            <el-col :span="11">
-                                <el-form-item prop="start_date">
-                                    <el-date-picker type="date" placeholder="选择开始日期" v-model="smashingGoldEggsValues.start_date" style="width: 100%;"></el-date-picker>
-                                </el-form-item>
-                            </el-col>
-                            <el-col style="text-align: center;" :span="2">-</el-col>
-                            <el-col :span="11">
-                                <el-form-item prop="end_date">
-                                    <el-date-picker type="date" placeholder="选择结束日期" v-model="smashingGoldEggsValues.end_date" style="width: 100%;"></el-date-picker>
-                                </el-form-item>
-                            </el-col>
+                        <el-form-item label="活动时间" style="width: 500px;" prop="date_time" required>
+                            <el-date-picker
+                                v-model="smashingGoldEggsValues.date_time"
+                                type="daterange"
+                                placeholder="选择日期范围">
+                            </el-date-picker>
                         </el-form-item>
 
                         <el-form-item>
@@ -104,7 +99,6 @@
                 }
                 textarea{
                     width: 500px;
-                    height: 100px;
                 }
                 .fontError{
                     color: red!important;
@@ -123,50 +117,64 @@ export default {
             if (!value) {
                 return callback(new Error('金额不能为空'))
             }
-            setTimeout(() => {
-                if (!Number.isInteger(value)) {
-                    callback(new Error('请输入纯数字'))
-                } else {
-                    callback()
-                }
-            }, 1000)
+            callback()
+        }
+        var checkName = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('请输入券名称'))
+            }
+            if (value.length > 10) {
+                return callback(new Error('名称10位以内'))
+            }
+            callback()
+        }
+        var checkDate = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('请选择时间'))
+            }
+            callback()
         }
         return {
             smashingGoldEggsValues: {
                 name: '', // 券名称
                 money: null, // 金额
-                rules: '', // 使用条件
-                start_date: null, // 开始时间
-                end_date: null // 结束时间
+                explain: '', // 使用条件
+                date_time: null // 获取时间戳
             },
             smashingGoldEggsRules: {
                 name: [
-                    { required: true, message: '请输券名称', trigger: 'change' }
+                    { validator: checkName, trigger: 'change' }
                 ],
                 money: [
                     { validator: checkMoney, trigger: 'change' }
                 ],
-                rules: [
-                    { required: true, min: 1, max: 150, message: '请输入使用条件,150字以内', trigger: 'change' }
+                explain: [
+                    { required: true, min: 1, max: 35, message: '请输入使用条件,35字以内', trigger: 'change' }
                 ],
-                start_date: [
-                    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-                ],
-                end_date: [
-                    { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+                date_time: [
+                    { validator: checkDate, trigger: 'change' }
                 ]
             }
         }
     },
     computed: {
         fontNum: function () {
-            return this.smashingGoldEggsValues.rules.length
+            return this.smashingGoldEggsValues.explain.length
         },
         isError: function () {
-            if (this.fontNum > 150) {
+            if (this.fontNum > 35) {
                 return true
             }
             return false
+        },
+        start_date: function () { // 开始时间
+            return this.smashingGoldEggsValues.date_time[0].getTime() / 1000
+        },
+        end_date: function () { // 结束时间
+            if (this.smashingGoldEggsValues.date_time[0].getTime() === this.smashingGoldEggsValues.date_time[1].getTime()) {
+                return (this.smashingGoldEggsValues.date_time[1].getTime() / 1000) + 86399
+            }
+            return this.smashingGoldEggsValues.date_time[1].getTime() / 1000
         }
     },
     created: function () {},
@@ -191,9 +199,9 @@ export default {
             this.$axios.post(addCouponInfo, {
                 name: this.smashingGoldEggsValues.name,
                 money: this.smashingGoldEggsValues.money,
-                rules: this.smashingGoldEggsValues.rules,
-                start_date: this.smashingGoldEggsValues.start_date,
-                end_date: this.smashingGoldEggsValues.end_date
+                explain: this.smashingGoldEggsValues.explain,
+                send_start_time: this.start_date,
+                send_end_time: this.end_date
             })
             .then(msg => {
                 const data = msg.data

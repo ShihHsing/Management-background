@@ -111,10 +111,10 @@
                             width="70">
                             <template scope="scope">
                                 <template v-if="scope.row.status === '0'">
-                                    <el-button type="text" @click="handleShopStatus(scope.row.id, scope.row.status)">冻结</el-button>
+                                    <el-button type="text" @click="handleShopStatus(scope.row.id, 1)">冻结</el-button>
                                 </template>
                                 <template v-else>
-                                    <el-button type="text" style="color: #FF4949;" @click="handleShopStatus(scope.row.id, scope.row.status)">解冻</el-button>
+                                    <el-button type="text" style="color: #FF4949;" @click="handleShopStatus(scope.row.id, 0)">解冻</el-button>
                                 </template>
                             </template>
                         </el-table-column>
@@ -369,7 +369,7 @@ export default {
                         type: 'success',
                         message: data.return_code
                     })
-
+  
                     this.getStoreList()
                 })
                 .catch(error => {
