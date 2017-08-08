@@ -133,7 +133,7 @@ export default {
             callback()
         }
         var checkDate = (rule, value, callback) => {
-            if (!value||!value[0]) {
+            if (!value || !value[0]) {
                 return callback(new Error('请选择时间'))
             }
             callback()
