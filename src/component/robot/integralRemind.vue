@@ -112,7 +112,7 @@
 </style>
 
 <script>
-import { addPushSetting, getPushSetting, deletePushSetting } from '../../assets/axios/api.js'
+import { addPushSetting, getPushSetting, deletePushSetting, editPushSetting } from '../../assets/axios/api.js'
 export default {
     name: 'integralRemind',
     data () {
@@ -189,11 +189,14 @@ export default {
             this.$axios.post(getPushSetting)
             .then(msg => {
                 const data = msg.data
-
+                if (data.status === 9000) {
+                    return false
+                }
                 if (data.status !== 1000) {
                     this.$message.error(data.ret_msg)
                     return false
                 }
+                this.integralRemindValues.push_arr = []
 
                 for (var i = data.data.length - 1; i >= 0; i--) {
                     this.integralRemindValues.push_arr.push({
@@ -232,7 +235,7 @@ export default {
 
         // 修改积分规则详情
         editPushSetting () {
-            this.$axios.post(addPushSetting, {
+            this.$axios.post(editPushSetting, {
                 push_arr: this.integralRemindValues.push_arr
             })
             .then(msg => {
@@ -246,6 +249,7 @@ export default {
                     message: data.ret_msg,
                     type: 'success'
                 })
+                this.getPushSetting()
             })
             .catch(error => {
                 this.$message.error('服务器异常')

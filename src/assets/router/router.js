@@ -18,8 +18,7 @@ const routes = [
             path: '/home', // 首页
             component: resolve => require(['../../component/login/home.vue'],
             resolve),
-            name: '首页',
-            meta: { auth: false }
+            name: '首页'
         }, {
             path: '/commodityBrand', // 商品品牌
             component: resolve => require(['../../component/commodityBrand.vue'],
@@ -69,14 +68,12 @@ const routes = [
             path: '/rouletteRules', // 幸运大转盘
             component: resolve => require(['../../component/robot/rouletteRules.vue'],
             resolve),
-            name: '机器人活动管理-幸运大转盘',
-            meta: { auth: false }
+            name: '机器人活动管理-幸运大转盘'
         }, {
             path: '/smashingGoldEggs', // 砸金蛋
             component: resolve => require(['../../component/robot/smashingGoldEggs.vue'],
             resolve),
-            name: '机器人活动管理-砸金蛋',
-            meta: { auth: false }
+            name: '机器人活动管理-砸金蛋'
         }, {
             path: '/giftTopUp', // 砸金蛋礼品充值
             component: resolve => require(['../../component/robot/giftTopUp.vue'],
@@ -86,8 +83,7 @@ const routes = [
             path: '/integralRemind', // 积分提醒
             component: resolve => require(['../../component/robot/integralRemind.vue'],
             resolve),
-            name: '机器人活动管理-积分提醒',
-            meta: { auth: false }
+            name: '机器人活动管理-积分提醒'
         }, {
             path: '/addRobotInstructions', // 机器人使用说明
             component: resolve => require(['../../component/addRobotInstructions.vue'],
@@ -138,8 +134,7 @@ const routes = [
             path: '/listStore', // 培训列表
             component: resolve => require(['../../component/listStore.vue'],
             resolve),
-            name: '管理员-门店管理-门店列表',
-            meta: { auth: false }
+            name: '管理员-门店管理-门店列表'
         }, {
             path: '/addExcel', // 老会员导入
             component: resolve => require(['../../component/addExcel.vue'],
