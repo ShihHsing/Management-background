@@ -40,10 +40,6 @@
                             prop="award_name"
                             label="礼品">
                             </el-table-column>
-                            <!-- <el-table-column
-                            prop="award_count"
-                            label="总量">
-                            </el-table-column> -->
                             <el-table-column
                             prop="passed"
                             label="可充值量">
@@ -110,7 +106,7 @@
 </style>
 
 <script>
-import { chargeTheCostfreeAward } from '../assets/axios/api.js'
+import { chargeTheCostfreeAward } from '../../assets/axios/api.js'
 export default {
     name: 'giftTopUp',
     data () {
@@ -122,23 +118,6 @@ export default {
         }
     },
     created: function () {
-        // 初始化
-        // this.$axios.post(chargeTheCostfreeAward, {
-        //     init: 'init'
-        // })
-        // .then(msg => {
-        //     const data = msg.data
-
-        //     if (data.flag !== 1000) {
-        //         this.$message.error(data.return_code)
-        //         return false
-        //     }
-
-        //     this.awardList = data.award_list
-        // })
-        // .catch(error => {
-        //     this.$message.error('服务器异常')
-        // })
         this.getAwardList()
     },
     methods: {

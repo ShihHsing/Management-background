@@ -65,10 +65,25 @@ const routes = [
             resolve),
             name: '商品管理-商品列表'
         }, {
-            path: '/giftTopUp', // 培训列表
-            component: resolve => require(['../../component/giftTopUp.vue'],
+            path: '/rouletteRules', // 幸运大转盘
+            component: resolve => require(['../../component/robot/rouletteRules.vue'],
             resolve),
-            name: '砸金蛋礼品充值'
+            name: '机器人活动管理-幸运大转盘'
+        }, {
+            path: '/smashingGoldEggs', // 砸金蛋
+            component: resolve => require(['../../component/robot/smashingGoldEggs.vue'],
+            resolve),
+            name: '机器人活动管理-砸金蛋'
+        }, {
+            path: '/giftTopUp', // 砸金蛋礼品充值
+            component: resolve => require(['../../component/robot/giftTopUp.vue'],
+            resolve),
+            name: '机器人活动管理-砸金蛋礼品充值'
+        }, {
+            path: '/integralRemind', // 积分提醒
+            component: resolve => require(['../../component/robot/integralRemind.vue'],
+            resolve),
+            name: '机器人活动管理-积分提醒'
         }, {
             path: '/addRobotInstructions', // 机器人使用说明
             component: resolve => require(['../../component/addRobotInstructions.vue'],

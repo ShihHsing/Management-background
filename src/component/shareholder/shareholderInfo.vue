@@ -79,16 +79,16 @@
                             label="变动后剩余积分">
                         </el-table-column>
                     </el-table>
-                    <!-- <div class="pagination">
+                    <div class="pagination">
                         <el-pagination
                             @current-change="handleCurrentChange"
                             :current-page="current_page"
                             :page-size="page_size"
                             layout="prev, pager, next, jumper"
-                            :total="total"
+                            :total="sum"
                             style="float: right;padding: 0;">
                         </el-pagination>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -269,6 +269,9 @@ export default {
                 member_number: '', // 绑定会员数
                 s_share_url: '' // 分享地址
             }, // 用户详情
+            page_size: 20, // 每页条数
+            sum: null, // 总条数
+            current_page: null, // 当前页
             shareholdRules: { // 验证规则
                 s_name: [
                     { required: true, message: '请输入股东姓名', trigger: 'blur' },
@@ -281,23 +284,23 @@ export default {
         }
     },
     created: function () {
-        // 获取股东详情
         this.getShareholderInfoById()
     },
     methods: {
-        // 下一页
-        handleCurrentChange () {
-
+        // 分页
+        handleCurrentChange (val) {
+            this.getShareholderInfoById(val)
         },
         // 获取股东详情
-        getShareholderInfoById () {
+        getShareholderInfoById (current_page) {
             // 重置表单
             if (this.$refs.sharehold) {
                 this.$refs.sharehold.resetFields()
             }
 
             this.$axios.post(getShareholderInfoById, {
-                s_id: this.id
+                s_id: this.id,
+                current_page
             })
             .then(msg => {
                 const data = msg.data
@@ -316,6 +319,9 @@ export default {
                     member_number: data.data.member_number, // 绑定会员数
                     s_share_url: data.data.s_share_url // 分享地址
                 }
+
+                this.current_page = data.data.current_page >> 0
+                this.sum = data.data.sum >> 0
 
                 this.dataList = data.data.integral_log // 积分变动明细
             })

@@ -72,7 +72,8 @@
                         stripe
                         :height="tableHeight"
                         v-loading="loading"
-                        element-loading-text="加载中...">
+                        element-loading-text="加载中..."
+                        :row-class-name="tableRowClassName">
                         <el-table-column
                             prop="shop_name"
                             label="门店名称">
@@ -106,13 +107,14 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            label="操作">
+                            label="操作"
+                            width="70">
                             <template scope="scope">
-                                <template v-if="">
-                                    
+                                <template v-if="scope.row.status === '0'">
+                                    <el-button type="text" @click="handleShopStatus(scope.row.id, 1)">冻结</el-button>
                                 </template>
-                                <template v-els>
-                                    <el-button type="text" @click="">停用(门店id{{ scope.row.id }})</el-button>
+                                <template v-else>
+                                    <el-button type="text" style="color: #FF4949;" @click="handleShopStatus(scope.row.id, 0)">解冻</el-button>
                                 </template>
                             </template>
                         </el-table-column>
@@ -163,6 +165,9 @@
                 .table_body{
                     width: 100%;
                     flex: 1;
+                    .freeze-row{
+                        background-color: #FF4949;
+                    }
                 }
                 .pagination{
                     width: 100%;
@@ -182,7 +187,7 @@
 </style>
 
 <script>
-import { getShopList } from '../assets/axios/api.js'
+import { getShopList, handleShopStatus } from '../assets/axios/api.js'
 export default {
     name: 'listStore',
     data () {
@@ -330,6 +335,51 @@ export default {
             })
             .catch(error => {
                 this.$message.error('服务器异常')
+            })
+        },
+
+        // 表格颜色
+        tableRowClassName (row, index) {
+            if (row.status === '1') {
+                return 'freeze-row'
+            }
+            return ''
+        },
+
+        // 冻结/解冻门店
+        handleShopStatus (shop_id, status) {
+            var prompt = status === '0' ? '此操作将冻结门店所有功能, 是否继续?' : '此操作将解冻门店所有功能, 是否继续?'
+            this.$confirm(prompt, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$axios.post(handleShopStatus, {
+                    shop_id,
+                    status
+                })
+                .then(msg => {
+                    const data = msg.data
+
+                    if (data.flag !== 1000) {
+                        this.$message.error(data.return_code)
+                        return false
+                    }
+                    this.$message({
+                        type: 'success',
+                        message: data.return_code
+                    })
+  
+                    this.getStoreList()
+                })
+                .catch(error => {
+                    this.$message.error('服务器异常')
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消操作'
+                })
             })
         }
     }

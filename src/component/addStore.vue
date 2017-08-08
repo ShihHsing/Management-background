@@ -80,7 +80,7 @@
                         </el-form-item>
                         
                         <el-form-item label="备注:" prop="info">
-                            <el-input placeholder="请输入备注" style="width: 500px;" type="textarea" v-model.number="addStoreValues.info"></el-input>
+                            <el-input placeholder="请输入备注" style="width: 500px;" type="textarea" v-model="addStoreValues.info"></el-input>
                         </el-form-item>
 
                         <el-form-item>

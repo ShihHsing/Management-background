@@ -61,9 +61,25 @@
                     提现列表
                 </el-menu-item>
             </el-submenu>
-            <el-menu-item index="/giftTopUp">
-                砸金蛋礼品充值
-            </el-menu-item>
+            <el-submenu index="机器人活动" v-if="phoneNumber !== '15914383361'">
+                <template slot="title">
+                    <span class="robot">
+                        机器人活动
+                    </span>
+                </template>
+                <el-menu-item index="/rouletteRules">
+                    幸运大转盘
+                </el-menu-item>
+                <el-menu-item index="/smashingGoldEggs">
+                    砸金蛋
+                </el-menu-item>
+                <el-menu-item index="/integralRemind">
+                    积分提醒
+                </el-menu-item>
+                <!-- <el-menu-item index="/giftTopUp">
+                    砸金蛋礼品充值
+                </el-menu-item> -->
+            </el-submenu>
             <!-- 管理员权限 -->
             <el-submenu index="管理员" v-if="phoneNumber === '15914383361'">
                 <template slot="title">
@@ -156,7 +172,18 @@
              center;
              background-size: 18px;
         }
-
+        .robot{
+            padding-left: 30px;
+            background: url('../../assets/img/nav-menu/robot_activity_default.png') no-repeat left
+             center;
+             background-size: 18px;
+        }
+        .selected_robot{
+            padding-left: 30px;
+            background: url('../../assets/img/nav-menu/robot_activity_selected.png') no-repeat left
+             center;
+             background-size: 18px;
+        }
     }
 </style>
 
