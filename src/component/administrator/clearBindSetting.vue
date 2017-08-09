@@ -123,6 +123,7 @@ export default {
                     message: data.return_code,
                     type: 'success'
                 })
+                this.robot_id = 0
             })
             .catch(error => {
                 this.$message.error('服务器异常')
