@@ -147,6 +147,13 @@ export default {
         },
         // 添加一行
         addIntegralRemind () {
+            if (this.integralRemindValues.push_arr.length >= 10) {
+                this.$message({
+                    message: '最多添加十条规则',
+                    type: 'warning'
+                })
+                return false
+            }
             this.integralRemindValues.push_arr.push({
                 push_condition: '',
                 push_content: '',
