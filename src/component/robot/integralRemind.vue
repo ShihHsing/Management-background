@@ -155,12 +155,23 @@ export default {
         },
         // 删除一行
         deleteIntegralRemind (id, index) {
-            if (id) {
-                this.deletePushSetting(id)
-            } else {
-                if (index < 0) return this.integralRemindValues.push_arr
-                this.integralRemindValues.push_arr = this.integralRemindValues.push_arr.slice(0, index).concat(this.integralRemindValues.push_arr.slice(index + 1, this.integralRemindValues.push_arr.length))
-            }
+            this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                if (id) {
+                    this.deletePushSetting(id)
+                } else {
+                    if (index < 0) return this.integralRemindValues.push_arr
+                    this.integralRemindValues.push_arr = this.integralRemindValues.push_arr.slice(0, index).concat(this.integralRemindValues.push_arr.slice(index + 1, this.integralRemindValues.push_arr.length))
+                }
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                })
+            })
         },
         // 添加积分规则
         addPushSetting () {
@@ -224,7 +235,10 @@ export default {
                     this.$message.error(data.ret_msg)
                     return false
                 }
-
+                this.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                })
                 // 获取积分规则详情
                 this.getPushSetting()
             })
