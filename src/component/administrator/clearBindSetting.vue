@@ -3,7 +3,7 @@
         <el-col :span="24" style="height: 100%; width: 100%;">
             <!-- 头部 -->
             <div class="clearBindSetting_top">
-                <span>股东信息</span>
+                <span>解除绑定</span>
             </div>
             
             <div class="clearBindSetting_form_wrap">
