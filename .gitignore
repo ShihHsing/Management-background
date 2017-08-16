@@ -5,3 +5,4 @@ dist
 *.zip
 *.babelrc
 /src/assets/axios/*
+/程序特殊说明.docx
