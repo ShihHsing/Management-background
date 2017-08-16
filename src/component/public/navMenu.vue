@@ -216,7 +216,6 @@ export default {
         handleSelect (key, keyPath) {
             console.log(key, keyPath)
         }
-
         // 获取当前路由地址
         // 动态绑定导航和路由对应关系
         // getRouterUrl () {
