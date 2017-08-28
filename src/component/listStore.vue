@@ -106,7 +106,7 @@
                                 </template>
                             </template>
                         </el-table-column>
-                        <el-table-column
+                        <!-- <el-table-column
                             label="操作"
                             width="70">
                             <template scope="scope">
@@ -117,7 +117,7 @@
                                     <el-button type="text" style="color: #FF4949;" @click="handleShopStatus(scope.row.id, 0)">解冻</el-button>
                                 </template>
                             </template>
-                        </el-table-column>
+                        </el-table-column> -->
                     </el-table>
                 </div>
                 <div class="pagination">

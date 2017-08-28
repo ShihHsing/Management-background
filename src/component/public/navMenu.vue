@@ -113,6 +113,14 @@
                         门店列表
                     </el-menu-item>
                 </el-submenu>
+                <el-submenu index="机器人管理">
+                    <template slot="title">
+                        机器人管理
+                    </template>
+                    <el-menu-item index="/clearBindSetting">
+                        解除绑定
+                    </el-menu-item>
+                </el-submenu>
             </el-submenu>
         </el-menu>
     </div>
@@ -208,7 +216,6 @@ export default {
         handleSelect (key, keyPath) {
             console.log(key, keyPath)
         }
-
         // 获取当前路由地址
         // 动态绑定导航和路由对应关系
         // getRouterUrl () {

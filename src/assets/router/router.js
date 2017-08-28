@@ -136,6 +136,11 @@ const routes = [
             resolve),
             name: '管理员-门店管理-门店列表'
         }, {
+            path: '/clearBindSetting', // 培训列表
+            component: resolve => require(['../../component/administrator/clearBindSetting.vue'],
+            resolve),
+            name: '管理员-机器人管理-解除绑定'
+        }, {
             path: '/addExcel', // 老会员导入
             component: resolve => require(['../../component/addExcel.vue'],
             resolve),
