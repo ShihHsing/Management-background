@@ -24,7 +24,10 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="5">
-                            <el-button type="primary" @click="onSubmit" style="float: right;">立即搜索</el-button>
+                            <el-button type="primary" @click="onSubmit" style="float: right;">
+                                    <template v-if="searchShopList.commodityBrand === '' && searchShopList.commodityClassification === '' && searchShopList.model === ''">查看全部</template>
+                                    <template v-else>立即搜索</template>
+                            </el-button>
                         </el-col>
                     </el-row>
                 </el-form>
@@ -134,7 +137,7 @@
                                 width="100">
                                 <template scope="scope">
                                     <template v-if="shop_id == 1">
-                                        <router-link :to="{path: 'add3DModel', query: {code: scope.row.code, id: scope.row.id, shop_id: scope.row.shop_id, color: scope.row.image_url}}" replace>
+                                        <router-link :to="{path: 'add3DModel', query: {model: scope.row.model, id: scope.row.id, shop_id: scope.row.shop_id, color: scope.row.image_url}}" replace>
                                             <el-button type="info" size="small">添加</el-button>
                                         </router-link>
                                     </template>
@@ -302,10 +305,10 @@ export default {
 
         // 搜索商品
         onSubmit () {
-            if (this.searchShopList.commodityBrand === '' && this.searchShopList.commodityClassification === '' && this.searchShopList.model === '') {
-                this.$message.error('请完善搜索信息,至少需要一个搜索条件')
-                return false
-            }
+            // if (this.searchShopList.commodityBrand === '' && this.searchShopList.commodityClassification === '' && this.searchShopList.model === '') {
+            //     this.$message.error('请完善搜索信息,至少需要一个搜索条件')
+            //     return false
+            // }
 
             this.searchShopData()
         },

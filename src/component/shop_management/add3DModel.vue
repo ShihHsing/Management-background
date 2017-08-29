@@ -16,7 +16,7 @@
                 <div class="add3DModel_form_body sx_basis_scroll sx_scroll_style">
                     <el-form label-position="left" label-width="80px" class="add3DModel_form">
                         <el-form-item label="商品款号:">
-                            <el-input placeholder="请输入内容" v-model="code" :disabled="true" style="width: 217px;">
+                            <el-input placeholder="请输入内容" v-model="model" :disabled="true" style="width: 217px;">
                             </el-input>
                         </el-form-item>
                         <el-form-item label="商品颜色:">
@@ -127,7 +127,7 @@ export default{
     name: 'add3DModel',
     data () {
         return {
-            code: '',
+            model: '',
             color: '',
             colorImg: [],
             colorAndImg: [],
@@ -144,7 +144,7 @@ export default{
     },
     methods: {
         initData () {
-            this.code = this.$route.query.code // 商品款号
+            this.model = this.$route.query.model // 商品款号
             this.id = this.$route.query.id // 商品id
             this.shop_id = this.$route.query.shop_id // 门店id
             // 商品颜色
@@ -227,7 +227,7 @@ export default{
                 }
             }
 
-            if (!(this.code && this.color)) {
+            if (!(this.model && this.color)) {
                 this.$message.error('商品必要信息缺失!请返回列表重新获取!')
                 return false
             }
@@ -249,7 +249,7 @@ export default{
 
             this.$axios.post(API.handle3DModel, {
                 arguments: {
-                    'code': this.code,
+                    'model': this.model,
                     'ios_unity_url': this.ios,
                     'android_unity_url': this.android,
                     'colorAndImg': this.colorAndImg,
