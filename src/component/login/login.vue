@@ -14,7 +14,7 @@
                 </header>
                 <!-- 大标题 -->
                 <div class="title">
-                    <h1>哎哟不错管理后台</h1>
+                    <h1>哎哟不错管理后台DEV</h1>
                 </div>
                 <!-- 登录框 -->
                 <div class="login_form_wrap">
@@ -25,7 +25,7 @@
                         </template>
                     </el-input>
                     </br></br>
-                    <el-input type="password" placeholder="请输入密码" v-model="password" @keyup.enter="login">
+                    <el-input type="password" placeholder="请输入密码" v-model="password" @keyup.enter.native="login">
                         <template slot="prepend">
                             <img src="../../assets/img/login/login_password.png" height="20" width="20">
                         </template>
