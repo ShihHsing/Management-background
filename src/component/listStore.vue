@@ -192,6 +192,7 @@ export default {
     name: 'listStore',
     data () {
         return {
+            loading: true,
             tableHeight: null, // 表格高度
             getShopList: {
                 province: '', // 省

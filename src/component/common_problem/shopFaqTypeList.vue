@@ -13,9 +13,9 @@
                     ref="shopFaqTypeListValues"
                     label-position="left"
                     class="shopFaqTypeList_form"
-                    label-width="120px">
+                    label-width="80px">
                     
-                    <el-form-item label="问题内容:" prop="type_name">
+                    <el-form-item label="分类:" prop="type_name">
                         <el-input v-model="shopFaqTypeListValues.type_name" style="width: 217px;" :maxlength="20" @keyup.enter.native="submitForm('shopFaqTypeListValues')"></el-input>
                     </el-form-item>
 
@@ -23,7 +23,7 @@
                         <el-button type="primary" @click="submitForm('shopFaqTypeListValues')">添加</el-button>
                     </el-form-item>
                 </el-form>
-                <div style="flex: 1;box-sizing: border-box;padding: 15px 30px;" v-if="shopFaqTypeInfo.length !== 0">
+                <div style="flex: 1;box-sizing: border-box;padding: 15px 30px;">
                     <div class="listStore_body_wrap">
                         <div class="listStore_body">
                             <div class="table_body sx_basis_scroll sx_scroll_style" id="table">
@@ -33,7 +33,9 @@
                                     stripe
                                     :height="tableHeight"
                                     v-loading="loading"
-                                    element-loading-text="加载中...">
+                                    element-loading-text="加载中..."
+                                    v-if="shopFaqTypeInfo.length !== 0">
+
                                     <el-table-column
                                         prop="t_type_name"
                                         label="分类">
@@ -144,7 +146,7 @@ export default {
             },
             shopFaqTypeListValuesRules: {
                 type_name: [
-                    { required: true, message: '请输入问题分类', trigger: 'blur' }
+                    { required: true, message: '请输入问题分类', trigger: 'change' }
                 ]
             },
             tableHeight: null, // 表格高度
@@ -203,12 +205,14 @@ export default {
         },
         // 获取分类列表
         getShopFaqTypeList (current_page) {
+            this.loading = true
             this.$axios.post(getShopFaqTypeList, {
                 current_page: current_page || this.current_page
             })
             .then(msg => {
                 const data = msg.data
 
+                this.loading = false
                 if (data.status !== 1000) {
                     this.$message.error(data.ret_msg)
                     return false
@@ -273,7 +277,7 @@ export default {
         },
         // 删除分类
         openDel (id) {
-            this.$confirm('此操作将永久删除此分类下的所有问答该, 是否继续?', '提示', {
+            this.$confirm('此操作将永久删除此分类下的所有问答, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

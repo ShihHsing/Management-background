@@ -17,13 +17,28 @@
                         class="addShopFaqInfo_form"
                         label-width="120px">
                         
-                        <el-form-item label="问题内容:" prop="name">
-                            <el-input v-model="addShopFaqInfoValues.title" style="width: 217px;" maxlength="15"></el-input>
+                        <el-form-item label="问题:" prop="title">
+                            <el-input v-model="addShopFaqInfoValues.title" style="width: 217px;" maxlength="25"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="问题分类:" prop="phone_number" required>
-                            <el-input v-model.number="addShopFaqInfoValues.phone_number" style="width: 217px;"></el-input>
+                        <el-form-item label="问题分类:" prop="phone_number" prop="type">
+                            <el-select v-model="addShopFaqInfoValues.type" placeholder="请选择问题分类">
+                                    <el-option
+                                        v-for="item in shopFaqTypeListAll"
+                                        :label="item.t_type_name"
+                                        :value="item.t_id">
+                                    </el-option>
+                                </el-select>
                         </el-form-item>
+                        
+                        <el-form-item label="回答内容:" id="myQuill" required>
+                            <quill-editor ref="myTextEditor" v-model="addShopFaqInfoValues.content"
+                            :options="editorOption" @showImageUI="imageHandler">
+                            </quill-editor>
+                        </el-form-item>
+
+                        <input type="file" name="file" id="fileinput" @change="customimgupload($event)"
+                        style="display: none;">
 
                         <el-form-item>
                             <el-button type="primary" @click="submitForm('addShopFaqInfoValues')">提交</el-button>
@@ -89,44 +104,60 @@
 </style>
 
 <script>
-import { addShopFaqTypeInfo } from '../../assets/axios/api.js'
+import { addShopFaqInfo, getShopFaqTypeListAll } from '../../assets/axios/api.js'
 export default {
     name: 'addShopFaqInfo',
     data () {
-        var checkPhoneNumber = (rule, value, callback) => {
-            if (!value) {
-                return callback(new Error('请输入股东手机号码'))
-            }
-            setTimeout(() => {
-                if (!Number.isInteger(value)) {
-                    return callback(new Error('请输入数字值'))
-                }
-                var reg = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|17[0-9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/
-                if (!reg.test(value)) {
-                    return callback(new Error('手机号码格式不正确'))
-                } else {
-                    return callback()
-                }
-            }, 1000)
-        }
         return {
             addShopFaqInfoValues: {
-                name: '',
-                phone_number: ''
+                title: '', // 问题标题
+                type: '', // 问题类型
+                content: '' // 内容
             },
+            shopFaqTypeListAll: [], // 问题分类
+            editorOption: {}, // 富文本对象
             addShopFaqInfoValuesRules: { // 验证规则
-                name: [
-                    { required: true, message: '请输入股东姓名', trigger: 'blur' },
-                    { min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur' }
+                title: [
+                    { required: true, message: '请输入问题', trigger: 'blur' },
+                    { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
                 ],
-                phone_number: [
-                    { validator: checkPhoneNumber, trigger: 'blur' }
+                type: [
+                    { required: true, message: '请选择问题分类', trigger: 'blur' }
                 ]
             }
         }
     },
+    created: function () {
+        // 获取问题分类
+        this.getShopFaqTypeListAll()
+    },
     methods: {
-        // 提交颜色
+        /* ------------------ 自定义富文本图片上传 ------------------- */
+        imageHandler () {
+            const fileinput = document.getElementById('fileinput')
+            fileinput.click()
+        },
+        customimgupload () {
+            var formData = new FormData()
+            formData.append('image', fileinput.files[0])
+            if (fileinput.files[0]) {
+                API.myAjax({
+                    url: API.editorServer,
+                    data: formData,
+                    success: msg => {
+                        var imageUrl = msg
+                        var range = this.$refs.myTextEditor.quillEditor.getSelection()
+                        var length = range.index
+                        this.$refs.myTextEditor.quillEditor.insertEmbed(length, 'image', imageUrl)
+                    },
+                    fail: error => {
+                        console.log(error)
+                    }
+                })
+            }
+        },
+        /* --------------------------------------------------------- */
+        // 提交常见问题
         submitForm (formName) {
             this.$refs[formName].validate((valid) => {
                 if (!valid) {
@@ -136,10 +167,17 @@ export default {
                     })
                     return false
                 }
-
-                this.$axios.post(addShopFaqTypeInfo, {
-                    's_name': this.addShareholderValues.name,
-                    's_phone_number': this.addShareholderValues.phone_number
+                if (!this.addShopFaqInfoValues.content) {
+                    this.$message({
+                        message: '请完善回答详情',
+                        type: 'warning'
+                    })
+                    return false
+                }
+                this.$axios.post(addShopFaqInfo, {
+                    title: this.addShopFaqInfoValues.title,
+                    type: this.addShopFaqInfoValues.type,
+                    content: this.addShopFaqInfoValues.content
                 })
                 .then(msg => {
                     const data = msg.data
@@ -153,12 +191,30 @@ export default {
                         message: data.ret_msg,
                         type: 'success'
                     })
-                    this.addShareholderValues.name = ''
-                    this.addShareholderValues.phone_number = ''
+                    // 添加成功跳转列表页
+                    this.$router.push('shopFaqList')
                 })
                 .catch(error => {
                     this.$message.error('服务器异常')
                 })
+            })
+        },
+        // 获取分类列表
+        getShopFaqTypeListAll () {
+            this.$axios.post(getShopFaqTypeListAll)
+            .then(msg => {
+                const data = msg.data
+
+                if (data.status !== 1000) {
+                    this.$message.error(data.ret_msg)
+                    return false
+                }
+
+                // 列表数据
+                this.shopFaqTypeListAll = data.data.type_list
+            })
+            .catch(error => {
+                this.$message.error('服务器异常')
             })
         }
     }
