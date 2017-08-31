@@ -146,7 +146,8 @@ export default {
             },
             shopFaqTypeListValuesRules: {
                 type_name: [
-                    { required: true, message: '请输入问题分类', trigger: 'change' }
+                    { required: true, message: '请输入问题分类', trigger: 'change' },
+                    { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' }
                 ]
             },
             tableHeight: null, // 表格高度
