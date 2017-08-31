@@ -16,7 +16,7 @@
                     label-width="80px">
                     
                     <el-form-item label="分类:" prop="type_name">
-                        <el-input v-model="shopFaqTypeListValues.type_name" style="width: 217px;" :maxlength="20" @keyup.enter.native="submitForm('shopFaqTypeListValues')"></el-input>
+                        <el-input v-model="shopFaqTypeListValues.type_name" style="width: 217px;" :maxlength="8" @keyup.enter.native="submitForm('shopFaqTypeListValues')"></el-input>
                     </el-form-item>
 
                     <el-form-item>
