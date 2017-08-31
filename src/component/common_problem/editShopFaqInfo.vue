@@ -2,7 +2,12 @@
     <div id="editShopFaqInfo">
         <el-col :span="24" style="height: 100%; width: 100%;">
             <!-- 头部 -->
-            <div class="addShopFaqInfo_top">
+            <div class="editShopFaqInfo_top">
+                <router-link to="/shopFaqList" style="width: 45px;text-align: center;">
+                    <el-button type="text">
+                        <i class="el-icon-arrow-left"></i>
+                    </el-button>
+                </router-link>
                 <span>修改常见问题</span>
             </div>
             
@@ -61,12 +66,8 @@
         .editShopFaqInfo_top{
             box-sizing: border-box;
             display: flex;
-            justify-content: space-between;
 
             height: 50px;
-            
-            padding: 0 30px;
-
             border-bottom: 1px solid #E5E9F2;
     
             line-height: 50px;
@@ -182,10 +183,10 @@ export default {
 
                 // 绑定问答详情
                 this.editShopFaqInfoValues = {
-                    title: data.faq_info.f_title,
-                    type: data.faq_info.f_type,
-                    content: data.faq_info.f_content,
-                    id: data.faq_info.f_id
+                    title: data.data.faq_info.f_title,
+                    type: data.data.faq_info.f_type,
+                    content: (data.data.faq_info.f_content).replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
+                    id: data.data.faq_info.f_id
                 }
             })
             .catch(error => {
@@ -202,7 +203,7 @@ export default {
                     })
                     return false
                 }
-                if (!this.addShopFaqInfoValues.content) {
+                if (!this.editShopFaqInfoValues.content) {
                     this.$message({
                         message: '请完善回答详情',
                         type: 'warning'
@@ -210,10 +211,10 @@ export default {
                     return false
                 }
                 this.$axios.post(editShopFaqInfoById, {
-                    f_id: this.addShopFaqInfoValues.id,
-                    title: this.addShopFaqInfoValues.title,
-                    type: this.addShopFaqInfoValues.type,
-                    content: this.addShopFaqInfoValues.content
+                    f_id: this.editShopFaqInfoValues.id,
+                    title: this.editShopFaqInfoValues.title,
+                    type: this.editShopFaqInfoValues.type,
+                    content: this.editShopFaqInfoValues.content
                 })
                 .then(msg => {
                     const data = msg.data

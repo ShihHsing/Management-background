@@ -209,7 +209,6 @@
                                     <el-form :model="four" ref="four" label-width="47%">
                                         <el-card class="box-card">
                                             <div class="sx_basis_scroll sx_scroll_style_lucency">
-                                                <!-- <vue-html5-editor :content="description" @change="updateData"></vue-html5-editor> -->
                                                 <quill-editor ref="myTextEditor" v-model="description" :options="editorOption"
                                                 @showImageUI="imageHandler" @change="updateData">
                                                 </quill-editor>

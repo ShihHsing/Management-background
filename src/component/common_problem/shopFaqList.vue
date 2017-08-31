@@ -42,7 +42,7 @@
                         </el-table-column>
                         <el-table-column
                             label="操作"
-                            width="120">
+                            width="130">
                             <template scope="scope">
                                 <router-link :to="{path: 'editShopFaqInfo', query: {id: scope.row.f_id}}" replace>
                                     <el-button size="small" type="success">修改</el-button>
