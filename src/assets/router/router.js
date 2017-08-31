@@ -220,6 +220,12 @@ const routes = [
             name: '管理员-常见问题-问题列表',
             meta: { auth: false }
         }, {
+            path: '/editShopFaqInfo',
+            component: resolve => require(['../../component/common_problem/editShopFaqInfo.vue'],
+            resolve),
+            name: '管理员-常见问题-修改问题',
+            meta: { auth: false }
+        }, {
             path: '/shopFaqTypeList',
             component: resolve => require(['../../component/common_problem/shopFaqTypeList.vue'],
             resolve),
