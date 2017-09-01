@@ -106,6 +106,7 @@
 
 <script>
 import { getShopFaqInfo, editShopFaqInfoById, getShopFaqTypeListAll } from '../../assets/axios/api.js'
+import * as API from '../../assets/axios/api.js'
 export default {
     name: 'editShopFaqInfo',
     data () {
@@ -185,7 +186,7 @@ export default {
                 this.editShopFaqInfoValues = {
                     title: data.data.faq_info.f_title,
                     type: data.data.faq_info.f_type,
-                    content: (data.data.faq_info.f_content).replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
+                    content: (data.data.faq_info.f_content).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"'),
                     id: data.data.faq_info.f_id
                 }
             })

@@ -105,6 +105,7 @@
 
 <script>
 import { addShopFaqInfo, getShopFaqTypeListAll } from '../../assets/axios/api.js'
+import * as API from '../../assets/axios/api.js'
 export default {
     name: 'addShopFaqInfo',
     data () {
