@@ -3,7 +3,7 @@
         <div class="addCarouselDrawing_body_wrap">
             <!-- <div class="addCarouselDrawing_body"> -->
             <el-tabs type="border-card" @tab-click="getCarouselDrawingList" v-model="tabCheck">
-                <el-tab-pane label="新增轮播图" name="addCarouselDrawing">
+                <el-tab-pane label="新增轮播图" name="addCarouselDrawing" class="sx_basis_scroll sx_scroll_style">
                     <el-form label-position="left" label-width="120px">
                         <el-form-item label="轮播图名称">
                             <el-tooltip class="item" effect="dark" content="请保证轮播图名称唯一" placement="right-start">
@@ -772,10 +772,6 @@ export default{
                     this.$message.error(msg.data.return_code)
                     return false
                 }
-                this.$message({
-                    message: '修改数据获取',
-                    type: 'success'
-                })
                 // 显示弹出层
                 this.modification.dialogFormVisible = true
                 // 保存数据到本地
@@ -860,7 +856,7 @@ export default{
                 return false
             }
 
-            if (!this.modification.carousel_drawing_url || !this.modification.imageUrl) {
+            if (!this.modification.imageUrl) {
                 this.$message.error('请上传图片')
                 return false
             }

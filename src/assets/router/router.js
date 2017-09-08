@@ -174,6 +174,26 @@ const routes = [
             component: resolve => require(['../../component/shareholder/shareholderInfo.vue'],
             resolve),
             name: '3D购股东-股东列表-股东详情'
+        }, {
+            path: '/addShopFaqInfo',
+            component: resolve => require(['../../component/common_problem/addShopFaqInfo.vue'],
+            resolve),
+            name: '管理员-常见问题-添加问题'
+        }, {
+            path: '/shopFaqList',
+            component: resolve => require(['../../component/common_problem/shopFaqList.vue'],
+            resolve),
+            name: '管理员-常见问题-问题列表'
+        }, {
+            path: '/editShopFaqInfo',
+            component: resolve => require(['../../component/common_problem/editShopFaqInfo.vue'],
+            resolve),
+            name: '管理员-常见问题-修改问题'
+        }, {
+            path: '/shopFaqTypeList',
+            component: resolve => require(['../../component/common_problem/shopFaqTypeList.vue'],
+            resolve),
+            name: '管理员-常见问题-问题分类'
         }]
     }, {
         path: '*',

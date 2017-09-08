@@ -12,7 +12,7 @@
         <div class="logo_right_wrap">
             <!-- 标题 -->
             <el-col :span="16" class="logoTitle">
-                <h1>哎哟不错店家管理系统</h1>
+                <h1>哎哟不错店家管理系统DEV</h1>
             </el-col>
             <!-- 门店列表 -->
             <el-col :span="4" class="storeSelect">

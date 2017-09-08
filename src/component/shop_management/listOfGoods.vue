@@ -24,7 +24,10 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="5">
-                            <el-button type="primary" @click="onSubmit" style="float: right;">立即搜索</el-button>
+                            <el-button type="primary" @click="onSubmit" style="float: right;">
+                                    <template v-if="searchShopList.commodityBrand === '' && searchShopList.commodityClassification === '' && searchShopList.model === ''">查看全部</template>
+                                    <template v-else>立即搜索</template>
+                            </el-button>
                         </el-col>
                     </el-row>
                 </el-form>
@@ -91,40 +94,67 @@
                                 label="商品设置"
                                 width="180">
                                 <template scope="scope">
-                                    <template v-if="shop_id != 1">
-                                        <template v-for="(item,index) in scope.row.switch_list">
-                                            <template v-if="scope.row.shop_id == 1">
-                                                <el-form v-if="scope.row.switch_list[index].switch_name != '上架'">
-                                                    <el-form-item :label="item.switch_name">
-                                                        <el-switch 
-                                                            v-model="goodsSetSwitchModel[scope.$index][index].model"
-                                                            @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
-                                                        </el-switch>
-                                                    </el-form-item>
-                                                </el-form>
-                                            </template>
-                                            <template v-else>
-                                                <el-form>
-                                                    <el-form-item :label="item.switch_name">
-                                                        <el-switch 
-                                                            v-model="goodsSetSwitchModel[scope.$index][index].model"
-                                                            @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
-                                                        </el-switch>
-                                                    </el-form-item>
-                                                </el-form>
-                                            </template>
+                                    <template v-if="shop_id == scope.row.shop_id">
+                                        <el-form>
+                                            <el-form-item label="上架">
+                                                <el-switch 
+                                                    v-model="scope.row.is_on"
+                                                    @change="goodsSetSwitch(scope.row.id, 'is_on', scope.row.is_on)">
+                                                </el-switch>
+                                            </el-form-item>
+                                        </el-form>
+                                    </template>
+                                    <el-form>
+                                        <el-form-item label="热销">
+                                            <el-switch 
+                                                v-model="scope.row.switch_list.is_hot"
+                                                @change="goodsSetSwitch(scope.row.id, 'is_hot', scope.row.switch_list.is_hot)">
+                                            </el-switch>
+                                        </el-form-item>
+                                    </el-form>
+                                    <el-form>
+                                        <el-form-item label="新品">
+                                            <el-switch 
+                                                v-model="scope.row.switch_list.is_new"
+                                                @change="goodsSetSwitch(scope.row.id, 'is_new', scope.row.switch_list.is_new)">
+                                            </el-switch>
+                                        </el-form-item>
+                                    </el-form>
+                                    <el-form>
+                                        <el-form-item label="精品">
+                                            <el-switch 
+                                                v-model="scope.row.switch_list.is_boutique"
+                                                @change="goodsSetSwitch(scope.row.id, 'is_boutique', scope.row.switch_list.is_boutique)">
+                                            </el-switch>
+                                        </el-form-item>
+                                    </el-form>
+                                    <!-- <template v-for="(item,index) in scope.row.switch_list">
+                                        <template v-if="scope.row.shop_id == 1">
+                                            <el-form v-if="scope.row.switch_list[index].switch_name != '上架'">
+                                                <el-form-item :label="item.switch_name">
+                                                    <el-switch 
+                                                        v-model="goodsSetSwitchModel[scope.$index][index].model"
+                                                        @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
+                                                    </el-switch>
+                                                </el-form-item>
+                                            </el-form>
                                         </template>
-                                        <!-- 这是一个Debug的办法 为了配合商品属性开关动态效果的失效 -->
-                                        <el-switch
-                                            v-model="value1"
-                                            style="display:none;">
-                                        </el-switch>
-                                    </template>
-                                    <template v-else>
-                                        <el-row type="flex" justify="center">
-                                            <span>此商品为公共商品</span>
-                                        </el-row>
-                                    </template>
+                                        <template v-else>
+                                            <el-form>
+                                                <el-form-item :label="item.switch_name">
+                                                    <el-switch 
+                                                        v-model="goodsSetSwitchModel[scope.$index][index].model"
+                                                        @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
+                                                    </el-switch>
+                                                </el-form-item>
+                                            </el-form>
+                                        </template>
+                                    </template> -->
+                                    <!-- 这是一个Debug的办法 为了配合商品属性开关动态效果的失效 -->
+                                    <el-switch
+                                        v-model="value1"
+                                        style="display:none;">
+                                    </el-switch>
                                 </template>
                             </el-table-column>
 
@@ -134,7 +164,7 @@
                                 width="100">
                                 <template scope="scope">
                                     <template v-if="shop_id == 1">
-                                        <router-link :to="{path: 'add3DModel', query: {code: scope.row.code, id: scope.row.id, shop_id: scope.row.shop_id, color: scope.row.image_url}}" replace>
+                                        <router-link :to="{path: 'add3DModel', query: {model: scope.row.model, id: scope.row.id, shop_id: scope.row.shop_id, color: scope.row.image_url}}" replace>
                                             <el-button type="info" size="small">添加</el-button>
                                         </router-link>
                                     </template>
@@ -302,10 +332,10 @@ export default {
 
         // 搜索商品
         onSubmit () {
-            if (this.searchShopList.commodityBrand === '' && this.searchShopList.commodityClassification === '' && this.searchShopList.model === '') {
-                this.$message.error('请完善搜索信息,至少需要一个搜索条件')
-                return false
-            }
+            // if (this.searchShopList.commodityBrand === '' && this.searchShopList.commodityClassification === '' && this.searchShopList.model === '') {
+            //     this.$message.error('请完善搜索信息,至少需要一个搜索条件')
+            //     return false
+            // }
 
             this.searchShopData()
         },
@@ -343,6 +373,39 @@ export default {
 
                 this.shopDateList = data.goods_list
 
+                // 转换开关布尔值
+                // 若不存在 则设置false为默认值
+                for (var i = this.shopDateList.length - 1; i >= 0; i--) {
+                    if (this.shopDateList[i].is_on) {
+                        this.shopDateList[i].is_on = !!Number(this.shopDateList[i].is_on)
+                    } else {
+                        this.shopDateList[i].is_on = false
+                    }
+                    if (this.shopDateList[i].switch_list) {
+                        if (this.shopDateList[i].switch_list.is_boutique) {
+                            this.shopDateList[i].switch_list.is_boutique = !!Number(this.shopDateList[i].switch_list.is_boutique)
+                        } else {
+                            this.shopDateList[i].switch_list.is_boutique = false
+                        }
+                        if (this.shopDateList[i].switch_list.is_hot) {
+                            this.shopDateList[i].switch_list.is_hot = !!Number(this.shopDateList[i].switch_list.is_hot)
+                        } else {
+                            this.shopDateList[i].switch_list.is_hot = false
+                        }
+                        if (this.shopDateList[i].switch_list.is_new) {
+                            this.shopDateList[i].switch_list.is_new = !!Number(this.shopDateList[i].switch_list.is_new)
+                        } else {
+                            this.shopDateList[i].switch_list.is_new = false
+                        }
+                    } else {
+                        this.shopDateList[i].switch_list = {
+                            is_boutique: false,
+                            is_hot: false,
+                            is_new: false
+                        }
+                    }
+                }
+
                 // 构建二次确认数据模型
                 this.dialogVisible = []
                 for (let i = 0; i < this.shopDateList.length; i++) {
@@ -356,17 +419,17 @@ export default {
                 this.current_page = (data.current_page) >> 0
 
                 // 商品设置开关
-                this.goodsSetSwitchModel = []
-                for (let i = 0; i < this.shopDateList.length; i++) {
-                    var model = []
-                    for (let ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
-                        model.push({
-                            'model': !!(this.shopDateList[i].switch_list[ii].switch >> 0),
-                            'goods_id': this.shopDateList[i].id
-                        })
-                    }
-                    this.goodsSetSwitchModel[i] = model
-                }
+                // this.goodsSetSwitchModel = []
+                // for (let i = 0; i < this.shopDateList.length; i++) {
+                //     var model = []
+                //     for (let ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
+                //         model.push({
+                //             'model': !!(this.shopDateList[i].switch_list[ii].switch >> 0),
+                //             'goods_id': this.shopDateList[i].id
+                //         })
+                //     }
+                //     this.goodsSetSwitchModel[i] = model
+                // }
 
                 this.loading = false
             })
@@ -399,6 +462,38 @@ export default {
 
                 this.shopDateList = data.goods_list
 
+                // 转换开关布尔值
+                // 若不存在 则设置false为默认值
+                for (var i = this.shopDateList.length - 1; i >= 0; i--) {
+                    if (this.shopDateList[i].is_on) {
+                        this.shopDateList[i].is_on = !!Number(this.shopDateList[i].is_on)
+                    } else {
+                        this.shopDateList[i].is_on = false
+                    }
+                    if (this.shopDateList[i].switch_list) {
+                        if (this.shopDateList[i].switch_list.is_boutique) {
+                            this.shopDateList[i].switch_list.is_boutique = !!Number(this.shopDateList[i].switch_list.is_boutique)
+                        } else {
+                            this.shopDateList[i].switch_list.is_boutique = false
+                        }
+                        if (this.shopDateList[i].switch_list.is_hot) {
+                            this.shopDateList[i].switch_list.is_hot = !!Number(this.shopDateList[i].switch_list.is_hot)
+                        } else {
+                            this.shopDateList[i].switch_list.is_hot = false
+                        }
+                        if (this.shopDateList[i].switch_list.is_new) {
+                            this.shopDateList[i].switch_list.is_new = !!Number(this.shopDateList[i].switch_list.is_new)
+                        } else {
+                            this.shopDateList[i].switch_list.is_new = false
+                        }
+                    } else {
+                        this.shopDateList[i].switch_list = {
+                            is_boutique: false,
+                            is_hot: false,
+                            is_new: false
+                        }
+                    }
+                }
                 // 构建二次确认数据模型
                 this.dialogVisible = []
                 for (var i = 0; i < this.shopDateList.length; i++) {
@@ -413,17 +508,17 @@ export default {
                 this.page_size = (data.page_size) >> 0
 
                 // 商品设置开关
-                this.goodsSetSwitchModel = []
-                for (let i = 0; i < this.shopDateList.length; i++) {
-                    var model = []
-                    for (let ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
-                        model.push({
-                            'model': !!(this.shopDateList[i].switch_list[ii].switch >> 0),
-                            'goods_id': this.shopDateList[i].id
-                        })
-                    }
-                    this.goodsSetSwitchModel[i] = model
-                }
+                // this.goodsSetSwitchModel = []
+                // for (let i = 0; i < this.shopDateList.length; i++) {
+                //     var model = []
+                //     for (let ii = 0; ii < this.shopDateList[i].switch_list.length; ii++) {
+                //         model.push({
+                //             'model': !!(this.shopDateList[i].switch_list[ii].switch >> 0),
+                //             'goods_id': this.shopDateList[i].id
+                //         })
+                //     }
+                //     this.goodsSetSwitchModel[i] = model
+                // }
 
                 // 设置月销模型
                 this.saleCount = []
@@ -442,25 +537,28 @@ export default {
         },
 
         // 商品设置开关
-        goodsSetSwitch (goods_id, switch_id, switch_value) {
+        goodsSetSwitch (goods_id, switch_name, switch_value) {
             // Debug 处理
             this.value1 = !this.value1
             this.$axios.post(API.switchHandleUrl, {
                 'goods_id': goods_id,
-                'switch_id': switch_id,
+                'switch_name': switch_name,
                 'switch_value': Number(switch_value)
             })
             .then(msg => {
                 const data = msg.data
 
-                if (data.flag >> 0 !== 1000) {
+                if (data.flag !== 1000) {
                     this.$message.error(data.return_code)
+                    return false
                 }
 
                 this.$message({
                     message: data.return_code,
                     type: 'success'
                 })
+                // 重新加载数据
+                this.searchShopData(this.current_page)
             })
             .catch(error => {
                 this.$message.error('服务器异常')

@@ -209,7 +209,6 @@
                                     <el-form :model="four" ref="four" label-width="47%">
                                         <el-card class="box-card">
                                             <div class="sx_basis_scroll sx_scroll_style_lucency">
-                                                <!-- <vue-html5-editor :content="description" @change="updateData"></vue-html5-editor> -->
                                                 <quill-editor ref="myTextEditor" v-model="description" :options="editorOption"
                                                 @showImageUI="imageHandler" @change="updateData">
                                                 </quill-editor>
@@ -500,7 +499,6 @@ export default {
                     }
                     var goods_detail = msg.data.goods_detail
                     this.goods_detail = goods_detail
-                    // statement
                     // 商品品牌
                     this.one.commodityBrand = goods_detail.product_id
                     // 商品分类
@@ -569,6 +567,7 @@ export default {
 
         // 删除颜色图片
         removerColor (color, index) {
+            // 恢复颜色
             this.four.cities.push(color)
             this.goods_detail.image_url.splice(index, 1)
         },
@@ -1107,7 +1106,8 @@ export default {
             for (let i = 0; i < this.goods_detail.image_url.length; i++) {
                 colorAndImg.push({
                     color: this.goods_detail.image_url[i].color_arg_id,
-                    imgUrl: this.goods_detail.image_url[i].image_url
+                    imgUrl: this.goods_detail.image_url[i].image_url,
+                    unity_img_url: this.goods_detail.image_url[i].unity_img_url
                 })
             }
             if (colorAndImg.length !== 0) {

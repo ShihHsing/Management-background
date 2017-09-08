@@ -121,6 +121,20 @@
                         解除绑定
                     </el-menu-item>
                 </el-submenu>
+                <el-submenu index="常见问题">
+                    <template slot="title">
+                        常见问题
+                    </template>
+                    <el-menu-item index="/addShopFaqInfo">
+                        添加问题
+                    </el-menu-item>
+                    <el-menu-item index="/shopFaqList">
+                        问题列表
+                    </el-menu-item>
+                    <el-menu-item index="/shopFaqTypeList">
+                        问题分类
+                    </el-menu-item>
+                </el-submenu>
             </el-submenu>
         </el-menu>
     </div>
