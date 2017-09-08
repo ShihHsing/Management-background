@@ -158,6 +158,12 @@ export default {
                 const data = msg.data
 
                 this.loading = false
+
+                if (data.status === 9001) {
+                    this.shopFaqList = []
+                    return false
+                }
+                
                 if (data.status !== 1000) {
                     this.shopFaqList = []
                     this.$message.error(data.ret_msg)
