@@ -94,7 +94,7 @@
                                 label="商品设置"
                                 width="180">
                                 <template scope="scope">
-                                    <template v-if="shop_id != 1">
+                                    <template v-if="shop_id == scope.row.shop_id">
                                         <el-form>
                                             <el-form-item label="上架">
                                                 <el-switch 
@@ -103,63 +103,58 @@
                                                 </el-switch>
                                             </el-form-item>
                                         </el-form>
-                                        <el-form>
-                                            <el-form-item label="热销">
-                                                <el-switch 
-                                                    v-model="scope.row.switch_list.is_hot"
-                                                    @change="goodsSetSwitch(scope.row.id, 'is_hot', scope.row.switch_list.is_hot)">
-                                                </el-switch>
-                                            </el-form-item>
-                                        </el-form>
-                                        <el-form>
-                                            <el-form-item label="新品">
-                                                <el-switch 
-                                                    v-model="scope.row.switch_list.is_new"
-                                                    @change="goodsSetSwitch(scope.row.id, 'is_new', scope.row.switch_list.is_new)">
-                                                </el-switch>
-                                            </el-form-item>
-                                        </el-form>
-                                        <el-form>
-                                            <el-form-item label="精品">
-                                                <el-switch 
-                                                    v-model="scope.row.switch_list.is_boutique"
-                                                    @change="goodsSetSwitch(scope.row.id, 'is_boutique', scope.row.switch_list.is_boutique)">
-                                                </el-switch>
-                                            </el-form-item>
-                                        </el-form>
-                                        <!-- <template v-for="(item,index) in scope.row.switch_list">
-                                            <template v-if="scope.row.shop_id == 1">
-                                                <el-form v-if="scope.row.switch_list[index].switch_name != '上架'">
-                                                    <el-form-item :label="item.switch_name">
-                                                        <el-switch 
-                                                            v-model="goodsSetSwitchModel[scope.$index][index].model"
-                                                            @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
-                                                        </el-switch>
-                                                    </el-form-item>
-                                                </el-form>
-                                            </template>
-                                            <template v-else>
-                                                <el-form>
-                                                    <el-form-item :label="item.switch_name">
-                                                        <el-switch 
-                                                            v-model="goodsSetSwitchModel[scope.$index][index].model"
-                                                            @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
-                                                        </el-switch>
-                                                    </el-form-item>
-                                                </el-form>
-                                            </template>
-                                        </template> -->
-                                        <!-- 这是一个Debug的办法 为了配合商品属性开关动态效果的失效 -->
-                                        <el-switch
-                                            v-model="value1"
-                                            style="display:none;">
-                                        </el-switch>
                                     </template>
-                                    <template v-else>
-                                        <el-row type="flex" justify="center">
-                                            <span>此商品为公共商品</span>
-                                        </el-row>
-                                    </template>
+                                    <el-form>
+                                        <el-form-item label="热销">
+                                            <el-switch 
+                                                v-model="scope.row.switch_list.is_hot"
+                                                @change="goodsSetSwitch(scope.row.id, 'is_hot', scope.row.switch_list.is_hot)">
+                                            </el-switch>
+                                        </el-form-item>
+                                    </el-form>
+                                    <el-form>
+                                        <el-form-item label="新品">
+                                            <el-switch 
+                                                v-model="scope.row.switch_list.is_new"
+                                                @change="goodsSetSwitch(scope.row.id, 'is_new', scope.row.switch_list.is_new)">
+                                            </el-switch>
+                                        </el-form-item>
+                                    </el-form>
+                                    <el-form>
+                                        <el-form-item label="精品">
+                                            <el-switch 
+                                                v-model="scope.row.switch_list.is_boutique"
+                                                @change="goodsSetSwitch(scope.row.id, 'is_boutique', scope.row.switch_list.is_boutique)">
+                                            </el-switch>
+                                        </el-form-item>
+                                    </el-form>
+                                    <!-- <template v-for="(item,index) in scope.row.switch_list">
+                                        <template v-if="scope.row.shop_id == 1">
+                                            <el-form v-if="scope.row.switch_list[index].switch_name != '上架'">
+                                                <el-form-item :label="item.switch_name">
+                                                    <el-switch 
+                                                        v-model="goodsSetSwitchModel[scope.$index][index].model"
+                                                        @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
+                                                    </el-switch>
+                                                </el-form-item>
+                                            </el-form>
+                                        </template>
+                                        <template v-else>
+                                            <el-form>
+                                                <el-form-item :label="item.switch_name">
+                                                    <el-switch 
+                                                        v-model="goodsSetSwitchModel[scope.$index][index].model"
+                                                        @change="goodsSetSwitch(goodsSetSwitchModel[scope.$index][index].goods_id,item.id,goodsSetSwitchModel[scope.$index][index].model)">
+                                                    </el-switch>
+                                                </el-form-item>
+                                            </el-form>
+                                        </template>
+                                    </template> -->
+                                    <!-- 这是一个Debug的办法 为了配合商品属性开关动态效果的失效 -->
+                                    <el-switch
+                                        v-model="value1"
+                                        style="display:none;">
+                                    </el-switch>
                                 </template>
                             </el-table-column>
 
