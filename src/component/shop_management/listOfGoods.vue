@@ -89,7 +89,7 @@
                                     </template>
                                 </template>
                             </el-table-column>
-                            <el-table-column
+                            <!-- <el-table-column
                                 fixed="right"
                                 label="商品设置"
                                 width="180">
@@ -127,7 +127,7 @@
                                                 @change="goodsSetSwitch(scope.row.id, 'is_boutique', scope.row.switch_list.is_boutique)">
                                             </el-switch>
                                         </el-form-item>
-                                    </el-form>
+                                    </el-form> -->
                                     <!-- <template v-for="(item,index) in scope.row.switch_list">
                                         <template v-if="scope.row.shop_id == 1">
                                             <el-form v-if="scope.row.switch_list[index].switch_name != '上架'">
@@ -151,12 +151,12 @@
                                         </template>
                                     </template> -->
                                     <!-- 这是一个Debug的办法 为了配合商品属性开关动态效果的失效 -->
-                                    <el-switch
+                                    <!-- <el-switch
                                         v-model="value1"
                                         style="display:none;">
                                     </el-switch>
                                 </template>
-                            </el-table-column>
+                            </el-table-column> -->
 
                             <el-table-column
                                 fixed="right"
