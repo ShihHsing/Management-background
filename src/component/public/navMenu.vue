@@ -37,11 +37,11 @@
                     商品列表
                 </el-menu-item>
             </el-submenu>
-            <el-menu-item index="/addExcel">
+            <!-- <el-menu-item index="/addExcel">
                 <span class="addExcel" v-bind:class="[router_url == '/addExcel' ? 'selected_addExcel' : 'addExcel']">
                     会员导入
                 </span>
-            </el-menu-item>
+            </el-menu-item> -->
             <el-submenu index="3D购股东" v-if="phoneNumber !== '15914383361'">
                 <template slot="title">
                     <span class="shareholder">
