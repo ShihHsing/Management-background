@@ -220,6 +220,16 @@ export default {
                     return false
                 }
 
+                for (var i = this.goodsPrivatePropertyValues.dynamicTags.length - 1; i >= 0; i--) {
+                    if (this.goodsPrivatePropertyValues.dynamicTags[i] === '颜色') {
+                        this.$message({
+                            message: '不可添加[颜色]为商品颜色!',
+                            type: 'warning'
+                        })
+                        return false
+                    }
+                }
+
                 this.$axios.post(addNewerCategoryArguments, {
                     'product_id': this.goodsPrivatePropertyValues.commodityBrand,
                     'category_id': this.goodsPrivatePropertyValues.commodityClassification,
