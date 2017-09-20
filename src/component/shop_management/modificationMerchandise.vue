@@ -60,7 +60,7 @@
                                                 <el-input placeholder="请输入易企秀链接" v-model="two.shop_show">
                                                 </el-input>
                                             </el-form-item>
-                                            <div v-for="(item,index) in two.privateProperty">
+                                            <div v-for="(item,index) in privateProperty">
                                                 <el-form-item :label="item.argument_value" required>
                                                     <el-select placeholder="请选择" v-model="two.privatePropertyList[index].attributeValue"
                                                     v-on:change="getPrivatePropertyList();">
@@ -436,7 +436,29 @@ export default {
             elCarousel: ''
         }
     },
-
+    computed: {
+        privateProperty: function () {
+            // 检查商品属性是否有空属性存在 存在过滤
+            // 若过滤后属性列表为空 则抛出Error
+            var arrList = []
+            for (var i = this.two.privateProperty.length - 1; i >= 0; i--) {
+                if (this.two.privateProperty[i].hasOwnProperty('child_list')) {
+                    arrList.push(this.two.privateProperty[i])
+                    // ------- 定义新的数据模型绑定数据 -------
+                    var newAttribute = {
+                        attribute: this.two.privateProperty[i].argument_value,
+                        attributeValue: ''
+                    }
+                    this.two.privatePropertyList.push(newAttribute)
+                // ----------------------------------------
+                }
+            }
+            if (arrList.length >> 0 !== 0) {
+                return arrList
+            }
+            return ''
+        }
+    },
     created: function () {
         // 获取商品ID
         this.shopID = this.$route.query.shopID
