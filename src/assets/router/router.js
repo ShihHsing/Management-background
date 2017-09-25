@@ -110,7 +110,7 @@ const routes = [
             component: resolve => require(['../../component/carousel_drawing/addCarouselDrawing.vue'],
             resolve),
             name: '管理员-添加轮播图'
-        },{
+        }, {
             path: '/carouselDrawingList', // 轮播图列表
             component: resolve => require(['../../component/carousel_drawing/carouselDrawingList.vue'],
             resolve),
