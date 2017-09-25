@@ -60,15 +60,17 @@
                                                 <el-input placeholder="请输入易企秀链接" v-model="two.shop_show">
                                                 </el-input>
                                             </el-form-item>
-                                            <div v-for="(item,index) in privateProperty">
-                                                <el-form-item :label="item.argument_value" required>
-                                                    <el-select placeholder="请选择" v-model="two.privatePropertyList[index].attributeValue"
-                                                    v-on:change="getPrivatePropertyList();">
-                                                        <el-option v-for="childItem in item.child_list" :label="childItem.argument_value"
-                                                        :value="childItem.id">
-                                                        </el-option>
-                                                    </el-select>
-                                                </el-form-item>
+                                            <div v-for="(item,index) in two.privateProperty">
+                                                <template v-if="item.child_list">
+                                                    <el-form-item :label="item.argument_value" required>
+                                                        <el-select placeholder="请选择" v-model="two.privatePropertyList[index].attributeValue"
+                                                        v-on:change="getPrivatePropertyList();">
+                                                            <el-option v-for="childItem in item.child_list" :label="childItem.argument_value"
+                                                            :value="childItem.id">
+                                                            </el-option>
+                                                        </el-select>
+                                                    </el-form-item>
+                                                </template>
                                             </div>
                                             <el-form-item>
                                                 <el-button type="primary" @click="flag1 && submitForm('two')">
@@ -434,29 +436,6 @@ export default {
                 }]
             },
             elCarousel: ''
-        }
-    },
-    computed: {
-        privateProperty: function () {
-            // 检查商品属性是否有空属性存在 存在过滤
-            // 若过滤后属性列表为空 则抛出Error
-            var arrList = []
-            for (var i = this.two.privateProperty.length - 1; i >= 0; i--) {
-                if (this.two.privateProperty[i].hasOwnProperty('child_list')) {
-                    arrList.push(this.two.privateProperty[i])
-                    // ------- 定义新的数据模型绑定数据 -------
-                    var newAttribute = {
-                        attribute: this.two.privateProperty[i].argument_value,
-                        attributeValue: ''
-                    }
-                    this.two.privatePropertyList.push(newAttribute)
-                // ----------------------------------------
-                }
-            }
-            if (arrList.length >> 0 !== 0) {
-                return arrList
-            }
-            return ''
         }
     },
     created: function () {
@@ -844,19 +823,29 @@ export default {
         // 填充商品分类属性
         // 属性检验规则 第二步骤
         twoReg () {
-            // 计数检查数据模型是否有空值存在
-            var countReg = true
+            // 记录二级属性为空的根属性数量
+            var countNum = 0
+
             if (this.two.privatePropertyList.length === 0) {
                 console.log('two.privatePropertyList数据模型为空,与预期不符!')
                 return false
             }
 
-            for (var i = 0, length1 = this.two.privatePropertyList.length; i < length1; i++) {
-                if (this.two.privatePropertyList[i].attributeValue === '') {
-                    countReg = false
+            for (var i = this.two.privateProperty.length - 1; i >= 0; i--) {
+                if (!this.two.privateProperty[i].hasOwnProperty('child_list')) {
+                    countNum++
                 }
             }
-            return countReg
+            for (var i = 0, length1 = this.two.privatePropertyList.length; i < length1; i++) {
+                if (this.two.privatePropertyList[i].attributeValue === '') {
+                    countNum--
+                }
+            }
+            if (countNum !== 0) {
+                return false
+            }
+
+            return true
         },
 
         // 颜色选择 单选
@@ -1200,9 +1189,8 @@ export default {
                     this.$message.error(msg.data.return_code)
                     return false
                 }
-
                 this.$message({
-                    message: msg.return_code,
+                    message: msg.data.return_code,
                     type: 'success'
                 })
                 setTimeout(() => {

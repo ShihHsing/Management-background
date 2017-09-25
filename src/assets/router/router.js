@@ -107,9 +107,14 @@ const routes = [
             name: '商品管理-3D模型上传'
         }, {
             path: '/addCarouselDrawing', // 添加轮播图
-            component: resolve => require(['../../component/addCarouselDrawing.vue'],
+            component: resolve => require(['../../component/carousel_drawing/addCarouselDrawing.vue'],
             resolve),
-            name: '管理员-轮播图'
+            name: '管理员-添加轮播图'
+        },{
+            path: '/carouselDrawingList', // 轮播图列表
+            component: resolve => require(['../../component/carousel_drawing/carouselDrawingList.vue'],
+            resolve),
+            name: '管理员-轮播图列表'
         }, {
             path: '/trainingClassifyList', // 添加培训分类&&培训分类列表
             component: resolve => require(['../../component/trainingClassifyList.vue'],

@@ -85,7 +85,7 @@
                 <template slot="title">
                     管理员
                 </template>
-                <el-submenu index="培训功能">
+                <el-submenu index="培训管理">
                     <template slot="title">
                         培训功能
                     </template>
@@ -99,9 +99,18 @@
                         培训列表
                     </el-menu-item>
                 </el-submenu>
-                <el-menu-item index="/addCarouselDrawing">
-                    轮播图
-                </el-menu-item>
+                <el-submenu index="轮播图管理">
+                    <template slot="title">
+                        轮播图管理
+                    </template>
+                    <el-menu-item index="/addCarouselDrawing">
+                        添加轮播图
+                    </el-menu-item>
+                    <el-menu-item index="/carouselDrawingList">
+                        轮播图列表
+                    </el-menu-item>
+                </el-submenu>
+
                 <el-submenu index="门店管理">
                     <template slot="title">
                         门店管理
