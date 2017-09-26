@@ -36,12 +36,12 @@
                                         <el-button type="primary" icon="search" @click="userSearchData(1)">
                                         </el-button>
                                     </el-tooltip>
-                                    <el-tooltip class="item" effect="dark" content="新增轮播图" placement="top">
+                                    <!-- <el-tooltip class="item" effect="dark" content="新增轮播图" placement="top">
                                         <el-button type="primary" @click="tabCheck = 'addCarouselDrawing'">
                                             <i class="el-icon-upload el-icon--right">
                                             </i>
                                         </el-button>
-                                    </el-tooltip>
+                                    </el-tooltip> -->
                                 </el-row>
                             </el-col>
                         </el-row>

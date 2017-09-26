@@ -42,7 +42,7 @@
                     会员导入
                 </span>
             </el-menu-item> -->
-            <el-submenu index="3D购股东" v-if="phoneNumber !== '15914383361'">
+            <el-submenu index="3D购股东" v-if="shopId !== 1">
                 <template slot="title">
                     <span class="shareholder">
                         3D购股东
@@ -61,7 +61,7 @@
                     提现列表
                 </el-menu-item>
             </el-submenu>
-            <el-submenu index="机器人活动" v-if="phoneNumber !== '15914383361'">
+            <el-submenu index="机器人活动" v-if="shopId !== 1">
                 <template slot="title">
                     <span class="robot">
                         机器人活动
@@ -81,7 +81,7 @@
                 </el-menu-item> -->
             </el-submenu>
             <!-- 管理员权限 -->
-            <el-submenu index="管理员" v-if="phoneNumber === '15914383361'">
+            <el-submenu index="管理员" v-if="shopId === 1">
                 <template slot="title">
                     管理员
                 </template>
@@ -224,8 +224,8 @@ export default {
     name: 'navMenu',
     data () {
         return {
-            // 用户姓名
-            phoneNumber: store.state.user.userData.emp.phone_number
+            // 为1则为管理员账号
+            shopId: store.state.user.userData.emp.shop_id
         }
     },
 
