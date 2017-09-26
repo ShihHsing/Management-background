@@ -42,7 +42,7 @@
                     会员导入
                 </span>
             </el-menu-item> -->
-            <el-submenu index="3D购股东" v-if="shopId !== 1">
+            <el-submenu index="3D购股东" v-if="shopId !== '1'">
                 <template slot="title">
                     <span class="shareholder">
                         3D购股东
@@ -61,7 +61,7 @@
                     提现列表
                 </el-menu-item>
             </el-submenu>
-            <el-submenu index="机器人活动" v-if="shopId !== 1">
+            <el-submenu index="机器人活动" v-if="shopId !== '1'">
                 <template slot="title">
                     <span class="robot">
                         机器人活动
@@ -81,7 +81,7 @@
                 </el-menu-item> -->
             </el-submenu>
             <!-- 管理员权限 -->
-            <el-submenu index="管理员" v-if="shopId === 1">
+            <el-submenu index="管理员" v-if="shopId === '1'">
                 <template slot="title">
                     管理员
                 </template>
@@ -141,6 +141,20 @@
                         问题列表
                     </el-menu-item>
                     <el-menu-item index="/shopFaqTypeList">
+                        问题分类
+                    </el-menu-item>
+                </el-submenu>
+                <el-submenu index="客服问答管理">
+                    <template slot="title">
+                        客服问答管理
+                    </template>
+                    <el-menu-item index="/addCustomerService">
+                        添加问题
+                    </el-menu-item>
+                    <el-menu-item index="/customerServiceList">
+                        问题列表
+                    </el-menu-item>
+                    <el-menu-item index="/customerServiceClassification">
                         问题分类
                     </el-menu-item>
                 </el-submenu>

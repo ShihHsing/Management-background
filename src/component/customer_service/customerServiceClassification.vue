@@ -3,7 +3,7 @@
         <el-col :span="24" style="height: 100%; width: 100%;display: flex;flex-direction: column;">
             <!-- 头部 -->
             <div class="customerServiceClassification_top">
-                <span>问题分类</span>
+                <span>快速咨询回答分类</span>
             </div>
             <div class="customerServiceClassification_body">
                 <el-form
@@ -39,7 +39,11 @@
                                     <el-table-column
                                         prop="t_type_name"
                                         label="分类">
-                                        </el-table-column>
+                                    </el-table-column>
+                                    <!-- <el-table-column
+                                        prop="t_type_name"
+                                        label="默认">
+                                    </el-table-column> -->
                                     <el-table-column
                                         label="操作"
                                         width="160">
@@ -69,14 +73,14 @@
 </template>
 
 <style lang="less">
-    #shopFaqTypeList{
+    #customerServiceClassification{
         width: 100%;
         height: 100%;
 
         background: #fff;
 
         overflow: hidden;
-        .shopFaqTypeList_top{
+        .customerServiceClassification_top{
             box-sizing: border-box;
             height: 50px;
             padding: 0 30px;
@@ -89,13 +93,13 @@
                 font-size: 12px;
             }
         }
-        .shopFaqTypeList_body{
+        .customerServiceClassification_body{
             display: flex;
             flex-direction: column;
             flex: 1;
             width: 100%;
         }
-        .shopFaqTypeList_form{
+        .customerServiceClassification_form{
             box-sizing: border-box;
             padding: 30px 30px 0 30px;
 
@@ -136,7 +140,7 @@
 </style>
 
 <script>
-import { addUserFaqTypeInfo, getUseraqTypeList, editUserpFaqTypeInfoById, delUserFaqTypeInfoById } from '../../assets/axios/api.js'
+import { addUserFaqTypeInfo, getUseraqTypeList, editUserpFaqTypeInfoById, delUserFaqTypeInfoById, editDefaultTypeById } from '../../assets/axios/api.js'
 export default {
     name: 'customerServiceClassification',
     data () {
@@ -161,7 +165,7 @@ export default {
         this.$nextTick(function () { // 获取表格高度
             this.tableHeight = document.getElementById('table').offsetHeight
         })
-        this.getShopFaqTypeList() // 获取列表数据
+        this.getUseraqTypeList() // 获取列表数据
     },
     methods: {
         // 提交颜色
@@ -175,7 +179,7 @@ export default {
                     return false
                 }
 
-                this.$axios.post(addShopFaqTypeInfo, {
+                this.$axios.post(addUserFaqTypeInfo, {
                     type_name: this.shopFaqTypeListValues.type_name
                 })
                 .then(msg => {
@@ -193,7 +197,7 @@ export default {
                     // 重置表单
                     this.resetForm(formName)
                     // 获取分类列表
-                    this.getShopFaqTypeList(1)
+                    this.getUseraqTypeList(1)
                 })
                 .catch(error => {
                     this.$message.error('服务器异常')
@@ -205,9 +209,9 @@ export default {
             this.$refs[formName].resetFields()
         },
         // 获取分类列表
-        getShopFaqTypeList (current_page) {
+        getUseraqTypeList (current_page) {
             this.loading = true
-            this.$axios.post(getShopFaqTypeList, {
+            this.$axios.post(getUseraqTypeList, {
                 current_page: current_page || this.current_page
             })
             .then(msg => {
@@ -232,7 +236,7 @@ export default {
         },
         // 根据用户输入条件搜索数据
         handleCurrentChange (val) {
-            this.getShopFaqTypeList(val)
+            this.getUseraqTypeList(val)
         },
         // 修改分类
         openEdit (id, text) {
@@ -244,7 +248,7 @@ export default {
                 inputValue: text
             }).then(({ value }) => {
                 // 提交数据
-                this.editShopFaqTypeInfoById(id, value)
+                this.editUserpFaqTypeInfoById(id, value)
             }).catch(() => {
                 this.$message({
                     type: 'info',
@@ -252,8 +256,8 @@ export default {
                 })
             })
         },
-        editShopFaqTypeInfoById (id, typeName) {
-            this.$axios.post(editShopFaqTypeInfoById, {
+        editUserpFaqTypeInfoById (id, typeName) {
+            this.$axios.post(editUserpFaqTypeInfoById, {
                 t_id: id,
                 type_name: typeName
             })
@@ -270,7 +274,7 @@ export default {
                     message: '修改成功'
                 })
                 // 重新获取当前页数据
-                this.getShopFaqTypeList()
+                this.getUseraqTypeList()
             })
             .catch(error => {
                 this.$message.error('服务器异常')
@@ -284,7 +288,7 @@ export default {
                 type: 'warning'
             }).then(() => {
                 // 请求删除
-                this.delShopFaqTypeInfoById(id)
+                this.delUserFaqTypeInfoById(id)
             }).catch(() => {
                 this.$message({
                     type: 'info',
@@ -292,8 +296,8 @@ export default {
                 })
             })
         },
-        delShopFaqTypeInfoById (id) {
-            this.$axios.post(delShopFaqTypeInfoById, {
+        delUserFaqTypeInfoById (id) {
+            this.$axios.post(delUserFaqTypeInfoById, {
                 t_id: id
             })
             .then(msg => {
@@ -309,7 +313,7 @@ export default {
                     message: '删除成功'
                 })
                 // 重新获取当前页数据
-                this.getShopFaqTypeList()
+                this.getUseraqTypeList()
             })
             .catch(error => {
                 this.$message.error('服务器异常')

@@ -146,6 +146,21 @@ const routes = [
             resolve),
             name: '管理员-机器人管理-解除绑定'
         }, {
+            path: '/customerServiceClassification', // 培训列表
+            component: resolve => require(['../../component/customer_service/customerServiceClassification.vue'],
+            resolve),
+            name: '管理员-客服问答管理-快速咨询问题分类'
+        }, {
+            path: '/customerServiceList', // 培训列表
+            component: resolve => require(['../../component/customer_service/customerServiceList.vue'],
+            resolve),
+            name: '管理员-客服问答管理-快速咨询问题列表'
+        }, {
+            path: '/addCustomerService', // 培训列表
+            component: resolve => require(['../../component/customer_service/addCustomerService.vue'],
+            resolve),
+            name: '管理员-客服问答管理-添加快速咨询问题'
+        }, {
             path: '/addExcel', // 老会员导入
             component: resolve => require(['../../component/addExcel.vue'],
             resolve),
