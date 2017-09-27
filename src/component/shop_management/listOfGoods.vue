@@ -76,16 +76,22 @@
                             label="新商品操作">
                             <el-table-column
                                 label="设置">
-                                <el-switch
-                                  v-model="scope.row.is_show"
-                                  on-color="#13ce66"
-                                  off-color="#ff4949"
-                                  @change="handleIsShow(scope.row.id, scope.row.is_show)">
-                                </el-switch>
+                                <template scope="scope">
+                                    <el-switch
+                                      v-model="scope.row.is_show"
+                                      on-color="#13ce66"
+                                      off-color="#ff4949"
+                                      @change="handleIsShow(scope.row.id, scope.row.is_show)">
+                                    </el-switch>
+                                </template>
                             </el-table-column>
                             <el-table-column
-                                label="排序">
-                                <el-input-number v-model="scope.row.order_sequence" @change="handleOrderSequence(scope.row.id, scope.row.order_sequence)" :min="0" :max="9"  :controls="false"></el-input-number>
+                                label="排序"
+                                width="180">
+                                <template scope="scope">
+                                    <el-input-number style="width: 100px;" v-model="scope.row.order_sequence" :min="0" :max="9" :controls="false"></el-input-number>
+                                    <el-button style="float: right;" type="text" @click="handleOrderSequence(scope.row.id, scope.row.order_sequence)">确定</el-button>
+                                </template>
                             </el-table-column>
                         </el-table-column>
                         <el-table-column
@@ -392,6 +398,7 @@ export default {
                 // 转换开关布尔值
                 // 若不存在 则设置false为默认值
                 for (var i = this.shopDateList.length - 1; i >= 0; i--) {
+                    this.shopDateList[i].is_show = this.shopDateList[i].is_show >> 0
                     if (this.shopDateList[i].is_on) {
                         this.shopDateList[i].is_on = !!Number(this.shopDateList[i].is_on)
                     } else {
@@ -617,7 +624,7 @@ export default {
         handleIsShow (id, is_show) {
             this.$axios.post(API.handleIsShow, {
                 'goods_id': id,
-                'is_show': is_show
+                'is_show': Number(is_show)
             })
             .then(msg => {
                 const data = msg.data
