@@ -77,10 +77,26 @@
                                             <el-form-item label="商品条码" prop="commodityBarcode">
                                                 <el-input type="textarea" v-model="two.commodityBarcode" placeholder="请输入全球统一条形码"></el-input>
                                             </el-form-item>
-
-                                            <el-form-item label="商品价格" prop="price">
-                                                <el-input v-model="two.price" placeholder="请输入商品价格"></el-input>
-                                            </el-form-item>
+                                            
+                                            <template v-if="shopId === '1'">
+                                                <el-form-item label="内衣吊牌价">
+                                                    <el-input v-model="two.price" placeholder="请输入内衣吊牌价"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="内衣机器人尊享价">
+                                                    <el-input v-model="two.robot_price" placeholder="请输入内衣机器人尊享价"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="内裤吊牌价">
+                                                    <el-input v-model="two.match_price" placeholder="请输入内裤吊牌价"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="内裤机器人尊享价">
+                                                    <el-input v-model="two.robot_match_price" placeholder="请输入内裤机器人尊享价"></el-input>
+                                                </el-form-item>
+                                            </template>
+                                            <template v-else>
+                                                <el-form-item label="商品价格" prop="price">
+                                                    <el-input v-model="two.price" placeholder="请输入商品价格"></el-input>
+                                                </el-form-item>
+                                            </template>
 
                                             <el-form-item label="易企秀" prop="shop_show">
                                                 <el-input placeholder="请输入易企秀链接" v-model="two.shop_show"></el-input>
@@ -311,11 +327,14 @@
 </style>
 
 <script>
+import store from '../../assets/store'
 import * as API from '../../assets/axios/api.js'
 export default {
     name: 'addMerchandise',
     data () {
         return {
+            // 为1则为管理员账号
+            shopId: store.state.user.userData.emp.shop_id,
             editorOption: {}, // 富文本对象
             flag1: true, // 控制点击事件防止多次触发
             flag2: true,
@@ -884,6 +903,9 @@ export default {
             argument.push({ 'model': this.two.commodityNumber })
             argument.push({ 'code': this.two.commodityBarcode })
             argument.push({ 'price': this.two.price })
+            argument.push({ 'robot_price': this.two.robot_price })
+            argument.push({ 'match_price': this.two.match_price })
+            argument.push({ 'robot_match_price': this.two.robot_match_price })
             argument.push({ 'shop_show': this.two.shop_show })
             argument.push({ 'thumb_image': this.three.thumb_image_url })
             argument.push({ 'audio': this.three.audio_url })

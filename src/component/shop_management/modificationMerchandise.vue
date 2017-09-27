@@ -52,10 +52,28 @@
                                                 <el-input type="textarea" v-model="two.commodityBarcode" placeholder="请输入全球统一条形码">
                                                 </el-input>
                                             </el-form-item>
-                                            <el-form-item label="商品价格" prop="price">
-                                                <el-input v-model="two.price" placeholder="请输入商品价格">
-                                                </el-input>
-                                            </el-form-item>
+
+                                            <template v-if="shopId === '1'">
+                                                <el-form-item label="内衣吊牌价">
+                                                    <el-input v-model="two.price" placeholder="请输入内衣吊牌价"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="内衣机器人尊享价">
+                                                    <el-input v-model="two.robot_price" placeholder="请输入内衣机器人尊享价"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="内裤吊牌价">
+                                                    <el-input v-model="two.match_price" placeholder="请输入内裤吊牌价"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="内裤机器人尊享价">
+                                                    <el-input v-model="two.robot_match_price" placeholder="请输入内裤机器人尊享价"></el-input>
+                                                </el-form-item>
+                                            </template>
+                                            <template v-else>
+                                                <el-form-item label="商品价格" prop="price">
+                                                    <el-input v-model="two.price" placeholder="请输入商品价格">
+                                                    </el-input>
+                                                </el-form-item>
+                                            </template>
+
                                             <el-form-item label="易企秀" prop="shop_show">
                                                 <el-input placeholder="请输入易企秀链接" v-model="two.shop_show">
                                                 </el-input>
@@ -334,12 +352,15 @@
 </style>
 
 <script>
+import store from '../../assets/store'
 import * as API from '../../assets/axios/api.js'
 // 脚本文件
 export default {
     name: 'modificationMerchandise',
     data () {
         return {
+            // 为1则为管理员账号
+            shopId: store.state.user.userData.emp.shop_id,
             editorOption: {},
             flag1: true, // 富文本对象
             flag2: true, // 控制点击事件防止多次触发
@@ -360,7 +381,11 @@ export default {
                 commodityIntroduction: '', // 商品简介
                 commodityNumber: '', // 商品款号
                 commodityBarcode: '', // 商品条码
-                price: '', // 商品价格
+                // 特殊说明: 管理员权限上传上传才可以展示并添加价格的四种字段
+                price: '', // 商品价格 || 内衣吊牌价
+                robot_price: '', // 内衣机器人尊享价
+                match_price: '', // 内裤价格
+                robot_match_price: '', // 内裤机器人尊享价
                 shop_show: '', // 易企秀
                 privateProperty: [], // 私有属性 服务器端获取数据
                 privatePropertyList: [] // 生成新的数据结构
@@ -512,8 +537,14 @@ export default {
                     this.two.commodityNumber = goods_detail.model
                     // 商品条码
                     this.two.commodityBarcode = goods_detail.code
-                    // 商品价格
+                    // 商品价格 || 内衣吊牌价
                     this.two.price = goods_detail.price
+                    // 内衣机器人尊享价
+                    this.two.robot_price = goods_detail.robot_price
+                    // 内裤价格
+                    this.two.match_price = goods_detail.match_price
+                    // 内裤机器人尊享价
+                    this.two.robot_match_price = goods_detail.robot_match_price
                     // 易企秀
                     this.two.shop_show = goods_detail.show_url
                     // 商品列表图
@@ -1096,7 +1127,10 @@ export default {
             argument.push({ 'sub-title': this.two.commodityIntroduction })
             argument.push({ model: this.two.commodityNumber })
             argument.push({ code: this.two.commodityBarcode })
-            argument.push({ price: this.two.price })
+            argument.push({ 'price': this.two.price })
+            argument.push({ 'robot_price': this.two.robot_price })
+            argument.push({ 'match_price': this.two.match_price })
+            argument.push({ 'robot_match_price': this.two.robot_match_price })
             argument.push({ thumb_image: this.three.thumb_image_url })
             argument.push({ audio: this.three.audio_url })
             argument.push({ video: this.three.video_url })

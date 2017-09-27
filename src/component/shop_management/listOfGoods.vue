@@ -73,6 +73,22 @@
                             width="100">
                         </el-table-column>
                         <el-table-column
+                            label="新商品操作">
+                            <el-table-column
+                                label="设置">
+                                <el-switch
+                                  v-model="scope.row.is_show"
+                                  on-color="#13ce66"
+                                  off-color="#ff4949"
+                                  @change="handleIsShow(scope.row.id, scope.row.is_show)">
+                                </el-switch>
+                            </el-table-column>
+                            <el-table-column
+                                label="排序">
+                                <el-input-number v-model="scope.row.order_sequence" @change="handleOrderSequence(scope.row.id, scope.row.order_sequence)" :min="0" :max="9"  :controls="false"></el-input-number>
+                            </el-table-column>
+                        </el-table-column>
+                        <el-table-column
                             label="操作">
                             <el-table-column
                                 fixed="right"
@@ -595,8 +611,55 @@ export default {
             .catch(error => {
                 this.$message.error('服务器异常')
             })
-        }
+        },
 
+        // 是否设置为机器人端新商品平台商品
+        handleIsShow (id, is_show) {
+            this.$axios.post(API.handleIsShow, {
+                'goods_id': id,
+                'is_show': is_show
+            })
+            .then(msg => {
+                const data = msg.data
+
+                if (data.flag >> 0 !== 1000) {
+                    this.$message.error(data.return_code)
+                    return false
+                }
+                this.searchShopData(this.current_page)
+                this.$message({
+                    message: data.return_code,
+                    type: 'success'
+                })
+            })
+            .catch(error => {
+                this.$message.error('服务器异常')
+            })
+        },
+
+        // 排序功能
+        handleOrderSequence (id, order_sequence) {
+            this.$axios.post(API.handleOrderSequence, {
+                'goods_id': id,
+                'order_sequence': order_sequence
+            })
+            .then(msg => {
+                const data = msg.data
+
+                if (data.flag >> 0 !== 1000) {
+                    this.$message.error(data.return_code)
+                    return false
+                }
+                this.searchShopData(this.current_page)
+                this.$message({
+                    message: data.return_code,
+                    type: 'success'
+                })
+            })
+            .catch(error => {
+                this.$message.error('服务器异常')
+            })
+        }
         // 商品设置置顶&取消
         // toGoTop (scope) {
         //   var popular = scope.row.popular === 1 ? 0 : 1
