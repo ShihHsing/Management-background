@@ -335,7 +335,11 @@ export default {
                 commodityIntroduction: '', // 商品简介
                 commodityNumber: '', // 商品款号
                 commodityBarcode: '', // 商品条码
-                price: '', // 商品价格
+                // 特殊说明: 管理员权限上传上传才可以展示并添加价格的四种字段
+                price: '', // 商品价格 || 内衣吊牌价
+                robot_price: '', // 内衣机器人尊享价
+                match_price: '', // 内裤价格
+                robot_match_price: '', // 内裤机器人尊享价
                 shop_show: '', // 易企秀
                 privateProperty: [], // 私有属性 服务器端获取数据
                 privatePropertyList: [] // 生成新的数据结构

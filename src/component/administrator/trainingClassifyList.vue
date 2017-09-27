@@ -101,7 +101,7 @@
 </style>
 
 <script>
-import { modifyTrainingClassify, removeTrainingClassify, getTrainingClassifyList, addTrainingClassify } from '../assets/axios/api.js'
+import { modifyTrainingClassify, removeTrainingClassify, getTrainingClassifyList, addTrainingClassify } from '../../assets/axios/api.js'
 export default{
     name: 'trainingClassifyList',
     data () {

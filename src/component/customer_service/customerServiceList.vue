@@ -7,8 +7,8 @@
                     <el-select v-model="searchList.type" clearable placeholder="问题类型">
                         <el-option
                             v-for="item in shopFaqTypeListAll"
-                            :label="item.t_type_name"
-                            :value="item.t_id">
+                            :label="item.type_name"
+                            :value="item.id">
                         </el-option>
                     </el-select>
                     <el-button type="primary" @click="submitForm(1)" style="float: right;">
@@ -33,21 +33,21 @@
                         v-loading="loading"
                         element-loading-text="加载中...">
                         <el-table-column
-                            prop="f_title"
+                            prop="title"
                             label="问题">
                         </el-table-column>
                         <el-table-column
-                            prop="f_type_name"
+                            prop="type_name"
                             label="问题类型">
                         </el-table-column>
                         <el-table-column
                             label="操作"
                             width="160">
                             <template scope="scope">
-                                <router-link :to="{path: 'editShopFaqInfo', query: {id: scope.row.f_id}}" replace>
+                                <router-link :to="{path: 'editCustomerService', query: {id: scope.row.id}}" replace>
                                     <el-button size="small" type="success">修改</el-button>
                                 </router-link>
-                                <el-button size="small" type="danger" @click="openDel(scope.row.f_id)">删除</el-button>
+                                <el-button size="small" type="danger" @click="openDel(scope.row.id)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>

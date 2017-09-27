@@ -24,32 +24,40 @@
                     </el-form-item>
                 </el-form>
                 <div style="flex: 1;box-sizing: border-box;padding: 15px 30px;">
-                    <div class="listStore_body_wrap">
-                        <div class="listStore_body">
+                    <div class="customerServiceClassification_body_wrap">
+                        <div class="customerServiceClassification_body">
                             <div class="table_body sx_basis_scroll sx_scroll_style" id="table">
                                 <el-table
-                                    :data="shopFaqTypeInfo"
+                                    :data="newsUserFapTypeList"
                                     border
                                     stripe
                                     :height="tableHeight"
                                     v-loading="loading"
                                     element-loading-text="加载中..."
-                                    v-if="shopFaqTypeInfo.length !== 0">
+                                    v-if="newsUserFapTypeList.length !== 0">
 
                                     <el-table-column
-                                        prop="t_type_name"
+                                        prop="type_name"
                                         label="分类">
                                     </el-table-column>
-                                    <!-- <el-table-column
-                                        prop="t_type_name"
-                                        label="默认">
-                                    </el-table-column> -->
+                                    <el-table-column
+                                        label="设置默认"
+                                        width="140">
+                                        <template scope="scope">
+                                            <el-switch
+                                              v-model="scope.row.is_default"
+                                              on-color="#13ce66"
+                                              off-color="#ff4949"
+                                              @change="editDefaultTypeById(scope.row.id, scope.row.is_default)">
+                                            </el-switch>
+                                        </template>
+                                    </el-table-column>
                                     <el-table-column
                                         label="操作"
                                         width="160">
                                         <template scope="scope">
-                                            <el-button size="small" type="success" @click="openEdit(scope.row.t_id, scope.row.t_type_name)">修改</el-button>
-                                            <el-button size="small" type="danger" @click="openDel(scope.row.t_id)">删除</el-button>
+                                            <el-button size="small" type="success" @click="openEdit(scope.row.id, scope.row.type_name)">修改</el-button>
+                                            <el-button size="small" type="danger" @click="openDel(scope.row.id)">删除</el-button>
                                         </template>
                                     </el-table-column>
                                 </el-table>
@@ -107,15 +115,15 @@
                 color: #8492A6;
             }
             .el-tag{
-                margin-right: 15px!important;
+                margin-right: 15px !important;
             }
         }
-        .listStore_body_wrap{
+        .customerServiceClassification_body_wrap{
             box-sizing: border-box;
 
             width: 100%;
             height: 100%;
-            .listStore_body{
+            .customerServiceClassification_body{
                 display: flex;
                 flex-direction: column;
 
@@ -140,7 +148,7 @@
 </style>
 
 <script>
-import { addUserFaqTypeInfo, getUseraqTypeList, editUserpFaqTypeInfoById, delUserFaqTypeInfoById, editDefaultTypeById } from '../../assets/axios/api.js'
+import { addUserFaqTypeInfo, getUserfaqTypeList, editUserFaqTypeInfoById, delUserFaqTypeInfoById, editDefaultTypeById } from '../../assets/axios/api.js'
 export default {
     name: 'customerServiceClassification',
     data () {
@@ -156,16 +164,24 @@ export default {
             },
             tableHeight: null, // 表格高度
             current_page: 1, // 当前页
-            shopFaqTypeInfo: [], // 列表数据
+            userFapTypeList: [], // 列表数据
             loading: false, // 列表loading
             sum: 0 // 总条数
+        }
+    },
+    computed: {
+        newsUserFapTypeList: function () {
+            for (var i = this.userFapTypeList.length - 1; i >= 0; i--) {
+                this.userFapTypeList[i].is_default = this.userFapTypeList[i].is_default >> 0
+            }
+            return this.userFapTypeList
         }
     },
     created: function () {
         this.$nextTick(function () { // 获取表格高度
             this.tableHeight = document.getElementById('table').offsetHeight
         })
-        this.getUseraqTypeList() // 获取列表数据
+        this.getUserfaqTypeList() // 获取列表数据
     },
     methods: {
         // 提交颜色
@@ -180,7 +196,7 @@ export default {
                 }
 
                 this.$axios.post(addUserFaqTypeInfo, {
-                    type_name: this.shopFaqTypeListValues.type_name
+                    type_name: this.customerServiceClassificationValues.type_name
                 })
                 .then(msg => {
                     const data = msg.data
@@ -197,7 +213,7 @@ export default {
                     // 重置表单
                     this.resetForm(formName)
                     // 获取分类列表
-                    this.getUseraqTypeList(1)
+                    this.getUserfaqTypeList(1)
                 })
                 .catch(error => {
                     this.$message.error('服务器异常')
@@ -209,9 +225,9 @@ export default {
             this.$refs[formName].resetFields()
         },
         // 获取分类列表
-        getUseraqTypeList (current_page) {
+        getUserfaqTypeList (current_page) {
             this.loading = true
-            this.$axios.post(getUseraqTypeList, {
+            this.$axios.post(getUserfaqTypeList, {
                 current_page: current_page || this.current_page
             })
             .then(msg => {
@@ -224,7 +240,7 @@ export default {
                 }
 
                 // 列表数据
-                this.shopFaqTypeInfo = data.data.type_list
+                this.userFapTypeList = data.data.type_list
                 // 总条数
                 this.sum = parseInt(data.data.sum)
                 // 当前页
@@ -236,7 +252,7 @@ export default {
         },
         // 根据用户输入条件搜索数据
         handleCurrentChange (val) {
-            this.getUseraqTypeList(val)
+            this.getUserfaqTypeList(val)
         },
         // 修改分类
         openEdit (id, text) {
@@ -248,7 +264,7 @@ export default {
                 inputValue: text
             }).then(({ value }) => {
                 // 提交数据
-                this.editUserpFaqTypeInfoById(id, value)
+                this.editUserFaqTypeInfoById(id, value)
             }).catch(() => {
                 this.$message({
                     type: 'info',
@@ -256,8 +272,8 @@ export default {
                 })
             })
         },
-        editUserpFaqTypeInfoById (id, typeName) {
-            this.$axios.post(editUserpFaqTypeInfoById, {
+        editUserFaqTypeInfoById (id, typeName) {
+            this.$axios.post(editUserFaqTypeInfoById, {
                 t_id: id,
                 type_name: typeName
             })
@@ -274,7 +290,7 @@ export default {
                     message: '修改成功'
                 })
                 // 重新获取当前页数据
-                this.getUseraqTypeList()
+                this.getUserfaqTypeList()
             })
             .catch(error => {
                 this.$message.error('服务器异常')
@@ -282,7 +298,7 @@ export default {
         },
         // 删除分类
         openDel (id) {
-            this.$confirm('此操作将永久删除此分类下的所有问答, 是否继续?', '提示', {
+            this.$confirm('此操作将永久删除此分类下的所有快速咨询问答, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -313,7 +329,32 @@ export default {
                     message: '删除成功'
                 })
                 // 重新获取当前页数据
-                this.getUseraqTypeList()
+                this.getUserfaqTypeList()
+            })
+            .catch(error => {
+                this.$message.error('服务器异常')
+            })
+        },
+        // 设置为默认
+        editDefaultTypeById (id, is_on) {
+            this.$axios.post(editDefaultTypeById, {
+                t_id: id,
+                is_on: Number(is_on)
+            })
+            .then(msg => {
+                const data = msg.data
+
+                if (data.status !== 1000) {
+                    this.$message.error(data.ret_msg)
+                    return false
+                }
+
+                this.$message({
+                    type: 'success',
+                    message: '设置成功'
+                })
+                // 重新获取当前页数据
+                this.getUserfaqTypeList()
             })
             .catch(error => {
                 this.$message.error('服务器异常')

@@ -3,85 +3,179 @@
         <div class="addCarouselDrawing_body_wrap">
             <!-- <div class="addCarouselDrawing_body"> -->
             <el-tabs type="border-card" @tab-click="getCarouselDrawingList" v-model="tabCheck">
-                <el-tab-pane label="新增轮播图" name="addCarouselDrawing" class="sx_basis_scroll sx_scroll_style">
-                    <el-form label-position="left" label-width="120px">
-                        <el-form-item label="轮播图名称">
-                            <el-tooltip class="item" effect="dark" content="请保证轮播图名称唯一" placement="right-start">
-                                <el-input placeholder="请输入轮播图名称" v-model="name" :maxlength="20" style="width: 217px;">
-                                </el-input>
-                            </el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="上传轮播图:">
-                            <el-upload class="avatar-uploader" :action="uploadAddCarouselDrawing"
-                            name="image_url" :on-success="addCarouselDrawingImg" :on-error="uploadError"
-                            :before-upload="beforeAvatarUpload" :show-file-list="false">
-                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                <i v-else class="el-icon-plus avatar-uploader-icon">
-                                </i>
-                            </el-upload>
-                        </el-form-item>
-                        <el-form-item label="轮播图位置:">
-                            <el-select v-model="location" placeholder="请选择">
-                                <el-option v-for="item in location_type_list" :label="item.name" :value="item.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="轮播图类型:">
-                            <el-radio-group v-model="carousel_drawing_type">
-                                <template v-for="item in carousel_drawing_type_list">
-                                    <el-radio-button :label="item.id" v-if="!(item.id == 2 && location == 3)">
-                                        {{ item.name }}
-                                    </el-radio-button>
-                                </template>
-                            </el-radio-group>
-                        </el-form-item>
-                        <template v-if="carousel_drawing_type >> 0 === 1">
-                            <el-form-item label="图文详情:" id="myQuill">
-                                <div class="sx_basis_scroll sx_scroll_style_lucency">
-                                    <quill-editor v-if="carousel_drawing_type  >> 0 === 1" ref="myTextEditor"
-                                    v-model="initData" :options="editorOption" @change="updateData" @showImageUI="imageHandler">
-                                    </quill-editor>
-                                </div>
-                            </el-form-item>
-                            <input type="file" name="file" id="fileinput" @change="customimgupload($event)"
-                            style="display: none;">
-                        </template>
-                        <template v-else-if="carousel_drawing_type >> 0 === 2">
-                            <el-form-item label="商品款号:">
-                                <el-tooltip class="item" effect="dark" content="输入的商品款号将与此轮播图关联,下方会展示此款商品的缩略图,请核实!"
-                                placement="right-start">
-                                    <el-input placeholder="请输入" v-model="model" :maxlength="20" icon="search"
-                                    :on-icon-click="getShopIdThumbImg" style="width: 217px;">
+                <el-tab-pane label="轮播图列表" name="carouselDrawingList">
+                    <el-form label-position="left" label-width="90px" class="listForm">
+                        <el-row type="flex" justify="space-between">
+                            <el-col :span="7">
+                                <el-form-item label="轮播图类型:">
+                                    <el-select v-model="search_carousel_drawing_type" clearable placeholder="请选择">
+                                        <el-option v-for="item in carousel_drawing_type_list" :label="item.name"
+                                        :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="7">
+                                <el-form-item label="轮播图位置:">
+                                    <el-select v-model="search_location" clearable placeholder="请选择">
+                                        <el-option v-for="item in location_type_list" :label="item.name" :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="7">
+                                <el-form-item label="关键字:">
+                                    <el-input placeholder="请输入轮播图名称关键字" v-model="search_name" :maxlength="20"
+                                    style="width: 217px;">
                                     </el-input>
-                                </el-tooltip>
-                            </el-form-item>
-                            <el-form-item label="商品缩略图">
-                                <el-row>
-                                    <el-col :span="8">
-                                        <el-card :body-style="{ height: '150px'}">
-                                            <template v-if="model_img != ''">
-                                                <img :src="model_img" alt="商品缩略图" width="150">
-                                            </template>
-                                        </el-card>
-                                    </el-col>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="3">
+                                <el-row type="flex" justify="end">
+                                    <el-tooltip class="item" effect="dark" content="立即搜索" placement="top">
+                                        <el-button type="primary" icon="search" @click="userSearchData(1)">
+                                        </el-button>
+                                    </el-tooltip>
+                                    <!-- <el-tooltip class="item" effect="dark" content="新增轮播图" placement="top">
+                                        <el-button type="primary" @click="tabCheck = 'addCarouselDrawing'">
+                                            <i class="el-icon-upload el-icon--right">
+                                            </i>
+                                        </el-button>
+                                    </el-tooltip> -->
                                 </el-row>
-                            </el-form-item>
-                        </template>
-                        <template v-if="carousel_drawing_type >> 0 === 3">
-                            <el-form-item label="视频地址:">
-                                <el-tooltip class="item" effect="dark" content="请输入培训视频地址!" placement="right-start">
-                                    <el-input placeholder="请输入" v-model="carousel_drawing_video_url" style="width: 217px;">
-                                    </el-input>
-                                </el-tooltip>
-                            </el-form-item>
-                        </template>
-                        <el-button type="primary" @click="phpPostData">
-                            创建轮播图
-                        </el-button>
+                            </el-col>
+                        </el-row>
                     </el-form>
+                    <div class="listTable" id="table">
+                        <el-table :data="search_get_carousel_drawing_list_data" stripe :height="tableHeight">
+                            <el-table-column prop="name" label="轮播图名称" header-align="center" align="center"
+                            show-overflow-tooltip>
+                            </el-table-column>
+                            <el-table-column prop="type_name" label="轮播图类型" header-align="center"
+                            align="center">
+                            </el-table-column>
+                            <el-table-column prop="location_name" label="轮播图位置" header-align="center"
+                            align="center">
+                            </el-table-column>
+                            <el-table-column label="操作" header-align="center" align="center">
+                                <template scope="scope">
+                                    <template v-if="scope.row.status == '1'">
+                                        <el-tooltip class="item" effect="dark" content="点击禁用轮播图" placement="left">
+                                            <el-button @click.native.prevent="forbiddenOrStartUsing(scope.row.id,scope.row.status)"
+                                            type="text" size="small" style="color: #bfcbd9;">
+                                                禁用
+                                            </el-button>
+                                        </el-tooltip>
+                                    </template>
+                                    <template v-else>
+                                        <el-tooltip class="item" effect="dark" content="点击启用轮播图" placement="left">
+                                            <el-button @click.native.prevent="forbiddenOrStartUsing(scope.row.id,scope.row.status)"
+                                            type="text" size="small">
+                                                启用
+                                            </el-button>
+                                        </el-tooltip>
+                                    </template>
+                                    <el-button type="text" size="small" @click.native.prevent="getModificationData(scope.row.id)">
+                                        编辑
+                                    </el-button>
+                                    <el-button @click.native.prevent="deleteCarouseDrawing(scope.$index, scope.row, search_get_carousel_drawing_list_data)"
+                                    type="text" size="small">
+                                        移除
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                    <div class="listPage">
+                        <el-row type="flex" justify="end">
+                            <el-pagination layout="prev, pager, next" :total="20*pages" :page-size="20"
+                            :current-page="current_page" class="pageination" @current-change="handleCurrentChange">
+                            </el-pagination>
+                        </el-row>
+                    </div>
                 </el-tab-pane>
             </el-tabs>
+            <!-- </div> -->
         </div>
+        <el-dialog title="修改轮播图" v-model="modification.dialogFormVisible">
+            <el-form label-position="left" label-width="120px">
+                <el-form-item label="轮播图名称">
+                    <el-input placeholder="请输入轮播图名称" v-model="modification.name" :maxlength="20"
+                    disabled style="width: 217px;">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="上传轮播图:">
+                    <el-upload class="avatar-uploader" :action="uploadAddCarouselDrawing"
+                    name="image_url" :on-success="modificationAddCarouselDrawingImg" :on-error="uploadError"
+                    :before-upload="beforeAvatarUpload" :show-file-list="false">
+                        <img v-if="modification.imageUrl" :src="modification.imageUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon">
+                        </i>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="轮播图位置:">
+                    <el-select v-model="modification.location" placeholder="请选择">
+                        <el-option v-for="item in location_type_list" :label="item.name" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="轮播图类型:">
+                    <el-radio-group v-model="modificationCarouselDrawingType">
+                        <el-button type="primary">
+                            {{ modification.carousel_drawing_type_name }}
+                        </el-button>
+                    </el-radio-group>
+                </el-form-item>
+                <template v-if="modificationCarouselDrawingType >> 0 === 1">
+                    <el-form-item label="图文详情:" id="modificationMyQuill">
+                        <quill-editor v-if="modificationCarouselDrawingType >> 0 === 1" ref="myTextEditor"
+                        v-model="modification.initData" :options="editorOption" @showImageUI="imageHandler"
+                        @change="modificationUpdateData">
+                        </quill-editor>
+                    </el-form-item>
+                    <input type="file" name="file" id="fileinput" @change="customimgupload($event)"
+                    style="display: none;">
+                </template>
+                <template v-else-if="modificationCarouselDrawingType >> 0 === 2">
+                    <el-form-item label="商品款号:">
+                        <el-tooltip class="item" effect="dark" content="输入的商品款号将与此轮播图关联,下方会展示此款商品的缩略图,请核实!"
+                        placement="right-start">
+                            <el-input placeholder="请输入" v-model="modification.model" :maxlength="20"
+                            icon="search" :on-icon-click="modificationGetShopIdThumbImg" style="width: 217px;">
+                            </el-input>
+                        </el-tooltip>
+                    </el-form-item>
+                    <el-form-item label="商品缩略图">
+                        <el-row>
+                            <el-col :span="8">
+                                <el-card>
+                                    <template v-if="modification.model_img != ''">
+                                        <img :src="modification.model_img" alt="商品缩略图" class="img">
+                                    </template>
+                                </el-card>
+                            </el-col>
+                        </el-row>
+                    </el-form-item>
+                </template>
+                <template v-if="modificationCarouselDrawingType >> 0 === 3">
+                    <el-form-item label="视频地址:">
+                        <el-tooltip class="item" effect="dark" content="请输入培训视频地址!" placement="right-start">
+                            <el-input placeholder="请输入" v-model="modification.carousel_drawing_video_url"
+                            style="width: 217px;">
+                            </el-input>
+                        </el-tooltip>
+                    </el-form-item>
+                </template>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="modification.dialogFormVisible = false">
+                    取 消
+                </el-button>
+                <el-button type="primary" @click="modificationPhpPostData">
+                    确 定
+                </el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -164,17 +258,18 @@
 </style>
 
 <script>
-import * as API from '../../assets/axios/api.js'
+import * as API from '../../../assets/axios/api.js'
 export default{
-    name: 'addCarouselDrawing',
+    name: 'carouselDrawingList',
     created: function () {
         this.getLocationTypeList() // 后台获取轮播图位置
         this.getcarouselDrawingTypeList() // 后台获取轮播图类型
+        this.getCarouselDrawingListData() // 获取轮播图列表
     },
     data () {
         return {
             editorOption: {}, // 富文本对象
-            tabCheck: 'addCarouselDrawing', // tab页切换 addCarouselDrawing carouselDrawingList
+            tabCheck: 'carouselDrawingList', // tab页切换 addCarouselDrawing carouselDrawingList
             tableHeight: null, // 列表高度
             name: '', // 轮播图名称
             location_type_list: [], // 轮播图位置列表
@@ -417,8 +512,10 @@ export default{
                         type: 'success'
                     })
                     setTimeout(() => {
-                        this.$router.push({ path: 'carouselDrawingList' })
-                    }, 2000)
+                        this.tabCheck = 'carouselDrawingList'
+                        // 初始化获取列表数据
+                        this.getCarouselDrawingListData()
+                    }, 1000)
                 })
                 .catch(error => {
                     this.$message.error('服务器异常')
@@ -448,8 +545,10 @@ export default{
                         type: 'success'
                     })
                     setTimeout(() => {
-                        this.$router.push({ path: 'carouselDrawingList' })
-                    }, 2000)
+                        this.tabCheck = 'carouselDrawingList'
+                        // 初始化获取列表数据
+                        this.getCarouselDrawingListData()
+                    }, 1000)
                 })
                 .catch(error => {
                     this.$message.error('服务器异常')
@@ -480,8 +579,10 @@ export default{
                         type: 'success'
                     })
                     setTimeout(() => {
-                        this.$router.push({ path: 'carouselDrawingList' })
-                    }, 2000)
+                        this.tabCheck = 'carouselDrawingList'
+                        // 初始化获取列表数据
+                        this.getCarouselDrawingListData()
+                    }, 1000)
                 })
                 break
             }
@@ -515,10 +616,6 @@ export default{
 
         // 用户点击搜索数据
         userSearchData (current_page) {
-            if (!this.search_name || !this.search_location || !this.search_carousel_drawing_type) {
-                this.$message.error('至少一条搜索项不为空')
-                return false
-            }
             this.getCarouselDrawingListData(current_page)
         },
 

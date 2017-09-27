@@ -187,7 +187,7 @@
 </style>
 
 <script>
-import { getShopList, handleShopStatus } from '../assets/axios/api.js'
+import { getShopList, handleShopStatus } from '../../assets/axios/api.js'
 export default {
     name: 'listStore',
     data () {

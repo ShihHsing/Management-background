@@ -147,7 +147,7 @@
 </style>
 
 <script>
-import { addShop } from '../assets/axios/api.js'
+import { addShop } from '../../assets/axios/api.js'
 export default {
     name: 'addStore',
     data () {

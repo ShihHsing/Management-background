@@ -93,9 +93,10 @@ const routes = [
             component: resolve => require(['../../component/tvmFansList.vue'],
             resolve)
         }, {
-            path: '/privateBrandStores', // 设置自由品牌
+            path: '/privateBrandStores', // 设置自有品牌
             component: resolve => require(['../../component/privateBrandStores.vue'],
-            resolve)
+            resolve),
+            name: '未知领域-添加自有品牌'
         }, {
             path: '/goodsSetSwitch', // 商品设置的开关
             component: resolve => require(['../../component/goodsSetSwitch.vue'],
@@ -107,39 +108,49 @@ const routes = [
             name: '商品管理-3D模型上传'
         }, {
             path: '/addCarouselDrawing', // 添加轮播图
-            component: resolve => require(['../../component/carousel_drawing/addCarouselDrawing.vue'],
+            component: resolve => require(['../../component/administrator/carousel_drawing/addCarouselDrawing.vue'],
             resolve),
             name: '管理员-添加轮播图'
         }, {
             path: '/carouselDrawingList', // 轮播图列表
-            component: resolve => require(['../../component/carousel_drawing/carouselDrawingList.vue'],
+            component: resolve => require(['../../component/administrator/carousel_drawing/carouselDrawingList.vue'],
             resolve),
             name: '管理员-轮播图列表'
         }, {
             path: '/trainingClassifyList', // 添加培训分类&&培训分类列表
-            component: resolve => require(['../../component/trainingClassifyList.vue'],
+            component: resolve => require(['../../component/administrator/trainingClassifyList.vue'],
             resolve),
             name: '管理员-培训功能-培训分类'
         }, {
             path: '/addTraining', // 添加培训详情
-            component: resolve => require(['../../component/addTraining.vue'],
+            component: resolve => require(['../../component/administrator/addTraining.vue'],
             resolve),
             name: '管理员-培训功能-添加培训'
         }, {
             path: '/trainingList', // 培训列表
-            component: resolve => require(['../../component/trainingList.vue'],
+            component: resolve => require(['../../component/administrator/trainingList.vue'],
             resolve),
             name: '管理员-培训功能-培训列表'
         }, {
             path: '/addStore', // 培训列表
-            component: resolve => require(['../../component/addStore.vue'],
+            component: resolve => require(['../../component/administrator/addStore.vue'],
             resolve),
             name: '管理员-门店管理-添加门店'
         }, {
             path: '/listStore', // 培训列表
-            component: resolve => require(['../../component/listStore.vue'],
+            component: resolve => require(['../../component/administrator/listStore.vue'],
             resolve),
             name: '管理员-门店管理-门店列表'
+        }, {
+            path: '/addNewerProduct', // 添加品牌
+            component: resolve => require(['../../component/administrator/addNewerProduct.vue'],
+            resolve),
+            name: '管理员-商品管理-添加品牌'
+        }, {
+            path: '/addNewerCategory', // 添加分类
+            component: resolve => require(['../../component/administrator/addNewerCategory.vue'],
+            resolve),
+            name: '管理员-商品管理-添加分类'
         }, {
             path: '/clearBindSetting', // 培训列表
             component: resolve => require(['../../component/administrator/clearBindSetting.vue'],
@@ -160,6 +171,11 @@ const routes = [
             component: resolve => require(['../../component/customer_service/addCustomerService.vue'],
             resolve),
             name: '管理员-客服问答管理-添加快速咨询问题'
+        }, {
+            path: '/editCustomerService', // 培训列表
+            component: resolve => require(['../../component/customer_service/editCustomerService.vue'],
+            resolve),
+            name: '管理员-客服问答管理-修改快速咨询问题'
         }, {
             path: '/addExcel', // 老会员导入
             component: resolve => require(['../../component/addExcel.vue'],

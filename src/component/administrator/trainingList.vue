@@ -217,8 +217,8 @@
 </style>
 
 <script>
-import { removeTraining, modifyTrainingInfo, handleTrainingRecommend, listTrainingInfo, getTrainingClassifyList } from '../assets/axios/api.js'
-import * as API from '../assets/axios/api.js'
+import { removeTraining, modifyTrainingInfo, handleTrainingRecommend, listTrainingInfo, getTrainingClassifyList } from '../../assets/axios/api.js'
+import * as API from '../../assets/axios/api.js'
 export default{
     name: 'trainingList',
     data () {

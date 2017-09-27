@@ -87,7 +87,7 @@
                 </template>
                 <el-submenu index="培训管理">
                     <template slot="title">
-                        培训功能
+                        培训管理
                     </template>
                     <el-menu-item index="/trainingClassifyList">
                         培训分类
@@ -110,7 +110,6 @@
                         轮播图列表
                     </el-menu-item>
                 </el-submenu>
-
                 <el-submenu index="门店管理">
                     <template slot="title">
                         门店管理
@@ -120,6 +119,17 @@
                     </el-menu-item>
                     <el-menu-item index="/listStore">
                         门店列表
+                    </el-menu-item>
+                </el-submenu>
+                <el-submenu index="商品管控">
+                    <template slot="title">
+                        商品管控
+                    </template>
+                    <el-menu-item index="/addNewerProduct">
+                        添加品牌
+                    </el-menu-item>
+                    <el-menu-item index="/addNewerCategory">
+                        添加分类
                     </el-menu-item>
                 </el-submenu>
                 <el-submenu index="机器人管理">
